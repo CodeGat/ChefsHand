@@ -9,17 +9,17 @@ import UIKit
 import WatchConnectivity
 import SwiftSoup
 
-struct Recipe {
+struct Recipe: Codable {
     var ingredients: [String]
     var method: [Step]
 }
 
-struct Step {
+struct Step: Codable {
     var instruction: String
     var cookingTimes: [CookingTimer]
 }
 
-struct CookingTimer {
+struct CookingTimer: Codable {
     let time: Int
     let timeDefStart: Int
     let timeDefEnd: Int
