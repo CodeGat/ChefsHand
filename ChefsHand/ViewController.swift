@@ -21,8 +21,8 @@ struct Step {
 
 struct CookingTimer {
     let time: Int
-    let timeDefStart: String.Index
-    let timeDefEnd: String.Index
+    let timeDefStart: Int
+    let timeDefEnd: Int
 }
 
 struct TasteRecipe: Codable {
@@ -38,12 +38,14 @@ class ViewController: UIViewController {
     @IBAction func tapSendDataToWatch(_ sender: Any){
         let recipeUrl = urlField.text
         
-        let steps: Recipe? = createRecipe(from: recipeUrl)
+        let recipe: Recipe? = createRecipe(from: recipeUrl)
+        print("Got a potential recipe")
         
-        
-        if let validSession = self.session, validSession.isReachable {
-            let data: [String: Any] = ["recipe": steps as Any]
-            validSession.sendMessage(data, replyHandler: nil, errorHandler: nil)
+        if let validSession = self.session, let validRecipe = recipe, validSession.isReachable {
+            print("!!!! Made a recipie !!!")
+            let data: [String: Any] = ["recipe": validRecipe as Any]
+            print(data)
+            validSession.sendMessage(data, replyHandler: nil, errorHandler: {(error) -> Void in print{":( error: \(error.localizedDescription)"}})
         }
     }
     
@@ -69,36 +71,46 @@ class ViewController: UIViewController {
         let ingredients = tasteRecipe!.recipeIngredient
         var steps: [Step] = []
         for instruction: String in tasteRecipe!.recipeInstructions {
-            steps.append(Step(instruction: instruction, cookingTimes: getCookingTimes(of: instruction)))
+            steps.append(Step(instruction: instruction, cookingTimes: getCookingTimes(in: instruction)))
         }
         
         return Recipe(ingredients: ingredients, method: steps)
     }
     
-    func getCookingTimes(of instruction: String) -> [CookingTimer] {
+    func getCookingTimes(in instruction: String) -> [CookingTimer] {
         var cookingTimers: [CookingTimer] = []
         
-        print("For ", instruction, ": ")
-        
         do {
-            let regex = try NSRegularExpression(pattern: #"[0-9]+ (h(ou)?rs?|min(ute)?s?|sec(ond)?s?)"#, options: [])
+            let regex = try NSRegularExpression(pattern: #"[0-9]+ ?(h(ou)?r|min(ute)?|sec(ond)?)s?"#, options: []) //TODO: only integers
             let matches = regex.matches(in: instruction, options: [], range: NSRange(location: 0, length: instruction.count))
-            guard let match = matches.first else {return []}
             
-            for rangeIndex in 0..<match.numberOfRanges {
-                let matchRange = match.range(at: rangeIndex)
-                if let substringRange = Range(matchRange, in: instruction) {
-                    print(instruction[substringRange])
-                    let cookingTime: CookingTimer = CookingTimer(time: 999, timeDefStart: substringRange.lowerBound, timeDefEnd: substringRange.upperBound)
+            for match in matches {
+                let matchRange: NSRange = match.range(at: 0) // get the first match (the largest one)
+                if let substringRange: Range = Range(matchRange, in: instruction) {
+                    let cookingTimeString: String = String(instruction[substringRange])
+                    let cookingTime = getCookingTimeInSeconds(of: cookingTimeString)
+                    cookingTimers.append(CookingTimer(time: cookingTime, timeDefStart: matchRange.lowerBound, timeDefEnd: matchRange.upperBound))
                 }
             }
         } catch {
             print(error)
         }
         
-        print("\n\n\n")
-        
         return cookingTimers
+    }
+    
+    func getCookingTimeInSeconds(of timeString: String) -> Int {
+        let timeComponents: [String] = timeString.components(separatedBy: " ")
+        let time: Int = Int(timeComponents[0])!
+        
+        switch timeComponents[1] {
+        case let unit where unit.contains("h"):
+            return time * 60 * 60
+        case let unit where unit.contains("m"):
+            return time * 60
+        default:
+            return time
+        }
     }
     
     func showErrorAlert(_ messsage: String) {

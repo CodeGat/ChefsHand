@@ -11,6 +11,21 @@ import WatchConnectivity
 
 
 class InterfaceController: WKInterfaceController {
+    
+    struct Recipe {
+        var ingredients: [String]
+        var method: [Step]
+    }
+
+    struct Step {
+        var instruction: String
+        var cookingTimes: [CookingTimer]
+    }
+
+    struct CookingTimer {
+        let time: Int
+        let timeDefRange: Range<String.Index>
+    }
 
     @IBOutlet weak var label: WKInterfaceLabel!
     let session = WCSession.default
@@ -41,9 +56,9 @@ extension InterfaceController: WCSessionDelegate {
     }
     
     func session(_ session: WCSession, didReceiveMessage message: [String: Any]) {
-        print("got message from iphone! \(message)")
-        if let value = message["iPhone"] as? String {
-            self.label.setText(value)
+        print("Watch got a response!")
+        if let recipe = message["recipe"] as? Recipe {
+            self.label.setText(recipe.ingredients[0])
         }
     }
 }
