@@ -9,23 +9,47 @@ import UIKit
 import WatchConnectivity
 import SwiftSoup
 
-struct Recipe: Codable {
+struct Recipe: Encodable {
     var ingredients: [String]
     var method: [Step]
+    
+    //TODO: investigate Codable protocol instead of conversion
+    func toDictionary() -> [String: Any] {
+        var dict: [String: Any] = [String: Any]()
+        dict["ingredients"] = self.ingredients
+        
+        let steps: [Step] = self.method
+        var dictSteps: [String: Any] = [String: Any]()
+        for step: Step in steps {
+            dictSteps["instruction"] = step.instruction
+            
+            let cookingTimers: [CookingTimer] = step.cookingTimes
+            var dictCookingTimers: [String: Int] = [String: Int]()
+            for cookingTimer: CookingTimer in cookingTimers {
+                dictCookingTimers["time"] = cookingTimer.time
+                dictCookingTimers["timeDefStart"] = cookingTimer.timeDefStart
+                dictCookingTimers["timeDefEnd"] = cookingTimer.timeDefEnd
+            }
+            dictSteps["cookingTimes"] = dictCookingTimers
+        }
+        dict["method"] = dictSteps
+        
+        return dict
+    }
 }
 
-struct Step: Codable {
+struct Step: Encodable {
     var instruction: String
     var cookingTimes: [CookingTimer]
 }
 
-struct CookingTimer: Codable {
+struct CookingTimer: Encodable {
     let time: Int
     let timeDefStart: Int
     let timeDefEnd: Int
 }
 
-struct TasteRecipe: Codable {
+struct TasteRecipe: Decodable {
     var recipeInstructions: [String]
     var recipeIngredient: [String]
 }
@@ -42,9 +66,7 @@ class ViewController: UIViewController {
         print("Got a potential recipe")
         
         if let validSession = self.session, let validRecipe = recipe, validSession.isReachable {
-            print("!!!! Made a recipie !!!")
-            let data: [String: Any] = ["recipe": validRecipe as Any]
-            print(data)
+            let data: [String: Any] = ["recipe": validRecipe.dictionary as Any]
             validSession.sendMessage(data, replyHandler: nil, errorHandler: {(error) -> Void in print{":( error: \(error.localizedDescription)"}})
         }
     }
@@ -159,4 +181,10 @@ extension ViewController: WCSessionDelegate {
     }
 }
 
+extension Encodable {
+    var dictionary: [String: Any]? {
+        guard let data = try? JSONEncoder().encode(self) else { return nil }
+        return (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)).flatMap { $0 as? [String: Any] }
+    }
+}
 

@@ -12,19 +12,20 @@ import WatchConnectivity
 
 class InterfaceController: WKInterfaceController {
     
-    struct Recipe {
+    struct Recipe: Decodable {
         var ingredients: [String]
         var method: [Step]
     }
 
-    struct Step {
+    struct Step: Decodable {
         var instruction: String
         var cookingTimes: [CookingTimer]
     }
 
-    struct CookingTimer {
+    struct CookingTimer: Decodable {
         let time: Int
-        let timeDefRange: Range<String.Index>
+        let timeDefStart: Int
+        let timeDefEnd: Int
     }
 
     @IBOutlet weak var label: WKInterfaceLabel!
@@ -52,13 +53,24 @@ class InterfaceController: WKInterfaceController {
 
 extension InterfaceController: WCSessionDelegate {
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
-        
+        print("Activation state is: \(activationState)")
     }
     
     func session(_ session: WCSession, didReceiveMessage message: [String: Any]) {
         print("Watch got a response!")
-        if let recipe = message["recipe"] as? Recipe {
+        do {
+            let recipe = try Recipe(from: message["recipe"] as Any)
             self.label.setText(recipe.ingredients[0])
+        } catch {
+            print(error)
         }
     }
+}
+
+extension Decodable {
+  init(from: Any) throws {
+    let data = try JSONSerialization.data(withJSONObject: from, options: .prettyPrinted)
+    let decoder = JSONDecoder()
+    self = try decoder.decode(Self.self, from: data)
+  }
 }
