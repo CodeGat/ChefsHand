@@ -12,30 +12,6 @@ import SwiftSoup
 struct Recipe: Encodable {
     var ingredients: [String]
     var method: [Step]
-    
-    //TODO: investigate Codable protocol instead of conversion
-    func toDictionary() -> [String: Any] {
-        var dict: [String: Any] = [String: Any]()
-        dict["ingredients"] = self.ingredients
-        
-        let steps: [Step] = self.method
-        var dictSteps: [String: Any] = [String: Any]()
-        for step: Step in steps {
-            dictSteps["instruction"] = step.instruction
-            
-            let cookingTimers: [CookingTimer] = step.cookingTimes
-            var dictCookingTimers: [String: Int] = [String: Int]()
-            for cookingTimer: CookingTimer in cookingTimers {
-                dictCookingTimers["time"] = cookingTimer.time
-                dictCookingTimers["timeDefStart"] = cookingTimer.timeDefStart
-                dictCookingTimers["timeDefEnd"] = cookingTimer.timeDefEnd
-            }
-            dictSteps["cookingTimes"] = dictCookingTimers
-        }
-        dict["method"] = dictSteps
-        
-        return dict
-    }
 }
 
 struct Step: Encodable {
@@ -77,7 +53,7 @@ class ViewController: UIViewController {
             showErrorAlert("URL wasn't valid, check the URL and try again")
             return nil
         }
-        do {    
+        do {
             let html: String = try String(contentsOf: url, encoding: .ascii)
             let decoder = JSONDecoder()
             
@@ -187,4 +163,3 @@ extension Encodable {
         return (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)).flatMap { $0 as? [String: Any] }
     }
 }
-

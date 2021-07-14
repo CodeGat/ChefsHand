@@ -6,24 +6,72 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="18022"/>
     </dependencies>
     <scenes>
-        <!--Interface Controller-->
+        <!--Chefs Hand-->
         <scene sceneID="aou-V4-d1y">
             <objects>
-                <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="ChefsHand_WatchKit_App" customModuleProvider="target">
+                <controller identifier="InterfaceController" title="Chefs Hand" id="AgC-eL-Hgc" customClass="InterfaceController" customModule="ChefsHand_WatchKit_App" customModuleProvider="target">
                     <items>
-                        <label alignment="left" text="Get from iPhone" id="ei6-9X-DJg"/>
-                        <button width="1" alignment="left" title="Send To iPhone!" id="4LO-SG-MWS">
+                        <label alignment="left" text="New recipes will appear here!" numberOfLines="2" id="ei6-9X-DJg"/>
+                        <button width="1" alignment="left" title="Check Recipe State" id="gZI-Ub-VbF">
                             <connections>
-                                <action selector="tapSendDataToiPhone" destination="AgC-eL-Hgc" id="G2B-kv-Def"/>
+                                <action selector="clickedButton" destination="AgC-eL-Hgc" id="sea-Ix-Amc"/>
                             </connections>
                         </button>
                     </items>
                     <connections>
                         <outlet property="label" destination="ei6-9X-DJg" id="uqf-ZE-pKH"/>
+                        <segue destination="RZ8-ZE-nGH" kind="relationship" relationship="nextPage" id="7JN-iK-iUh"/>
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="220" y="345"/>
+            <point key="canvasLocation" x="219.52173913043478" y="344.55357142857144"/>
+        </scene>
+        <!--Ingredients-->
+        <scene sceneID="A3N-Zi-AIw">
+            <objects>
+                <controller identifier="IngredientsController" title="Ingredients" id="RZ8-ZE-nGH" customClass="IngredientsController" customModule="ChefsHand_WatchKit_Extension">
+                    <items>
+                        <table alignment="left" id="1Sf-MH-wOY">
+                            <items>
+                                <tableRow identifier="Ingredients Row" id="fEk-f3-d0i" customClass="IngredientsRowController" customModule="ChefsHand_WatchKit_Extension">
+                                    <group key="rootItem" width="1" height="0.0" alignment="left" id="a7G-iG-STd">
+                                        <items>
+                                            <label alignment="left" verticalAlignment="center" textAlignment="left" numberOfLines="4" id="CLT-d5-B6h"/>
+                                        </items>
+                                        <edgeInsets key="margins" left="10" right="10" top="5" bottom="5"/>
+                                    </group>
+                                    <connections>
+                                        <outlet property="ingredientsLabel" destination="CLT-d5-B6h" id="PX3-9R-L8T"/>
+                                    </connections>
+                                </tableRow>
+                            </items>
+                        </table>
+                    </items>
+                    <connections>
+                        <outlet property="ingredientsTable" destination="1Sf-MH-wOY" id="fNW-gK-nfB"/>
+                        <segue destination="p3h-ES-Zvz" kind="relationship" relationship="nextPage" id="EeY-u3-DmB"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="458" y="345"/>
+        </scene>
+        <!--Method-->
+        <scene sceneID="jXg-zE-jdb">
+            <objects>
+                <controller identifier="MethodController" title="Method" id="p3h-ES-Zvz" customClass="MethodController" customModule="ChefsHand_WatchKit_Extension">
+                    <items>
+                        <label width="136" height="20" alignment="left" text="Method goes here" id="a1M-fk-tjk"/>
+                        <table alignment="left" id="Upx-BR-VrL">
+                            <items>
+                                <tableRow id="jWM-H1-fqD">
+                                    <group key="rootItem" width="1" alignment="left" id="4ec-La-8GJ"/>
+                                </tableRow>
+                            </items>
+                        </table>
+                    </items>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="685.91304347826087" y="344.55357142857144"/>
         </scene>
         <!--Static Notification Interface Controller-->
         <scene sceneID="AEw-b0-oYE">
@@ -47,14 +95,14 @@
             <objects>
                 <controller id="4sK-HA-Art" customClass="NotificationController" customModule="ChefsHand_WatchKit_App" customModuleProvider="target"/>
             </objects>
-            <point key="canvasLocation" x="468" y="643"/>
+            <point key="canvasLocation" x="458" y="867"/>
         </scene>
         <!--Notification Controller-->
         <scene sceneID="Niz-AI-uX2">
             <objects>
                 <controller id="eXb-UN-Cd0" customClass="NotificationController" customModule="ChefsHand_WatchKit_App" customModuleProvider="target"/>
             </objects>
-            <point key="canvasLocation" x="468" y="345"/>
+            <point key="canvasLocation" x="458" y="643"/>
         </scene>
     </scenes>
 </document>

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E3635BCB269E5DCB000BC63F /* StructuredRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3635BCA269E5DCB000BC63F /* StructuredRecipe.swift */; };
 		E36709362693FC74001E708B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36709352693FC74001E708B /* AppDelegate.swift */; };
 		E36709382693FC74001E708B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36709372693FC74001E708B /* SceneDelegate.swift */; };
 		E367093A2693FC74001E708B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36709392693FC74001E708B /* ViewController.swift */; };
@@ -23,6 +24,9 @@
 		E36709612693FC78001E708B /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36709602693FC78001E708B /* ComplicationController.swift */; };
 		E36709632693FC79001E708B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E36709622693FC79001E708B /* Assets.xcassets */; };
 		E39CD101269ABE060054AF60 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = E39CD100269ABE060054AF60 /* SwiftSoup */; };
+		E3F27674269E991100CA78D8 /* IngredientsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F27673269E991100CA78D8 /* IngredientsController.swift */; };
+		E3F27676269E9BE900CA78D8 /* MethodController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F27675269E9BE900CA78D8 /* MethodController.swift */; };
+		E3F27679269E9F5800CA78D8 /* IngredientsRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F27678269E9F5800CA78D8 /* IngredientsRowController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +72,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E3635BCA269E5DCB000BC63F /* StructuredRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructuredRecipe.swift; sourceTree = "<group>"; };
 		E36709322693FC74001E708B /* ChefsHand.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChefsHand.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E36709352693FC74001E708B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E36709372693FC74001E708B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -88,6 +93,9 @@
 		E36709622693FC79001E708B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E36709642693FC79001E708B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E36709652693FC79001E708B /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
+		E3F27673269E991100CA78D8 /* IngredientsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientsController.swift; sourceTree = "<group>"; };
+		E3F27675269E9BE900CA78D8 /* MethodController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MethodController.swift; sourceTree = "<group>"; };
+		E3F27678269E9F5800CA78D8 /* IngredientsRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientsRowController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,6 +171,10 @@
 				E36709622693FC79001E708B /* Assets.xcassets */,
 				E36709642693FC79001E708B /* Info.plist */,
 				E36709652693FC79001E708B /* PushNotificationPayload.apns */,
+				E3635BCA269E5DCB000BC63F /* StructuredRecipe.swift */,
+				E3F27673269E991100CA78D8 /* IngredientsController.swift */,
+				E3F27675269E9BE900CA78D8 /* MethodController.swift */,
+				E3F27678269E9F5800CA78D8 /* IngredientsRowController.swift */,
 			);
 			path = "ChefsHand WatchKit Extension";
 			sourceTree = "<group>";
@@ -315,9 +327,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				E367095F2693FC78001E708B /* NotificationController.swift in Sources */,
+				E3F27679269E9F5800CA78D8 /* IngredientsRowController.swift in Sources */,
 				E36709612693FC78001E708B /* ComplicationController.swift in Sources */,
 				E367095D2693FC78001E708B /* ExtensionDelegate.swift in Sources */,
 				E367095B2693FC78001E708B /* InterfaceController.swift in Sources */,
+				E3F27674269E991100CA78D8 /* IngredientsController.swift in Sources */,
+				E3635BCB269E5DCB000BC63F /* StructuredRecipe.swift in Sources */,
+				E3F27676269E9BE900CA78D8 /* MethodController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
