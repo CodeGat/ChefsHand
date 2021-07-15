@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		E3635BCB269E5DCB000BC63F /* StructuredRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3635BCA269E5DCB000BC63F /* StructuredRecipe.swift */; };
+		E3665EF426A0305600071844 /* MethodRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3665EF326A0305600071844 /* MethodRowController.swift */; };
 		E36709362693FC74001E708B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36709352693FC74001E708B /* AppDelegate.swift */; };
 		E36709382693FC74001E708B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36709372693FC74001E708B /* SceneDelegate.swift */; };
 		E367093A2693FC74001E708B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36709392693FC74001E708B /* ViewController.swift */; };
@@ -73,6 +74,7 @@
 
 /* Begin PBXFileReference section */
 		E3635BCA269E5DCB000BC63F /* StructuredRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructuredRecipe.swift; sourceTree = "<group>"; };
+		E3665EF326A0305600071844 /* MethodRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MethodRowController.swift; sourceTree = "<group>"; };
 		E36709322693FC74001E708B /* ChefsHand.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChefsHand.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E36709352693FC74001E708B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E36709372693FC74001E708B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				E3F27675269E9BE900CA78D8 /* MethodController.swift */,
+				E3665EF326A0305600071844 /* MethodRowController.swift */,
 			);
 			path = Method;
 			sourceTree = "<group>";
@@ -344,6 +347,7 @@
 			files = (
 				E367095F2693FC78001E708B /* NotificationController.swift in Sources */,
 				E3F27679269E9F5800CA78D8 /* IngredientsRowController.swift in Sources */,
+				E3665EF426A0305600071844 /* MethodRowController.swift in Sources */,
 				E36709612693FC78001E708B /* ComplicationController.swift in Sources */,
 				E367095D2693FC78001E708B /* ExtensionDelegate.swift in Sources */,
 				E367095B2693FC78001E708B /* InterfaceController.swift in Sources */,
