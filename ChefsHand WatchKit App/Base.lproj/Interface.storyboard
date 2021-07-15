@@ -86,6 +86,17 @@
             </objects>
             <point key="canvasLocation" x="685.91304347826087" y="344.55357142857144"/>
         </scene>
+        <!--Timer-->
+        <scene sceneID="Bbj-ER-ggm">
+            <objects>
+                <controller identifier="Timer" id="TAN-0M-BRT">
+                    <items>
+                        <label alignment="left" text="Magic happens here" id="PLl-mr-7fU"/>
+                    </items>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="982" y="347"/>
+        </scene>
         <!--Static Notification Interface Controller-->
         <scene sceneID="AEw-b0-oYE">
             <objects>

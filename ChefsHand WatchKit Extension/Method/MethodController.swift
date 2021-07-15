@@ -12,7 +12,8 @@ class MethodController: WKInterfaceController {
     @IBOutlet weak var methodTable: WKInterfaceTable!
     
     override func table(_ table: WKInterfaceTable, didSelectRowAt rowIndex: Int) {
-        
+        let selectedRow = methodTable.rowController(at: rowIndex) as! MethodRowController
+        print("\(rowIndex) row was tapped")
     }
     
     override func willActivate() {
@@ -24,7 +25,16 @@ class MethodController: WKInterfaceController {
             let recipe: Recipe.StructuredRecipe = Recipe.shared.getRecipe()
             let recipeRow: Recipe.StructuredRecipe.Step = recipe.method[index]
             
-            rowController.methodLabel.setText(step.instruction)
+            let attributedString = NSMutableAttributedString(string: step.instruction)
+            for cookingTimer in step.cookingTimes {
+                let start: Int = cookingTimer.timeDefStart
+                let length: Int = cookingTimer.timeDefEnd - start
+                let range = NSRange(location: start, length: length)
+                attributedString.addAttribute(.foregroundColor, value: UIColor.orange, range: range)
+            }
+            rowController.methodLabel.setAttributedText(attributedString)
+            
+            
             
             if (recipeRow.cookingTimes.count > 0){
                 rowController.methodTimer.setDate(NSDate(timeIntervalSinceNow: TimeInterval(recipeRow.cookingTimes[0].time)) as Date)
