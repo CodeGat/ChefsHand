@@ -117,6 +117,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E3665EF126A027CA00071844 /* Ingredients */ = {
+			isa = PBXGroup;
+			children = (
+				E3F27673269E991100CA78D8 /* IngredientsController.swift */,
+				E3F27678269E9F5800CA78D8 /* IngredientsRowController.swift */,
+			);
+			path = Ingredients;
+			sourceTree = "<group>";
+		};
+		E3665EF226A027F400071844 /* Method */ = {
+			isa = PBXGroup;
+			children = (
+				E3F27675269E9BE900CA78D8 /* MethodController.swift */,
+			);
+			path = Method;
+			sourceTree = "<group>";
+		};
 		E36709292693FC73001E708B = {
 			isa = PBXGroup;
 			children = (
@@ -172,9 +189,8 @@
 				E36709642693FC79001E708B /* Info.plist */,
 				E36709652693FC79001E708B /* PushNotificationPayload.apns */,
 				E3635BCA269E5DCB000BC63F /* StructuredRecipe.swift */,
-				E3F27673269E991100CA78D8 /* IngredientsController.swift */,
-				E3F27675269E9BE900CA78D8 /* MethodController.swift */,
-				E3F27678269E9F5800CA78D8 /* IngredientsRowController.swift */,
+				E3665EF126A027CA00071844 /* Ingredients */,
+				E3665EF226A027F400071844 /* Method */,
 			);
 			path = "ChefsHand WatchKit Extension";
 			sourceTree = "<group>";
