@@ -9,6 +9,7 @@ import WatchKit
 
 class IngredientsRowController: NSObject {
     @IBOutlet weak var ingredientsLabel: WKInterfaceLabel!
+    @IBOutlet weak var ingredientGroup: WKInterfaceGroup!
     
     var ingredient: String? {
         didSet {

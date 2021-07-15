@@ -12,11 +12,6 @@
                 <controller identifier="InterfaceController" title="Chefs Hand" id="AgC-eL-Hgc" customClass="InterfaceController" customModule="ChefsHand_WatchKit_App" customModuleProvider="target">
                     <items>
                         <label alignment="left" text="New recipes will appear here!" numberOfLines="2" id="ei6-9X-DJg"/>
-                        <button width="1" alignment="left" title="Check Recipe State" id="gZI-Ub-VbF">
-                            <connections>
-                                <action selector="clickedButton" destination="AgC-eL-Hgc" id="sea-Ix-Amc"/>
-                            </connections>
-                        </button>
                     </items>
                     <connections>
                         <outlet property="label" destination="ei6-9X-DJg" id="uqf-ZE-pKH"/>
@@ -36,11 +31,15 @@
                                 <tableRow identifier="Ingredients Row" id="fEk-f3-d0i" customClass="IngredientsRowController" customModule="ChefsHand_WatchKit_Extension">
                                     <group key="rootItem" width="1" height="0.0" alignment="left" id="a7G-iG-STd">
                                         <items>
-                                            <label alignment="left" verticalAlignment="center" textAlignment="left" numberOfLines="4" id="CLT-d5-B6h"/>
+                                            <imageView alignment="left" image="checkmark.circle.fill" catalog="system" id="qPA-1u-x8b">
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </imageView>
+                                            <label alignment="left" verticalAlignment="center" text="Test" textAlignment="left" numberOfLines="4" id="CLT-d5-B6h"/>
                                         </items>
                                         <edgeInsets key="margins" left="10" right="10" top="5" bottom="5"/>
                                     </group>
                                     <connections>
+                                        <outlet property="ingredientGroup" destination="a7G-iG-STd" id="uLj-HY-cSR"/>
                                         <outlet property="ingredientsLabel" destination="CLT-d5-B6h" id="PX3-9R-L8T"/>
                                     </connections>
                                 </tableRow>
@@ -60,11 +59,15 @@
             <objects>
                 <controller identifier="MethodController" title="Method" id="p3h-ES-Zvz" customClass="MethodController" customModule="ChefsHand_WatchKit_Extension">
                     <items>
-                        <label width="136" height="20" alignment="left" text="Method goes here" id="a1M-fk-tjk"/>
                         <table alignment="left" id="Upx-BR-VrL">
                             <items>
                                 <tableRow id="jWM-H1-fqD">
-                                    <group key="rootItem" width="1" alignment="left" id="4ec-La-8GJ"/>
+                                    <group key="rootItem" width="1" alignment="left" layout="vertical" id="4ec-La-8GJ">
+                                        <items>
+                                            <label alignment="left" text="Method Step" id="kdf-Oj-iOO"/>
+                                            <separator alignment="left" id="U53-F6-7s1"/>
+                                        </items>
+                                    </group>
                                 </tableRow>
                             </items>
                         </table>
@@ -105,4 +108,7 @@
             <point key="canvasLocation" x="458" y="643"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="checkmark.circle.fill" catalog="system" width="128" height="121"/>
+    </resources>
 </document>

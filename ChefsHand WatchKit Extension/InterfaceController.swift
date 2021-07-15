@@ -14,11 +14,7 @@ class InterfaceController: WKInterfaceController {
 
     @IBOutlet weak var label: WKInterfaceLabel!
     let session = WCSession.default
-    
-    @IBAction func clickedButton() {
-        print("recipe is:")
-        print(Recipe.shared.getRecipe())
-    }
+
     override func awake(withContext context: Any?) {
         // Configure interface objects here.
         session.delegate = self
@@ -45,7 +41,7 @@ extension InterfaceController: WCSessionDelegate {
     }
     
     func session(_ session: WCSession, didReceiveMessage message: [String: Any]) {
-        print("Watch got a response!")
         Recipe.shared.setRecipe(given: message["recipe"] as Any)
+        label.setText("A new recipe is availible!")
     }
 }
