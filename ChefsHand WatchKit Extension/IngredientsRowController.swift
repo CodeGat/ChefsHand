@@ -10,11 +10,12 @@ import WatchKit
 class IngredientsRowController: NSObject {
     @IBOutlet weak var ingredientsLabel: WKInterfaceLabel!
     @IBOutlet weak var ingredientGroup: WKInterfaceGroup!
+    @IBOutlet weak var doneImage: WKInterfaceImage!
     
-    var ingredient: String? {
+    var ingredient: Recipe.StructuredRecipe.Ingredient? {
         didSet {
             guard let ingredient = ingredient else {return}
-            self.ingredientsLabel.setText(ingredient)
+            self.ingredientsLabel.setText(ingredient.text)
         }
     }
 }

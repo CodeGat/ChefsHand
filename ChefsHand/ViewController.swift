@@ -10,19 +10,25 @@ import WatchConnectivity
 import SwiftSoup
 
 struct Recipe: Encodable {
-    var ingredients: [String]
+    var ingredients: [Ingredient]
     var method: [Step]
-}
-
-struct Step: Encodable {
-    var instruction: String
-    var cookingTimes: [CookingTimer]
-}
-
-struct CookingTimer: Encodable {
-    let time: Int
-    let timeDefStart: Int
-    let timeDefEnd: Int
+    
+    struct Ingredient: Encodable {
+        var text: String
+        var isDone: Bool
+    }
+    
+    struct Step: Encodable {
+        var instruction: String
+        var isDone: Bool
+        var cookingTimes: [CookingTimer]
+    }
+    
+    struct CookingTimer: Encodable {
+        let time: Int
+        let timeDefStart: Int
+        let timeDefEnd: Int
+    }
 }
 
 struct TasteRecipe: Decodable {
@@ -66,17 +72,20 @@ class ViewController: UIViewController {
             print(error)
         }
         
-        let ingredients = tasteRecipe!.recipeIngredient
-        var steps: [Step] = []
+        let ingredients: [String] = tasteRecipe!.recipeIngredient
+        let recipeIngredients: [Recipe.Ingredient] = ingredients.map { Recipe.Ingredient(text: $0, isDone: false) }
+        print(recipeIngredients)
+        
+        var steps: [Recipe.Step] = []
         for instruction: String in tasteRecipe!.recipeInstructions {
-            steps.append(Step(instruction: instruction, cookingTimes: getCookingTimes(in: instruction)))
+            steps.append(Recipe.Step(instruction: instruction, isDone: false, cookingTimes: getCookingTimes(in: instruction)))
         }
         
-        return Recipe(ingredients: ingredients, method: steps)
+        return Recipe(ingredients: recipeIngredients, method: steps)
     }
     
-    func getCookingTimes(in instruction: String) -> [CookingTimer] {
-        var cookingTimers: [CookingTimer] = []
+    func getCookingTimes(in instruction: String) -> [Recipe.CookingTimer] {
+        var cookingTimers: [Recipe.CookingTimer] = []
         
         do {
             let regex = try NSRegularExpression(pattern: #"[0-9]+ ?(h(ou)?r|min(ute)?|sec(ond)?)s?"#, options: []) //TODO: only integers
@@ -86,8 +95,9 @@ class ViewController: UIViewController {
                 let matchRange: NSRange = match.range(at: 0) // get the first match (the largest one)
                 if let substringRange: Range = Range(matchRange, in: instruction) {
                     let cookingTimeString: String = String(instruction[substringRange])
-                    let cookingTime = getCookingTimeInSeconds(of: cookingTimeString)
-                    cookingTimers.append(CookingTimer(time: cookingTime, timeDefStart: matchRange.lowerBound, timeDefEnd: matchRange.upperBound))
+                    let cookingTime: Int = getCookingTimeInSeconds(of: cookingTimeString)
+                    let cookingTimer = Recipe.CookingTimer(time: cookingTime, timeDefStart: matchRange.lowerBound, timeDefEnd: matchRange.upperBound)
+                    cookingTimers.append(cookingTimer)
                 }
             }
         } catch {

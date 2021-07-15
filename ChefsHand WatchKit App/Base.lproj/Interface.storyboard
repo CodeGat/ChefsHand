@@ -31,7 +31,7 @@
                                 <tableRow identifier="Ingredients Row" id="fEk-f3-d0i" customClass="IngredientsRowController" customModule="ChefsHand_WatchKit_Extension">
                                     <group key="rootItem" width="1" height="0.0" alignment="left" id="a7G-iG-STd">
                                         <items>
-                                            <imageView alignment="left" image="checkmark.circle.fill" catalog="system" id="qPA-1u-x8b">
+                                            <imageView alignment="left" id="qPA-1u-x8b">
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </imageView>
                                             <label alignment="left" verticalAlignment="center" text="Test" textAlignment="left" numberOfLines="4" id="CLT-d5-B6h"/>
@@ -39,6 +39,7 @@
                                         <edgeInsets key="margins" left="10" right="10" top="5" bottom="5"/>
                                     </group>
                                     <connections>
+                                        <outlet property="doneImage" destination="qPA-1u-x8b" id="ZHl-zp-YOZ"/>
                                         <outlet property="ingredientGroup" destination="a7G-iG-STd" id="uLj-HY-cSR"/>
                                         <outlet property="ingredientsLabel" destination="CLT-d5-B6h" id="PX3-9R-L8T"/>
                                     </connections>
@@ -108,7 +109,4 @@
             <point key="canvasLocation" x="458" y="643"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="checkmark.circle.fill" catalog="system" width="128" height="121"/>
-    </resources>
 </document>

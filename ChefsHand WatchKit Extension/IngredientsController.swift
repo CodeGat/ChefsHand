@@ -10,28 +10,38 @@ import WatchKit
 
 class IngredientsController: WKInterfaceController {
     @IBOutlet weak var ingredientsTable: WKInterfaceTable!
-    var isSelected: Bool = false
-    
+
     //TODO: maybe use a click region?
     override func table(_ table: WKInterfaceTable, didSelectRowAt rowIndex: Int) {
         let selectedRow = ingredientsTable.rowController(at: rowIndex) as! IngredientsRowController
+        let selectedRowIngredient: Recipe.StructuredRecipe.Ingredient = Recipe.shared.getRecipe().ingredients[rowIndex]
         
-        if (isSelected) {
-            isSelected = false
-            selectedRow.ingredientGroup.setBackgroundColor(UIColor(white: 0.1, alpha: 0.5))
-        } else {
-            isSelected = true
-            selectedRow.ingredientGroup.setBackgroundColor(UIColor(white: 0.33, alpha: 0.5))
-        }
+        Recipe.shared.setRecipeIngredientIsDone(at: rowIndex, to: !selectedRowIngredient.isDone)
+        
+        changeIngredientRowIsDoneState(using: selectedRow, to: !selectedRowIngredient.isDone)
     }
     
     override func willActivate() {
-        let ingredients: [String] = Recipe.shared.getRecipe().ingredients
+        let ingredients: [Recipe.StructuredRecipe.Ingredient] = Recipe.shared.getRecipe().ingredients
         ingredientsTable.setNumberOfRows(ingredients.count, withRowType: "Ingredients Row")
         
         for (index, ingredient) in ingredients.enumerated() {
-            let row = ingredientsTable.rowController(at: index) as! IngredientsRowController
-            row.ingredientsLabel.setText(ingredient)
+            let rowController  = ingredientsTable.rowController(at: index) as! IngredientsRowController
+            let recipe: Recipe.StructuredRecipe = Recipe.shared.getRecipe()
+            let recipeRow: Recipe.StructuredRecipe.Ingredient = recipe.ingredients[index]
+            
+            rowController.ingredientsLabel.setText(ingredient.text)
+            changeIngredientRowIsDoneState(using: rowController, to: recipeRow.isDone)
+        }
+    }
+    
+    func changeIngredientRowIsDoneState(using rowController: IngredientsRowController, to isDone: Bool) {
+        if (isDone) {
+            rowController.ingredientGroup.setBackgroundColor(UIColor(white: 0.1, alpha: 0.5))
+            rowController.doneImage.setImage(UIImage(systemName: "checkmark.circle"))
+        } else {
+            rowController.ingredientGroup.setBackgroundColor(UIColor(white: 0.32, alpha: 0.5))
+            rowController.doneImage.setImage(UIImage(systemName: "circle"))
         }
     }
 }

@@ -9,20 +9,28 @@ import Foundation
 
 class Recipe {
     struct StructuredRecipe: Codable {
-        var ingredients: [String]
+        var ingredients: [Ingredient]
         var method: [Step]
+        
+        struct Ingredient: Codable {
+            var text: String
+            var isDone: Bool
+        }
+        
+        struct Step: Codable {
+            var instruction: String
+            var isDone: Bool
+            var cookingTimes: [CookingTimer]
+        }
+
+        struct CookingTimer: Codable {
+            let time: Int
+            let timeDefStart: Int
+            let timeDefEnd: Int
+        }
     }
 
-    struct Step: Codable {
-        var instruction: String
-        var cookingTimes: [CookingTimer]
-    }
 
-    struct CookingTimer: Codable {
-        let time: Int
-        let timeDefStart: Int
-        let timeDefEnd: Int
-    }
 
     static let shared = Recipe()
     private var recipe: StructuredRecipe = StructuredRecipe(ingredients: [], method: [])
@@ -38,6 +46,10 @@ class Recipe {
         } catch {
             print(error)
         }
+    }
+    
+    func setRecipeIngredientIsDone(at rowIndex: Int, to value: Bool) {
+        recipe.ingredients[rowIndex].isDone = value
     }
 }
 
