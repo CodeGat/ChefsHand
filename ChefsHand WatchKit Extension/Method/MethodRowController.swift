@@ -7,15 +7,26 @@
 
 import WatchKit
 
+protocol TableCellButtonTappable {
+    func buttonTapped(at index: Int, inRow row: Int)
+}
+
 class MethodRowController: NSObject {
     @IBOutlet weak var methodLabel: WKInterfaceLabel!
     @IBOutlet weak var separator: WKInterfaceSeparator!
     @IBOutlet weak var methodTimer: WKInterfaceTimer!
+    @IBOutlet weak var timerBtn: WKInterfaceButton!
+    @IBOutlet weak var otherTimersBtn: WKInterfaceButton!
     
-    @IBAction func handleLongPress(_ sender: Any) {
-        print("From MethodRowController, ", sender)
+    @IBAction func switchTimer() {
+//        let timeInterval: Date =
+//        self.methodTimer.setDate(<#T##date: Date##Date#>)
     }
-    @IBOutlet weak var longPressToTimers: WKLongPressGestureRecognizer!
+    
+    @IBAction func timerStart() {
+        self.methodTimer.start()
+    }
+    
     var step: Recipe.StructuredRecipe.Step? {
         didSet {
             guard let step = step else {return}

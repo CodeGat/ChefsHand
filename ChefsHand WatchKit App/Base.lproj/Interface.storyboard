@@ -67,13 +67,40 @@
                                         <items>
                                             <label alignment="left" text="Method Step" textAlignment="center" numberOfLines="20" id="kdf-Oj-iOO"/>
                                             <separator alignment="left" id="U53-F6-7s1"/>
-                                            <timer alignment="center" textAlignment="center" id="sv7-r0-jEG"/>
+                                            <group width="1" alignment="left" id="vsQ-1J-5iy">
+                                                <items>
+                                                    <button alignment="center" verticalAlignment="center" id="fEV-ck-zz4">
+                                                        <group key="contentGroup" width="131" alignment="left" id="nOe-to-qUk">
+                                                            <items>
+                                                                <timer width="134" alignment="center" verticalAlignment="center" textAlignment="center" id="eFn-Ll-7HH"/>
+                                                            </items>
+                                                        </group>
+                                                        <connections>
+                                                            <action selector="timerStart" destination="jWM-H1-fqD" id="zSJ-zM-8Qu"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button alignment="right" id="tBJ-2d-bNI">
+                                                        <group key="contentGroup" width="31" height="44" alignment="left" id="W0t-Qu-oTI">
+                                                            <items>
+                                                                <imageView alignment="center" verticalAlignment="center" image="timer" catalog="system" id="sJW-9q-vRi">
+                                                                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                </imageView>
+                                                            </items>
+                                                        </group>
+                                                        <connections>
+                                                            <action selector="switchTimer" destination="jWM-H1-fqD" id="47d-H6-0It"/>
+                                                        </connections>
+                                                    </button>
+                                                </items>
+                                            </group>
                                         </items>
                                     </group>
                                     <connections>
                                         <outlet property="methodLabel" destination="kdf-Oj-iOO" id="SXO-hQ-Qk8"/>
-                                        <outlet property="methodTimer" destination="sv7-r0-jEG" id="FAe-9j-JNz"/>
+                                        <outlet property="methodTimer" destination="eFn-Ll-7HH" id="k7C-Vs-O6C"/>
+                                        <outlet property="otherTimersBtn" destination="tBJ-2d-bNI" id="mg4-xr-82Z"/>
                                         <outlet property="separator" destination="U53-F6-7s1" id="zU8-yV-dkV"/>
+                                        <outlet property="timerBtn" destination="fEV-ck-zz4" id="4KA-ys-oL0"/>
                                     </connections>
                                 </tableRow>
                             </items>
@@ -85,17 +112,6 @@
                 </controller>
             </objects>
             <point key="canvasLocation" x="685.91304347826087" y="344.55357142857144"/>
-        </scene>
-        <!--Timer-->
-        <scene sceneID="Bbj-ER-ggm">
-            <objects>
-                <controller identifier="Timer" id="TAN-0M-BRT">
-                    <items>
-                        <label alignment="left" text="Magic happens here" id="PLl-mr-7fU"/>
-                    </items>
-                </controller>
-            </objects>
-            <point key="canvasLocation" x="982" y="347"/>
         </scene>
         <!--Static Notification Interface Controller-->
         <scene sceneID="AEw-b0-oYE">
@@ -129,4 +145,7 @@
             <point key="canvasLocation" x="458" y="643"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="timer" catalog="system" width="128" height="121"/>
+    </resources>
 </document>
