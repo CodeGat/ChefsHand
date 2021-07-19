@@ -67,7 +67,7 @@
                                         <items>
                                             <label alignment="left" text="Method Step" numberOfLines="20" id="kdf-Oj-iOO"/>
                                         </items>
-                                        <edgeInsets key="margins" left="2" right="0.0" top="5" bottom="5"/>
+                                        <edgeInsets key="margins" left="10" right="5" top="5" bottom="5"/>
                                     </group>
                                     <connections>
                                         <outlet property="methodGroup" destination="4ec-La-8GJ" id="6tq-8I-JMh"/>
