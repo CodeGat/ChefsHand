@@ -18,7 +18,7 @@ class IngredientsController: WKInterfaceController {
         
         Recipe.shared.setRecipeIngredientIsDone(at: rowIndex, to: !selectedRowIngredient.isDone)
         
-        changeIngredientRowIsDoneState(using: selectedRow, to: !selectedRowIngredient.isDone)
+        changeIngredientRowVisual(using: selectedRow, to: !selectedRowIngredient.isDone)
     }
     
     override func willActivate() {
@@ -31,17 +31,19 @@ class IngredientsController: WKInterfaceController {
             let recipeRow: Recipe.StructuredRecipe.Ingredient = recipe.ingredients[index]
             
             rowController.ingredientsLabel.setText(ingredient.text)
-            changeIngredientRowIsDoneState(using: rowController, to: recipeRow.isDone)
+            changeIngredientRowVisual(using: rowController, to: recipeRow.isDone)
         }
     }
     
-    func changeIngredientRowIsDoneState(using rowController: IngredientsRowController, to isDone: Bool) {
+    func changeIngredientRowVisual(using rowController: IngredientsRowController, to isDone: Bool) {
         if (isDone) {
             rowController.ingredientGroup.setBackgroundColor(UIColor(white: 0.1, alpha: 0.5))
             rowController.doneImage.setImage(UIImage(systemName: "checkmark.circle"))
+            rowController.ingredientsLabel.setTextColor(UIColor(white: 1, alpha: 0.5))
         } else {
             rowController.ingredientGroup.setBackgroundColor(UIColor(white: 0.32, alpha: 0.5))
             rowController.doneImage.setImage(UIImage(systemName: "circle"))
+            rowController.ingredientsLabel.setTextColor(UIColor(white: 1, alpha: 1))
         }
     }
 }

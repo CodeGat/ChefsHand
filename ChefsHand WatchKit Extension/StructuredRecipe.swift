@@ -51,6 +51,10 @@ class Recipe {
     func setRecipeIngredientIsDone(at rowIndex: Int, to value: Bool) {
         recipe.ingredients[rowIndex].isDone = value
     }
+    
+    func setRecipeStepIsDone(at rowIndex: Int, to value: Bool) {
+        recipe.method[rowIndex].isDone = value
+    }
 }
 
 extension Decodable {
