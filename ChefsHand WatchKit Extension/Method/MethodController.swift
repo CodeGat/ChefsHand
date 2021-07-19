@@ -11,14 +11,15 @@ import WatchKit
 class MethodController: WKInterfaceController {
     @IBOutlet weak var methodTable: WKInterfaceTable!
     
-    @IBAction func pushTimerScene() {
-        pushController(withName: "Timers", context: Recipe.shared.getRecipe().method)
-        
-    }
-    
     override func table(_ table: WKInterfaceTable, didSelectRowAt rowIndex: Int) {
         let selectedRow = methodTable.rowController(at: rowIndex) as! MethodRowController
-        print("tapped the rest of the stuff: \(selectedRow)")
+        let selectedRowStep: Recipe.StructuredRecipe.Step = Recipe.shared.getRecipe().method[rowIndex]
+        
+        Recipe.shared.setRecipeStepIsDone(at: rowIndex, to: !selectedRowStep.isDone)
+        setMethodRowVisuals(using: selectedRow, to: !selectedRowStep.isDone)
+        if (rowIndex < methodTable.numberOfRows - 1 && !selectedRowStep.isDone) {
+            methodTable.scrollToRow(at: rowIndex + 1)
+        }
         
     }
     
@@ -29,9 +30,6 @@ class MethodController: WKInterfaceController {
         for (index, step) in steps.enumerated() {
             let rowController  = methodTable.rowController(at: index) as! MethodRowController
             
-            let recipe: Recipe.StructuredRecipe = Recipe.shared.getRecipe()
-            let recipeRow: Recipe.StructuredRecipe.Step = recipe.method[index]
-            
             let attributedString = NSMutableAttributedString(string: step.instruction)
             for cookingTimer in step.cookingTimes {
                 let start: Int = cookingTimer.timeDefStart
@@ -40,18 +38,16 @@ class MethodController: WKInterfaceController {
                 attributedString.addAttribute(.foregroundColor, value: UIColor.orange, range: range)
             }
             rowController.methodLabel.setAttributedText(attributedString)
-            
-            if (recipeRow.cookingTimes.count > 0){
-                rowController.methodTimer.setHidden(false)
-                rowController.separator.setHidden(false)
-                rowController.otherTimersBtn.setHidden(false)
-                rowController.methodTimer.setDate(NSDate(timeIntervalSinceNow: TimeInterval(recipeRow.cookingTimes[0].time)) as Date)
-            } else {
-                rowController.methodTimer.setHidden(true)
-                rowController.separator.setHidden(true)
-                rowController.otherTimersBtn.setHidden(true)
-            }
-            
+        }
+    }
+    
+    func setMethodRowVisuals(using rowController: MethodRowController, to isDone: Bool) {
+        if (isDone) {
+            rowController.methodGroup.setBackgroundColor(UIColor(white: 0.1, alpha: 0.5))
+            rowController.methodLabel.setTextColor(UIColor(white: 1, alpha: 0.5))
+        } else {
+            rowController.methodGroup.setBackgroundColor(UIColor(white: 0.32, alpha: 0.5))
+            rowController.methodLabel.setTextColor(UIColor(white: 1, alpha: 1))
         }
     }
 }
