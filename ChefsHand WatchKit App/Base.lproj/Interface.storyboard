@@ -12,9 +12,30 @@
                 <controller identifier="InterfaceController" title="Chefs Hand" id="AgC-eL-Hgc" customClass="InterfaceController" customModule="ChefsHand_WatchKit_App" customModuleProvider="target">
                     <items>
                         <label alignment="left" text="New recipes will appear here!" numberOfLines="2" id="ei6-9X-DJg"/>
+                        <table alignment="left" id="S9j-DI-ayR">
+                            <items>
+                                <tableRow identifier="Recipe Row" id="crS-QN-UV4" customClass="RecipeRowController" customModule="ChefsHand_WatchKit_Extension">
+                                    <group key="rootItem" width="1" alignment="left" id="ZmW-xv-iWP">
+                                        <items>
+                                            <label alignment="left" verticalAlignment="center" text="Recipe Name" id="vBH-74-dzs"/>
+                                        </items>
+                                    </group>
+                                    <connections>
+                                        <outlet property="recipeLabel" destination="vBH-74-dzs" id="PVS-Jz-zIN"/>
+                                    </connections>
+                                </tableRow>
+                            </items>
+                        </table>
+                        <separator alignment="left" id="5fj-P4-Fq9"/>
+                        <button width="1" alignment="left" title="Reset UserDefaults" id="XlQ-or-LJB">
+                            <connections>
+                                <action selector="resetUserDefaults" destination="AgC-eL-Hgc" id="N7B-Gt-pD7"/>
+                            </connections>
+                        </button>
                     </items>
                     <connections>
                         <outlet property="label" destination="ei6-9X-DJg" id="uqf-ZE-pKH"/>
+                        <outlet property="recipeTable" destination="S9j-DI-ayR" id="0rB-ne-eje"/>
                         <segue destination="RZ8-ZE-nGH" kind="relationship" relationship="nextPage" id="7JN-iK-iUh"/>
                     </connections>
                 </controller>
@@ -116,4 +137,10 @@
             <point key="canvasLocation" x="458" y="643"/>
         </scene>
     </scenes>
+    <color key="tintColor" name="AccentColor"/>
+    <resources>
+        <namedColor name="AccentColor">
+            <color red="0.67843137254901964" green="0.71372549019607845" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+    </resources>
 </document>

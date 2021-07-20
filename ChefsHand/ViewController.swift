@@ -10,6 +10,7 @@ import WatchConnectivity
 import SwiftSoup
 
 struct Recipe: Encodable {
+    var name: String
     var ingredients: [Ingredient]
     var method: [Step]
     
@@ -62,7 +63,9 @@ class ViewController: UIViewController {
     }
     
     func createRecipe(from urlString: String?) -> Recipe? {
+        var tasteRecipeName: String = "Recipe"
         var tasteRecipe: TasteRecipe?
+        
         guard let url = URL(string: urlString ?? "") else {
             showErrorAlert("URL wasn't valid, check the URL and try again")
             return nil
@@ -70,8 +73,11 @@ class ViewController: UIViewController {
         do {
             let html: String = try String(contentsOf: url, encoding: .ascii)
             let decoder = JSONDecoder()
-            
             let doc: Document = try SwiftSoup.parse(html)
+            
+            let nameElement: Element = try doc.select("title").first()!
+            tasteRecipeName = try nameElement.text()
+            
             let recipeElement: Element = try doc.select("script[data-schema-entity=recipe]").first()!
             let recipeString: String = recipeElement.data()
             let recipeData: Data = recipeString.data(using: .utf8)!
@@ -89,7 +95,7 @@ class ViewController: UIViewController {
             steps.append(Recipe.Step(instruction: instruction, isDone: false, cookingTimes: getCookingTimes(in: instruction)))
         }
         
-        return Recipe(ingredients: recipeIngredients, method: steps)
+        return Recipe(name: tasteRecipeName, ingredients: recipeIngredients, method: steps)
     }
     
     func getCookingTimes(in instruction: String) -> [Recipe.CookingTimer] {

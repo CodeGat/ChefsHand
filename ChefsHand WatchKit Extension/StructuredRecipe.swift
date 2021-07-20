@@ -9,6 +9,7 @@ import Foundation
 
 class Recipe {
     struct StructuredRecipe: Codable {
+        var name: String
         var ingredients: [Ingredient]
         var method: [Step]
         
@@ -33,7 +34,7 @@ class Recipe {
 
 
     static let shared = Recipe()
-    private var recipe: StructuredRecipe = StructuredRecipe(ingredients: [], method: [])
+    private var recipe: StructuredRecipe = StructuredRecipe(name: "", ingredients: [], method: [])
     private var recipeIsNew: Bool = false
     
     func getRecipe() -> StructuredRecipe {
@@ -46,6 +47,10 @@ class Recipe {
         } catch {
             print(error)
         }
+    }
+    
+    func setRecipe(given recipe: StructuredRecipe) {
+        self.recipe = recipe
     }
     
     func setRecipeIngredientIsDone(at rowIndex: Int, to value: Bool) {
