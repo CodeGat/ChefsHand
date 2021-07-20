@@ -33,6 +33,10 @@ class InterfaceController: WKInterfaceController {
         let data: [String: Any] = ["watch": "This is from my watch!" as String]
         session.sendMessage(data, replyHandler: nil, errorHandler: nil)
     }
+    
+    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
+        Recipe.shared.setRecipe(given: applicationContext["recipe"] as Any)
+    }
 }
 
 extension InterfaceController: WCSessionDelegate {

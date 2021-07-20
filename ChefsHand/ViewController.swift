@@ -45,11 +45,19 @@ class ViewController: UIViewController {
         let recipeUrl = urlField.text
         
         let recipe: Recipe? = createRecipe(from: recipeUrl)
-        print("Got a potential recipe")
         
-        if let validSession = self.session, let validRecipe = recipe, validSession.isReachable {
+        if let validSession = self.session, let validRecipe = recipe {
             let data: [String: Any] = ["recipe": validRecipe.dictionary as Any]
-            validSession.sendMessage(data, replyHandler: nil, errorHandler: {(error) -> Void in print{":( error: \(error.localizedDescription)"}})
+            if (validSession.isReachable){
+                validSession.sendMessage(data, replyHandler: nil, errorHandler: {(error) -> Void in print{":( error: \(error.localizedDescription)"}})
+            } else {
+                do {
+                    try validSession.updateApplicationContext(data)
+                } catch {
+                    print("Something happened when updating application context: \(error.localizedDescription)")
+                }
+                
+            }
         }
     }
     
