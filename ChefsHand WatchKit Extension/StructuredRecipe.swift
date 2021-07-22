@@ -8,7 +8,11 @@
 import Foundation
 
 class Recipe {
-    struct StructuredRecipe: Codable {
+    struct StructuredRecipe: Codable, Equatable {
+        static func == (lhs: Recipe.StructuredRecipe, rhs: Recipe.StructuredRecipe) -> Bool {
+            return lhs.name == rhs.name
+        }
+        
         var name: String
         var ingredients: [Ingredient]
         var method: [Step]
@@ -41,7 +45,7 @@ class Recipe {
         return recipe
     }
     
-    func setRecipe(given data: Any) {
+    func setRecipe(givenData data: Any) {
         do {
             recipe = try StructuredRecipe(from: data)
         } catch {
@@ -49,7 +53,7 @@ class Recipe {
         }
     }
     
-    func setRecipe(given recipe: StructuredRecipe) {
+    func setRecipe(givenRecipe recipe: StructuredRecipe) {
         self.recipe = recipe
     }
     

@@ -4,6 +4,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="18022"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
     </dependencies>
     <scenes>
         <!--Chefs Hand-->
@@ -26,10 +27,17 @@
                                 </tableRow>
                             </items>
                         </table>
-                        <separator alignment="left" id="5fj-P4-Fq9"/>
+                        <separator alignment="left" id="5fj-P4-Fq9">
+                            <color key="color" name="AccentColor"/>
+                        </separator>
                         <button width="1" alignment="left" title="Reset UserDefaults" id="XlQ-or-LJB">
                             <connections>
                                 <action selector="resetUserDefaults" destination="AgC-eL-Hgc" id="N7B-Gt-pD7"/>
+                            </connections>
+                        </button>
+                        <button width="1" alignment="left" title="Dump UserDefaults" id="Sad-46-hxH">
+                            <connections>
+                                <action selector="dumpUserDefaults" destination="AgC-eL-Hgc" id="1Se-T9-unZ"/>
                             </connections>
                         </button>
                     </items>

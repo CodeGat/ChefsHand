@@ -11,12 +11,6 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
 
     func applicationDidFinishLaunching() {
         // Perform any final initialization of your application.
-        let defaults = UserDefaults.standard
-        
-        if defaults.value(forKey: "recipes") == nil {
-            print("recipes are nil, initialize")
-            defaults.setValue([], forKey: "recipes")
-        }
     }
 
     func applicationDidBecomeActive() {
