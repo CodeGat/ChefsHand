@@ -37,7 +37,7 @@
                         </button>
                         <button width="1" alignment="left" title="Dump UserDefaults" id="Sad-46-hxH">
                             <connections>
-                                <action selector="dumpUserDefaults" destination="AgC-eL-Hgc" id="1Se-T9-unZ"/>
+                                <action selector="dumpUserDefaults" destination="AgC-eL-Hgc" id="VHC-x1-QeA"/>
                             </connections>
                         </button>
                     </items>

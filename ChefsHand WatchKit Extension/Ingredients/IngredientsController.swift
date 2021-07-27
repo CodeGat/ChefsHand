@@ -10,24 +10,30 @@ import WatchKit
 
 class IngredientsController: WKInterfaceController {
     @IBOutlet weak var ingredientsTable: WKInterfaceTable!
+    
+    let defaults = UserDefaults.standard
 
     //TODO: maybe use a click region?
     override func table(_ table: WKInterfaceTable, didSelectRowAt rowIndex: Int) {
         let selectedRow = ingredientsTable.rowController(at: rowIndex) as! IngredientsRowController
-        let selectedRowIngredient: Recipe.StructuredRecipe.Ingredient = Recipe.shared.getRecipe().ingredients[rowIndex]
+        let selectedRowIngredient: Recipe.StructuredRecipe.Ingredient = Recipe.shared.getRecipe()!.ingredients[rowIndex]
         
         Recipe.shared.setRecipeIngredientIsDone(at: rowIndex, to: !selectedRowIngredient.isDone)
         
         changeIngredientRowVisual(using: selectedRow, to: !selectedRowIngredient.isDone)
     }
     
+    override func willDisappear() {
+        defaults.storeRecipe(Recipe.shared.getRecipe()!)
+    }
+    
     override func willActivate() {
-        let ingredients: [Recipe.StructuredRecipe.Ingredient] = Recipe.shared.getRecipe().ingredients
+        let ingredients: [Recipe.StructuredRecipe.Ingredient] = Recipe.shared.getRecipe()!.ingredients
         ingredientsTable.setNumberOfRows(ingredients.count, withRowType: "Ingredients Row")
         
         for (index, ingredient) in ingredients.enumerated() {
             let rowController  = ingredientsTable.rowController(at: index) as! IngredientsRowController
-            let recipe: Recipe.StructuredRecipe = Recipe.shared.getRecipe()
+            let recipe: Recipe.StructuredRecipe = Recipe.shared.getRecipe()!
             let recipeRow: Recipe.StructuredRecipe.Ingredient = recipe.ingredients[index]
             
             rowController.ingredientsLabel.setText(ingredient.text)

@@ -38,11 +38,16 @@ class Recipe {
 
 
     static let shared = Recipe()
-    private var recipe: StructuredRecipe = StructuredRecipe(name: "", ingredients: [], method: [])
-    private var recipeIsNew: Bool = false
+    private var recipe: StructuredRecipe?
+    private var hasChanges: Bool = false
+    private let defaults = UserDefaults.standard
     
-    func getRecipe() -> StructuredRecipe {
+    func getRecipe() -> StructuredRecipe? {
         return recipe
+    }
+    
+    func recipeExists() -> Bool {
+        return recipe != nil
     }
     
     func setRecipe(givenData data: Any) {
@@ -51,18 +56,31 @@ class Recipe {
         } catch {
             print(error)
         }
+        hasChanges = false
+        defaults.storeRecipe(recipe!)
     }
     
     func setRecipe(givenRecipe recipe: StructuredRecipe) {
         self.recipe = recipe
+        hasChanges = false
+        defaults.storeRecipe(recipe)
+    }
+    
+    func storeRecipeChanges() {
+        if hasChanges {
+            defaults.storeRecipe(recipe!)
+            hasChanges = false
+        }
     }
     
     func setRecipeIngredientIsDone(at rowIndex: Int, to value: Bool) {
-        recipe.ingredients[rowIndex].isDone = value
+        recipe!.ingredients[rowIndex].isDone = value
+        hasChanges = true
     }
     
     func setRecipeStepIsDone(at rowIndex: Int, to value: Bool) {
-        recipe.method[rowIndex].isDone = value
+        recipe!.method[rowIndex].isDone = value
+        hasChanges = true
     }
 }
 
@@ -78,5 +96,28 @@ extension Encodable {
     var dictionary: [String: Any]? {
         guard let data = try? JSONEncoder().encode(self) else { return nil }
         return (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)).flatMap { $0 as? [String: Any] }
+    }
+}
+
+extension UserDefaults {
+    func retrieveRecipe() -> Recipe.StructuredRecipe? {
+        guard let recipe : Any = self.object(forKey: "recipe") else {
+            print("couldn't find 'recipe' key when retrieving key")
+            return nil
+        }
+        do {
+            return try Recipe.StructuredRecipe(from: recipe)
+        } catch {
+            print("Couldn't convert recipe: \(error)")
+            return nil
+        }
+    }
+    
+    func storeRecipe(_ recipe: Recipe.StructuredRecipe) {
+        self.setValue(recipe.dictionary, forKey: "recipe")
+    }
+    
+    func recipeKeyExists() -> Bool {
+        return self.object(forKey: "recipe") != nil
     }
 }

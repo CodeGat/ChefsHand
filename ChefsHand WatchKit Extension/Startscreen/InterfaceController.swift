@@ -11,29 +11,33 @@ import WatchConnectivity
 
 
 class InterfaceController: WKInterfaceController {
-
     @IBOutlet weak var label: WKInterfaceLabel!
     @IBOutlet weak var recipeTable: WKInterfaceTable!
     @IBAction func resetUserDefaults() {
         let defaults = UserDefaults.standard
-        defaults.removeObject(forKey: "recipes")
+        defaults.removeObject(forKey: "recipe")
+        defaults.setValue("", forKey: "recipe")
+        print("reset")
     }
+    @IBAction func dumpUserDefaults() {
+        print(defaults.object(forKey: "recipe") ?? "none")
+    }
+    
     let session = WCSession.default
+    let defaults = UserDefaults.standard
     
     override func table(_ table: WKInterfaceTable, didSelectRowAt rowIndex: Int) {
-        let defaults = UserDefaults.standard
         let selectedRow = recipeTable.rowController(at: rowIndex) as! RecipeRowController
         
-        let recipes: [Any] = defaults.array(forKey: "recipes")!
-        var structuredRecipes: [Recipe.StructuredRecipe] = []
-        do {
-            structuredRecipes =  try recipes.map { try Recipe.StructuredRecipe(from: $0)}
-        } catch {
-            print("Couldn't convert all recipes to StructuredRecipes: \(error)")
-        }
-        
-        for structuredRecipe in structuredRecipes where structuredRecipe.name == selectedRow.name {
-            Recipe.shared.setRecipe(given: structuredRecipe)
+        switch selectedRow.type {
+        case .cached:
+            Recipe.shared.setRecipe(givenRecipe: defaults.retrieveRecipe()!)
+        case .more:
+            loadRecipeNamesFromIphone(amount: 5)
+        case .phone:
+            loadRecipeIntoCacheFromIphone(named: selectedRow.name!)
+        case .none:
+            fatalError("uninitialised row type, exiting")
         }
     }
 
@@ -45,44 +49,42 @@ class InterfaceController: WKInterfaceController {
     
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
-        guard let recipes: [Any] = UserDefaults.standard.array(forKey: "recipes") else {
-            print("No recipes to add to the table!")
-            return
-        }
-        recipeTable.setNumberOfRows(recipes.count, withRowType: "Recipe Row")
+        refreshTable()
+    }
+    
+    func loadRecipeNamesFromIphone(amount: Int) {
+        print("stub loadRecipeNamesFromIphone")
+    }
+    
+    func loadRecipeIntoCacheFromIphone(named name: String) {
+        print("stub loadRecipeIntoCacheFromIphone")
+    }
+    
+    // MARK: Need to decide on if retriving/getting recipe should be possibly nil or not (check Recipe.getRecipe)
+    func refreshTable() {
+        var tableRowIx: Int = 0
         
-        for (index, recipe) in recipes.enumerated() {
-            let controller: RecipeRowController = recipeTable.rowController(at: index) as! RecipeRowController
-            do {
-                let structuredRecipe = try Recipe.StructuredRecipe(from: recipe)
-                controller.name = structuredRecipe.name
-            } catch {
-                print("Couldn't load recipe name: \(error)")
-            }
+        recipeTable.setNumberOfRows(1 + (Recipe.shared.recipeExists() || defaults.recipeKeyExists() ? 1 : 0), withRowType: "Recipe Row")
+        
+        if let recipe: Recipe.StructuredRecipe = Recipe.shared.getRecipe() {
+            let cachedController = recipeTable.rowController(at: tableRowIx) as! RecipeRowController
+            cachedController.name = recipe.name
+            cachedController.type = .cached
+            tableRowIx += 1
+        } else if let recipe: Recipe.StructuredRecipe = defaults.retrieveRecipe() {
+            let cachedController = recipeTable.rowController(at: tableRowIx) as! RecipeRowController
+            cachedController.name = recipe.name
+            cachedController.type = .cached
+            tableRowIx += 1
+        }
+        let moreController = recipeTable.rowController(at: tableRowIx) as! RecipeRowController
+        moreController.name = "Load more..."
+        moreController.type = .more
+    }
 
-        }
-    }
-    
-    override func didDeactivate() {
-        // This method is called when watch view controller is no longer visible
-    }
-    
-    @IBAction func tapSendDataToiPhone() {
-        let data: [String: Any] = ["watch": "This is from my watch!" as String]
-        session.sendMessage(data, replyHandler: nil, errorHandler: nil)
-    }
-    
     func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
-        Recipe.shared.setRecipe(given: applicationContext["recipe"] as Any)
-        
-        addRecipeToUserCollection(applicationContext["recipe"] as Any)
-    }
-    
-    func addRecipeToUserCollection(_ recipe: Any) {
-        let defaults = UserDefaults.standard
-        var newRecipes: [Any] = defaults.array(forKey: "recipes") ?? []
-        newRecipes.append(recipe)
-        defaults.setValue(newRecipes, forKey: "recipes")
+        Recipe.shared.setRecipe(givenData: applicationContext["recipe"] as Any)
+        refreshTable()
     }
 }
 
@@ -93,8 +95,8 @@ extension InterfaceController: WCSessionDelegate {
     
     func session(_ session: WCSession, didReceiveMessage message: [String: Any]) {
         let recipe = message["recipe"] as Any
-        Recipe.shared.setRecipe(given: recipe)
+        Recipe.shared.setRecipe(givenData: recipe)
         label.setText("A new recipe is availible!")
-        addRecipeToUserCollection(recipe)
+        refreshTable()
     }
 }

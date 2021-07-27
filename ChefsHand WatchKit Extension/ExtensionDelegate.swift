@@ -8,9 +8,16 @@
 import WatchKit
 
 class ExtensionDelegate: NSObject, WKExtensionDelegate {
+    let defaults = UserDefaults.standard
 
     func applicationDidFinishLaunching() {
         // Perform any final initialization of your application.
+        if let recipe = defaults.retrieveRecipe() {
+            Recipe.shared.setRecipe(givenRecipe: recipe)
+        } else {
+            print("Couldn't find recipe")
+        }
+        
     }
 
     func applicationDidBecomeActive() {

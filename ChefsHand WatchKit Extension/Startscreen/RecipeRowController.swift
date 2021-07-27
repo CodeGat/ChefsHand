@@ -8,8 +8,11 @@
 import WatchKit
 
 class RecipeRowController: NSObject {
-
     @IBOutlet weak var recipeLabel: WKInterfaceLabel!
+    
+    enum RowType {
+        case cached, phone, more
+    }
     
     var name: String? {
         didSet {
@@ -17,4 +20,5 @@ class RecipeRowController: NSObject {
             recipeLabel.setText(name)
         }
     }
+    var type: RowType?
 }

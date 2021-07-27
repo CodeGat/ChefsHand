@@ -11,9 +11,11 @@ import WatchKit
 class MethodController: WKInterfaceController {
     @IBOutlet weak var methodTable: WKInterfaceTable!
     
+    let defaults = UserDefaults.standard
+    
     override func table(_ table: WKInterfaceTable, didSelectRowAt rowIndex: Int) {
         let selectedRow = methodTable.rowController(at: rowIndex) as! MethodRowController
-        let selectedRowStep: Recipe.StructuredRecipe.Step = Recipe.shared.getRecipe().method[rowIndex]
+        let selectedRowStep: Recipe.StructuredRecipe.Step = Recipe.shared.getRecipe()!.method[rowIndex]
         
         Recipe.shared.setRecipeStepIsDone(at: rowIndex, to: !selectedRowStep.isDone)
         setMethodRowVisuals(using: selectedRow, to: !selectedRowStep.isDone)
@@ -24,7 +26,7 @@ class MethodController: WKInterfaceController {
     }
     
     override func willActivate() {
-        let steps: [Recipe.StructuredRecipe.Step] = Recipe.shared.getRecipe().method
+        let steps: [Recipe.StructuredRecipe.Step] = Recipe.shared.getRecipe()!.method
         methodTable.setNumberOfRows(steps.count, withRowType: "Method Row")
         
         for (index, step) in steps.enumerated() {
@@ -39,6 +41,10 @@ class MethodController: WKInterfaceController {
             }
             rowController.methodLabel.setAttributedText(attributedString)
         }
+    }
+    
+    override func willDisappear() {
+        defaults.storeRecipe(Recipe.shared.getRecipe()!)
     }
     
     func setMethodRowVisuals(using rowController: MethodRowController, to isDone: Bool) {
