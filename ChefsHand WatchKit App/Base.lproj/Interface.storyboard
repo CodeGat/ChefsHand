@@ -63,7 +63,7 @@
                                             <imageView alignment="left" id="qPA-1u-x8b">
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </imageView>
-                                            <label alignment="left" verticalAlignment="center" text="Done" textAlignment="left" numberOfLines="4" id="CLT-d5-B6h"/>
+                                            <label alignment="left" verticalAlignment="center" text="Done" textAlignment="left" numberOfLines="6" id="CLT-d5-B6h"/>
                                         </items>
                                         <edgeInsets key="margins" left="10" right="10" top="5" bottom="5"/>
                                     </group>

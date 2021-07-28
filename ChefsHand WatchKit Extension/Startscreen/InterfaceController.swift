@@ -16,9 +16,8 @@ class InterfaceController: WKInterfaceController {
     @IBAction func resetUserDefaults() {
         let defaults = UserDefaults.standard
         defaults.removeObject(forKey: "recipe")
-        defaults.setValue("", forKey: "recipe")
-        print("reset")
     }
+    
     @IBAction func dumpUserDefaults() {
         print(defaults.object(forKey: "recipe") ?? "none")
     }
