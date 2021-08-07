@@ -10,7 +10,19 @@ import Foundation
 import WatchConnectivity
 
 
-class InterfaceController: WKInterfaceController {
+class InterfaceController: WKInterfaceController, WKExtendedRuntimeSessionDelegate {
+    func extendedRuntimeSession(_ extendedRuntimeSession: WKExtendedRuntimeSession, didInvalidateWith reason: WKExtendedRuntimeSessionInvalidationReason, error: Error?) {
+        print("Something ExtendedRuntimeSession happened")
+    }
+    
+    func extendedRuntimeSessionDidStart(_ extendedRuntimeSession: WKExtendedRuntimeSession) {
+        print("Runtime session started at \(Date())")
+    }
+    
+    func extendedRuntimeSessionWillExpire(_ extendedRuntimeSession: WKExtendedRuntimeSession) {
+        print("Runtime session expired at \(Date())")
+    }
+    
     @IBOutlet weak var label: WKInterfaceLabel!
     @IBOutlet weak var recipeTable: WKInterfaceTable!
     @IBAction func resetUserDefaults() {
@@ -23,6 +35,7 @@ class InterfaceController: WKInterfaceController {
     }
     
     let session = WCSession.default
+    let ERSession = WKExtendedRuntimeSession()
     let defaults = UserDefaults.standard
     
     override func table(_ table: WKInterfaceTable, didSelectRowAt rowIndex: Int) {
