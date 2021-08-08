@@ -7,13 +7,30 @@
 
 import WatchKit
 
-class ExtensionDelegate: NSObject, WKExtensionDelegate {
+class ExtensionDelegate: NSObject, WKExtensionDelegate, WKExtendedRuntimeSessionDelegate {
+    func extendedRuntimeSession(_ extendedRuntimeSession: WKExtendedRuntimeSession, didInvalidateWith reason: WKExtendedRuntimeSessionInvalidationReason, error: Error?) {
+        print("something to do with the ExtendedRuntimeSession: \(extendedRuntimeSession.state)")
+    }
+    
+    func extendedRuntimeSessionDidStart(_ extendedRuntimeSession: WKExtendedRuntimeSession) {
+        print("ExtendedRuntimeSession did Start!!")
+    }
+    
+    func extendedRuntimeSessionWillExpire(_ extendedRuntimeSession: WKExtendedRuntimeSession) {
+        print("ExtendedRuntimeSession will End!!")
+    }
+    
     let defaults = UserDefaults.standard
+    var extendedRuntimeSession: WKExtendedRuntimeSession!
 
     func applicationDidFinishLaunching() {
         // Perform any final initialization of your application.
+        extendedRuntimeSession = WKExtendedRuntimeSession()
+        extendedRuntimeSession.delegate = self
+        
         if let recipe = defaults.retrieveRecipe() {
             Recipe.shared.setRecipe(givenRecipe: recipe)
+            extendedRuntimeSession.start()
         } else {
             print("Couldn't find recipe")
         }
