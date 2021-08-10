@@ -25,7 +25,6 @@ class InterfaceController: WKInterfaceController {
         if value {
             extensionDelegate.extendedRuntimeSession.start()
         } else {
-            print("invalidating extendedRuntimeSession")
             extensionDelegate.extendedRuntimeSession.invalidate()
         }
     }
@@ -102,7 +101,7 @@ extension InterfaceController: WCSessionDelegate {
     func session(_ session: WCSession, didReceiveMessage message: [String: Any]) {
         let recipe = message["recipe"] as Any
         Recipe.shared.setRecipe(givenData: recipe)
-        label.setText("A new recipe is availible!")
+        label.setText("A new recipe is up - swipe to the right!")
         refreshTable()
     }
 }

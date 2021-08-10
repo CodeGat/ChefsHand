@@ -8,16 +8,16 @@
 import WatchKit
 
 class ExtensionDelegate: NSObject, WKExtensionDelegate, WKExtendedRuntimeSessionDelegate {
-    func extendedRuntimeSession(_ extendedRuntimeSession: WKExtendedRuntimeSession, didInvalidateWith reason: WKExtendedRuntimeSessionInvalidationReason, error: Error?) {
-        print("something to do with the ExtendedRuntimeSession: \(extendedRuntimeSession.state)")
-    }
-    
     func extendedRuntimeSessionDidStart(_ extendedRuntimeSession: WKExtendedRuntimeSession) {
-        print("ExtendedRuntimeSession did Start!!")
+        
     }
     
     func extendedRuntimeSessionWillExpire(_ extendedRuntimeSession: WKExtendedRuntimeSession) {
-        print("ExtendedRuntimeSession will End!!")
+        
+    }
+    
+    func extendedRuntimeSession(_ extendedRuntimeSession: WKExtendedRuntimeSession, didInvalidateWith reason: WKExtendedRuntimeSessionInvalidationReason, error: Error?) {
+        
     }
     
     let defaults = UserDefaults.standard
