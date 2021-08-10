@@ -25,6 +25,7 @@
 		E36709612693FC78001E708B /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36709602693FC78001E708B /* ComplicationController.swift */; };
 		E36709632693FC79001E708B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E36709622693FC79001E708B /* Assets.xcassets */; };
 		E36BAD3D26A695C900A9DF82 /* RecipeRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36BAD3C26A695C900A9DF82 /* RecipeRowController.swift */; };
+		E381E42A26C2376D0042D4EE /* DeveloperSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E381E42926C2376D0042D4EE /* DeveloperSettingsController.swift */; };
 		E39CD101269ABE060054AF60 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = E39CD100269ABE060054AF60 /* SwiftSoup */; };
 		E3F27674269E991100CA78D8 /* IngredientsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F27673269E991100CA78D8 /* IngredientsController.swift */; };
 		E3F27676269E9BE900CA78D8 /* MethodController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F27675269E9BE900CA78D8 /* MethodController.swift */; };
@@ -97,6 +98,7 @@
 		E36709642693FC79001E708B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E36709652693FC79001E708B /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
 		E36BAD3C26A695C900A9DF82 /* RecipeRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeRowController.swift; sourceTree = "<group>"; };
+		E381E42926C2376D0042D4EE /* DeveloperSettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperSettingsController.swift; sourceTree = "<group>"; };
 		E3F27673269E991100CA78D8 /* IngredientsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientsController.swift; sourceTree = "<group>"; };
 		E3F27675269E9BE900CA78D8 /* MethodController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MethodController.swift; sourceTree = "<group>"; };
 		E3F27678269E9F5800CA78D8 /* IngredientsRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientsRowController.swift; sourceTree = "<group>"; };
@@ -186,6 +188,7 @@
 		E36709592693FC78001E708B /* ChefsHand WatchKit Extension */ = {
 			isa = PBXGroup;
 			children = (
+				E381E42826C237020042D4EE /* Developer */,
 				E36BAD3E26A6B04500A9DF82 /* Startscreen */,
 				E367095C2693FC78001E708B /* ExtensionDelegate.swift */,
 				E367095E2693FC78001E708B /* NotificationController.swift */,
@@ -207,6 +210,14 @@
 				E36BAD3C26A695C900A9DF82 /* RecipeRowController.swift */,
 			);
 			path = Startscreen;
+			sourceTree = "<group>";
+		};
+		E381E42826C237020042D4EE /* Developer */ = {
+			isa = PBXGroup;
+			children = (
+				E381E42926C2376D0042D4EE /* DeveloperSettingsController.swift */,
+			);
+			path = Developer;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -358,6 +369,7 @@
 			files = (
 				E36BAD3D26A695C900A9DF82 /* RecipeRowController.swift in Sources */,
 				E367095F2693FC78001E708B /* NotificationController.swift in Sources */,
+				E381E42A26C2376D0042D4EE /* DeveloperSettingsController.swift in Sources */,
 				E3F27679269E9F5800CA78D8 /* IngredientsRowController.swift in Sources */,
 				E3665EF426A0305600071844 /* MethodRowController.swift in Sources */,
 				E36709612693FC78001E708B /* ComplicationController.swift in Sources */,

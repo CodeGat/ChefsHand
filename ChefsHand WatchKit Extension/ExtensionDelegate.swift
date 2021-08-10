@@ -7,11 +7,28 @@
 
 import WatchKit
 
-class ExtensionDelegate: NSObject, WKExtensionDelegate {
+class ExtensionDelegate: NSObject, WKExtensionDelegate, WKExtendedRuntimeSessionDelegate {
+    func extendedRuntimeSessionDidStart(_ extendedRuntimeSession: WKExtendedRuntimeSession) {
+        
+    }
+    
+    func extendedRuntimeSessionWillExpire(_ extendedRuntimeSession: WKExtendedRuntimeSession) {
+        
+    }
+    
+    func extendedRuntimeSession(_ extendedRuntimeSession: WKExtendedRuntimeSession, didInvalidateWith reason: WKExtendedRuntimeSessionInvalidationReason, error: Error?) {
+        
+    }
+    
     let defaults = UserDefaults.standard
+    var extendedRuntimeSession: WKExtendedRuntimeSession!
+    var cookingModeSwitchState: Bool = false
 
     func applicationDidFinishLaunching() {
         // Perform any final initialization of your application.
+        extendedRuntimeSession = WKExtendedRuntimeSession()
+        extendedRuntimeSession.delegate = self
+        	
         if let recipe = defaults.retrieveRecipe() {
             Recipe.shared.setRecipe(givenRecipe: recipe)
         } else {
@@ -22,6 +39,12 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
 
     func applicationDidBecomeActive() {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        if extendedRuntimeSession.state == .running && cookingModeSwitchState {
+            extendedRuntimeSession.invalidate()
+        }
+        if cookingModeSwitchState {
+            extendedRuntimeSession.start()
+        }
     }
 
     func applicationWillResignActive() {

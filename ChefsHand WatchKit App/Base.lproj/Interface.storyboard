@@ -7,12 +7,44 @@
         <capability name="Named colors" minToolsVersion="9.0"/>
     </dependencies>
     <scenes>
+        <!--Dev Settings-->
+        <scene sceneID="dNC-c5-Gv2">
+            <objects>
+                <controller identifier="Developer Settings" title="Dev Settings" id="c7T-mb-Ck9" customClass="DeveloperSettingsController" customModule="ChefsHand_WatchKit_Extension">
+                    <items>
+                        <label alignment="left" text="Woo, developer stuff!!!!" id="pxQ-a6-IG4"/>
+                        <separator alignment="left" id="NAt-dI-0th">
+                            <color key="color" name="AccentColor"/>
+                        </separator>
+                        <button width="1" alignment="left" title="Reset UserDefaults" id="aw9-cw-RPG">
+                            <connections>
+                                <action selector="resetUserDefaults" destination="c7T-mb-Ck9" id="Hfx-49-MDY"/>
+                            </connections>
+                        </button>
+                        <button width="1" alignment="left" title="Dump UserDefaults" id="iht-ML-95S">
+                            <connections>
+                                <action selector="dumpUserDefaults" destination="c7T-mb-Ck9" id="iga-tW-3fU"/>
+                            </connections>
+                        </button>
+                    </items>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="225" y="58"/>
+        </scene>
         <!--Chefs Hand-->
         <scene sceneID="aou-V4-d1y">
             <objects>
                 <controller identifier="InterfaceController" title="Chefs Hand" id="AgC-eL-Hgc" customClass="InterfaceController" customModule="ChefsHand_WatchKit_App" customModuleProvider="target">
                     <items>
-                        <label alignment="left" text="New recipes will appear here!" numberOfLines="2" id="ei6-9X-DJg"/>
+                        <label alignment="left" text="New recipes will appear here!" numberOfLines="2" id="ei6-9X-DJg">
+                            <gestureRecognizers>
+                                <longPressGestureRecognizer minimumPressDuration="0.69999999999999996" id="sps-bO-uKg">
+                                    <connections>
+                                        <action selector="accessDeveloperSettings:" destination="AgC-eL-Hgc" id="0GO-FU-OO0"/>
+                                    </connections>
+                                </longPressGestureRecognizer>
+                            </gestureRecognizers>
+                        </label>
                         <table alignment="left" id="S9j-DI-ayR">
                             <items>
                                 <tableRow identifier="Recipe Row" id="crS-QN-UV4" customClass="RecipeRowController" customModule="ChefsHand_WatchKit_Extension">
@@ -30,16 +62,12 @@
                         <separator alignment="left" id="5fj-P4-Fq9">
                             <color key="color" name="AccentColor"/>
                         </separator>
-                        <button width="1" alignment="left" title="Reset UserDefaults" id="XlQ-or-LJB">
+                        <switch width="1" alignment="left" title="Cooking Mode" id="1Hg-Bb-G36">
+                            <color key="tintColor" name="AccentColor"/>
                             <connections>
-                                <action selector="resetUserDefaults" destination="AgC-eL-Hgc" id="N7B-Gt-pD7"/>
+                                <action selector="cookingModeSwitched:" destination="AgC-eL-Hgc" id="JAh-CE-vkV"/>
                             </connections>
-                        </button>
-                        <button width="1" alignment="left" title="Dump UserDefaults" id="Sad-46-hxH">
-                            <connections>
-                                <action selector="dumpUserDefaults" destination="AgC-eL-Hgc" id="VHC-x1-QeA"/>
-                            </connections>
-                        </button>
+                        </switch>
                     </items>
                     <connections>
                         <outlet property="label" destination="ei6-9X-DJg" id="uqf-ZE-pKH"/>
