@@ -13,15 +13,21 @@ import WatchConnectivity
 class InterfaceController: WKInterfaceController {
     @IBOutlet weak var label: WKInterfaceLabel!
     @IBOutlet weak var recipeTable: WKInterfaceTable!
-    @IBAction func resetUserDefaults() {
-        let defaults = UserDefaults.standard
-        defaults.removeObject(forKey: "recipe")
+    
+    @IBAction func accessDeveloperSettings(_ sender: Any) {
+        pushController(withName: "Developer Settings", context: nil)
     }
     
-    @IBAction func dumpUserDefaults() {
-        print(defaults.object(forKey: "recipe") ?? "none")
+    @IBAction func cookingModeSwitched(_ value: Bool) {
+        let extensionDelegate = WKExtension.shared().delegate as! ExtensionDelegate
+        
+        extensionDelegate.cookingModeSwitchState = value
+        if value {
+            extensionDelegate.extendedRuntimeSession.start()
+        } else {
+            extensionDelegate.extendedRuntimeSession.invalidate()
+        }
     }
-    
     let session = WCSession.default
     let defaults = UserDefaults.standard
     
@@ -95,7 +101,7 @@ extension InterfaceController: WCSessionDelegate {
     func session(_ session: WCSession, didReceiveMessage message: [String: Any]) {
         let recipe = message["recipe"] as Any
         Recipe.shared.setRecipe(givenData: recipe)
-        label.setText("A new recipe is availible!")
+        label.setText("A new recipe is up - swipe to the right!")
         refreshTable()
     }
 }
