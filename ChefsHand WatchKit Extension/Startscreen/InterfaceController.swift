@@ -10,32 +10,26 @@ import Foundation
 import WatchConnectivity
 
 
-class InterfaceController: WKInterfaceController, WKExtendedRuntimeSessionDelegate {
-    func extendedRuntimeSession(_ extendedRuntimeSession: WKExtendedRuntimeSession, didInvalidateWith reason: WKExtendedRuntimeSessionInvalidationReason, error: Error?) {
-        print("Something ExtendedRuntimeSession happened")
-    }
-    
-    func extendedRuntimeSessionDidStart(_ extendedRuntimeSession: WKExtendedRuntimeSession) {
-        print("Runtime session started at \(Date())")
-    }
-    
-    func extendedRuntimeSessionWillExpire(_ extendedRuntimeSession: WKExtendedRuntimeSession) {
-        print("Runtime session expired at \(Date())")
-    }
-    
+class InterfaceController: WKInterfaceController {
     @IBOutlet weak var label: WKInterfaceLabel!
     @IBOutlet weak var recipeTable: WKInterfaceTable!
-    @IBAction func resetUserDefaults() {
-        let defaults = UserDefaults.standard
-        defaults.removeObject(forKey: "recipe")
+    
+    @IBAction func accessDeveloperSettings(_ sender: Any) {
+        pushController(withName: "Developer Settings", context: nil)
     }
     
-    @IBAction func dumpUserDefaults() {
-        print(defaults.object(forKey: "recipe") ?? "none")
+    @IBAction func cookingModeSwitched(_ value: Bool) {
+        let extensionDelegate = WKExtension.shared().delegate as! ExtensionDelegate
+        
+        extensionDelegate.cookingModeSwitchState = value
+        if value {
+            extensionDelegate.extendedRuntimeSession.start()
+        } else {
+            print("invalidating extendedRuntimeSession")
+            extensionDelegate.extendedRuntimeSession.invalidate()
+        }
     }
-    
     let session = WCSession.default
-    let ERSession = WKExtendedRuntimeSession()
     let defaults = UserDefaults.standard
     
     override func table(_ table: WKInterfaceTable, didSelectRowAt rowIndex: Int) {

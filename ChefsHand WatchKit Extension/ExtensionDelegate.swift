@@ -22,15 +22,15 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WKExtendedRuntimeSession
     
     let defaults = UserDefaults.standard
     var extendedRuntimeSession: WKExtendedRuntimeSession!
+    var cookingModeSwitchState: Bool = false
 
     func applicationDidFinishLaunching() {
         // Perform any final initialization of your application.
         extendedRuntimeSession = WKExtendedRuntimeSession()
         extendedRuntimeSession.delegate = self
-        
+        	
         if let recipe = defaults.retrieveRecipe() {
             Recipe.shared.setRecipe(givenRecipe: recipe)
-            extendedRuntimeSession.start()
         } else {
             print("Couldn't find recipe")
         }
@@ -39,6 +39,12 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WKExtendedRuntimeSession
 
     func applicationDidBecomeActive() {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        if extendedRuntimeSession.state == .running && cookingModeSwitchState {
+            extendedRuntimeSession.invalidate()
+        }
+        if cookingModeSwitchState {
+            extendedRuntimeSession.start()
+        }
     }
 
     func applicationWillResignActive() {
