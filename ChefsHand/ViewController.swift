@@ -41,7 +41,7 @@ class ViewController: UIViewController {
     var session: WCSession?
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var urlField: UITextField!
-    
+    @IBOutlet weak var tabBar: UITabBar!
     @IBAction func tapSendDataToWatch(_ sender: Any){
         let recipeUrl = urlField.text
         
@@ -145,6 +145,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.configureWatchKitSession()
+        self.tabBar
     }
     
     func configureWatchKitSession() {

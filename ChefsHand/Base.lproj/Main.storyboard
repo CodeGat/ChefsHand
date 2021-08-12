@@ -5,6 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -16,21 +17,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="Cooking URL" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4z6-Il-EZZ">
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Cooking URL" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4z6-Il-EZZ">
                                 <rect key="frame" x="41" y="138" width="292" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" enablesReturnKeyAutomatically="YES" textContentType="url"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B7x-cR-DCo">
-                                <rect key="frame" x="83" y="180" width="208" height="58"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" name="AccentColor"/>
-                                <state key="normal" title="Send Recipe to Watch!"/>
-                                <connections>
-                                    <action selector="tapSendDataToWatch:" destination="BYZ-38-t0r" eventType="touchDown" id="nut-2r-4fy"/>
-                                </connections>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Type in or paste the recipe URL below" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HrJ-uF-nCz">
                                 <rect key="frame" x="43" y="98" width="288" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -38,12 +30,31 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B7x-cR-DCo">
+                                <rect key="frame" x="41" y="180" width="292" height="58"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" name="AccentColor"/>
+                                <state key="normal" title="Send Recipe to Watch!"/>
+                                <connections>
+                                    <action selector="tapSendDataToWatch:" destination="BYZ-38-t0r" eventType="touchDown" id="nut-2r-4fy"/>
+                                </connections>
+                            </button>
+                            <tabBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="n1H-17-tHb">
+                                <rect key="frame" x="0.0" y="618" width="375" height="49"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <items>
+                                    <tabBarItem title="Send to Watch" image="applewatch.radiowaves.left.and.right" catalog="system" id="ait-Mg-eyK"/>
+                                    <tabBarItem systemItem="downloads" id="7wB-Nj-nBl"/>
+                                </items>
+                            </tabBar>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                     <connections>
                         <outlet property="label" destination="HrJ-uF-nCz" id="d2F-4Y-fYL"/>
+                        <outlet property="tabBar" destination="n1H-17-tHb" id="jd9-da-7DN"/>
                         <outlet property="urlField" destination="4z6-Il-EZZ" id="Zzp-i9-WuD"/>
                     </connections>
                 </viewController>
@@ -51,10 +62,39 @@
             </objects>
             <point key="canvasLocation" x="104.8" y="81.409295352323838"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="ZBl-vP-a8r">
+            <objects>
+                <viewController id="VWX-uU-FFo" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="M15-eH-bkU">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="List of Recipes" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hVi-f0-xAe">
+                                <rect key="frame" x="16" y="20" width="282" height="48"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="40"/>
+                                <color key="textColor" name="AccentColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="g5d-UQ-1rW"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="fDQ-cE-XbY"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nKB-sK-E4j" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="954" y="81"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="applewatch.radiowaves.left.and.right" catalog="system" width="128" height="82"/>
         <namedColor name="AccentColor">
             <color red="0.67843137254901964" green="0.71372549019607845" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>
