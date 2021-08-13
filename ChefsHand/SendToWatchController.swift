@@ -37,7 +37,7 @@ struct TasteRecipe: Decodable {
     var recipeIngredient: [String]
 }
 
-class ViewController: UIViewController {
+class SendToWatchController: UIViewController {
     var session: WCSession?
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var urlField: UITextField!
@@ -157,7 +157,7 @@ class ViewController: UIViewController {
 
 //todo: make an extension for Recipie generics
 
-extension ViewController: WCSessionDelegate {
+extension SendToWatchController: WCSessionDelegate {
     func sessionDidBecomeInactive(_ session: WCSession) {
         print("Session between watch and iPhone was deactivated")
     }

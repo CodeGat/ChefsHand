@@ -11,7 +11,7 @@
 		E3665EF426A0305600071844 /* MethodRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3665EF326A0305600071844 /* MethodRowController.swift */; };
 		E36709362693FC74001E708B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36709352693FC74001E708B /* AppDelegate.swift */; };
 		E36709382693FC74001E708B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36709372693FC74001E708B /* SceneDelegate.swift */; };
-		E367093A2693FC74001E708B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36709392693FC74001E708B /* ViewController.swift */; };
+		E367093A2693FC74001E708B /* SendToWatchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36709392693FC74001E708B /* SendToWatchController.swift */; };
 		E367093D2693FC74001E708B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E367093B2693FC74001E708B /* Main.storyboard */; };
 		E367093F2693FC75001E708B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E367093E2693FC75001E708B /* Assets.xcassets */; };
 		E36709422693FC75001E708B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E36709402693FC75001E708B /* LaunchScreen.storyboard */; };
@@ -27,6 +27,7 @@
 		E36BAD3D26A695C900A9DF82 /* RecipeRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36BAD3C26A695C900A9DF82 /* RecipeRowController.swift */; };
 		E381E42A26C2376D0042D4EE /* DeveloperSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E381E42926C2376D0042D4EE /* DeveloperSettingsController.swift */; };
 		E381E42C26C366F70042D4EE /* ChefsHand.png in Resources */ = {isa = PBXBuildFile; fileRef = E381E42B26C366F70042D4EE /* ChefsHand.png */; };
+		E381E42E26C5140E0042D4EE /* RecipeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E381E42D26C5140E0042D4EE /* RecipeTableViewController.swift */; };
 		E39CD101269ABE060054AF60 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = E39CD100269ABE060054AF60 /* SwiftSoup */; };
 		E3F27674269E991100CA78D8 /* IngredientsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F27673269E991100CA78D8 /* IngredientsController.swift */; };
 		E3F27676269E9BE900CA78D8 /* MethodController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F27675269E9BE900CA78D8 /* MethodController.swift */; };
@@ -81,7 +82,7 @@
 		E36709322693FC74001E708B /* ChefsHand.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChefsHand.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E36709352693FC74001E708B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E36709372693FC74001E708B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		E36709392693FC74001E708B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		E36709392693FC74001E708B /* SendToWatchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendToWatchController.swift; sourceTree = "<group>"; };
 		E367093C2693FC74001E708B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E367093E2693FC75001E708B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E36709412693FC75001E708B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -101,6 +102,7 @@
 		E36BAD3C26A695C900A9DF82 /* RecipeRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeRowController.swift; sourceTree = "<group>"; };
 		E381E42926C2376D0042D4EE /* DeveloperSettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperSettingsController.swift; sourceTree = "<group>"; };
 		E381E42B26C366F70042D4EE /* ChefsHand.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChefsHand.png; sourceTree = "<group>"; };
+		E381E42D26C5140E0042D4EE /* RecipeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeTableViewController.swift; sourceTree = "<group>"; };
 		E3F27673269E991100CA78D8 /* IngredientsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientsController.swift; sourceTree = "<group>"; };
 		E3F27675269E9BE900CA78D8 /* MethodController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MethodController.swift; sourceTree = "<group>"; };
 		E3F27678269E9F5800CA78D8 /* IngredientsRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientsRowController.swift; sourceTree = "<group>"; };
@@ -169,11 +171,12 @@
 				E381E42B26C366F70042D4EE /* ChefsHand.png */,
 				E36709352693FC74001E708B /* AppDelegate.swift */,
 				E36709372693FC74001E708B /* SceneDelegate.swift */,
-				E36709392693FC74001E708B /* ViewController.swift */,
+				E36709392693FC74001E708B /* SendToWatchController.swift */,
 				E367093B2693FC74001E708B /* Main.storyboard */,
 				E367093E2693FC75001E708B /* Assets.xcassets */,
 				E36709402693FC75001E708B /* LaunchScreen.storyboard */,
 				E36709432693FC76001E708B /* Info.plist */,
+				E381E42D26C5140E0042D4EE /* RecipeTableViewController.swift */,
 			);
 			path = ChefsHand;
 			sourceTree = "<group>";
@@ -361,7 +364,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E367093A2693FC74001E708B /* ViewController.swift in Sources */,
+				E381E42E26C5140E0042D4EE /* RecipeTableViewController.swift in Sources */,
+				E367093A2693FC74001E708B /* SendToWatchController.swift in Sources */,
 				E36709362693FC74001E708B /* AppDelegate.swift in Sources */,
 				E36709382693FC74001E708B /* SceneDelegate.swift in Sources */,
 			);
