@@ -18,7 +18,7 @@ class SendToWatchController: UIViewController {
     @IBAction func tapSendDataToWatch(_ sender: Any){
         let recipeUrl = urlField.text
         
-        let recipe: Recipe? = createRecipe(from: recipeUrl)
+        let recipe: StructuredRecipe? = createRecipe(from: recipeUrl)
         
         if let validSession = self.session, let validRecipe = recipe {
             
@@ -38,7 +38,7 @@ class SendToWatchController: UIViewController {
         }
     }
     
-    func saveToPhone(_ recipe: Recipe) {
+    func saveToPhone(_ recipe: StructuredRecipe) {
         guard let validContext = context else {
             fatalError("Context not found")
         }
@@ -54,7 +54,7 @@ class SendToWatchController: UIViewController {
         }
     }
     
-    func createRecipe(from urlString: String?) -> Recipe? {
+    func createRecipe(from urlString: String?) -> StructuredRecipe? {
         var tasteRecipeName: String = "Recipe"
         var tasteRecipe: TasteRecipe?
         
@@ -79,19 +79,19 @@ class SendToWatchController: UIViewController {
         }
         
         let ingredients: [String] = tasteRecipe!.recipeIngredient
-        let recipeIngredients: [Recipe.Ingredient] = ingredients.map { Recipe.Ingredient(text: $0, isDone: false) }
+        let recipeIngredients: [StructuredIngredient] = ingredients.map { StructuredIngredient(text: $0, isDone: false) }
         print(recipeIngredients)
         
-        var steps: [Recipe.Step] = []
+        var steps: [StructuredStep] = []
         for instruction: String in tasteRecipe!.recipeInstructions {
-            steps.append(Recipe.Step(instruction: instruction, isDone: false, cookingTimes: getCookingTimes(in: instruction)))
+            steps.append(StructuredStep(instruction: instruction, isDone: false, cookingTimes: getCookingTimes(in: instruction)))
         }
         
-        return Recipe(name: tasteRecipeName, ingredients: recipeIngredients, method: steps)
+        return StructuredRecipe(name: tasteRecipeName, ingredients: recipeIngredients, method: steps)
     }
     
-    func getCookingTimes(in instruction: String) -> [Recipe.CookingTimer] {
-        var cookingTimers: [Recipe.CookingTimer] = []
+    func getCookingTimes(in instruction: String) -> [CookingTimer] {
+        var cookingTimers: [CookingTimer] = []
         
         do {
             let regex = try NSRegularExpression(pattern: #"[0-9]+ ?(h(ou)?r|min(ute)?|sec(ond)?)s?"#, options: []) //TODO: only integers
@@ -102,7 +102,7 @@ class SendToWatchController: UIViewController {
                 if let substringRange: Range = Range(matchRange, in: instruction) {
                     let cookingTimeString: String = String(instruction[substringRange])
                     let cookingTime: Int = getCookingTimeInSeconds(of: cookingTimeString)
-                    let cookingTimer = Recipe.CookingTimer(time: cookingTime, timeDefStart: matchRange.lowerBound, timeDefEnd: matchRange.upperBound)
+                    let cookingTimer = CookingTimer(time: cookingTime, timeDefStart: matchRange.lowerBound, timeDefEnd: matchRange.upperBound)
                     cookingTimers.append(cookingTimer)
                 }
             }

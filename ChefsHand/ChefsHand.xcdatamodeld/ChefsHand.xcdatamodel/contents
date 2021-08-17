@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20F71" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Recipes" representedClassName="Recipes" syncable="YES" codeGenerationType="class">
-        <attribute name="image" optional="YES" attributeType="URI"/>
-        <attribute name="ingredients" optional="YES" attributeType="Transformable"/>
-        <attribute name="method" optional="YES" attributeType="Transformable"/>
-        <attribute name="name" optional="YES" attributeType="String"/>
+    <entity name="Recipes" representedClassName="Recipes" syncable="YES">
+        <attribute name="image" optional="YES" attributeType="Transformable" customClassName="UIImage"/>
+        <attribute name="ingredients" attributeType="Transformable" customClassName="[StructuredIngredient]"/>
+        <attribute name="method" attributeType="Transformable" customClassName="[StructuredStep]"/>
+        <attribute name="name" attributeType="String"/>
     </entity>
     <elements>
         <element name="Recipes" positionX="-54" positionY="-9" width="128" height="89"/>
