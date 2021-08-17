@@ -29,6 +29,7 @@
 		E381E42C26C366F70042D4EE /* ChefsHand.png in Resources */ = {isa = PBXBuildFile; fileRef = E381E42B26C366F70042D4EE /* ChefsHand.png */; };
 		E381E42E26C5140E0042D4EE /* RecipeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E381E42D26C5140E0042D4EE /* RecipeTableViewController.swift */; };
 		E39CD101269ABE060054AF60 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = E39CD100269ABE060054AF60 /* SwiftSoup */; };
+		E3E4EFF326C6083800427B69 /* ChefsHand.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E3E4EFF126C6083800427B69 /* ChefsHand.xcdatamodeld */; };
 		E3F27674269E991100CA78D8 /* IngredientsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F27673269E991100CA78D8 /* IngredientsController.swift */; };
 		E3F27676269E9BE900CA78D8 /* MethodController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F27675269E9BE900CA78D8 /* MethodController.swift */; };
 		E3F27679269E9F5800CA78D8 /* IngredientsRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F27678269E9F5800CA78D8 /* IngredientsRowController.swift */; };
@@ -103,6 +104,7 @@
 		E381E42926C2376D0042D4EE /* DeveloperSettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperSettingsController.swift; sourceTree = "<group>"; };
 		E381E42B26C366F70042D4EE /* ChefsHand.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChefsHand.png; sourceTree = "<group>"; };
 		E381E42D26C5140E0042D4EE /* RecipeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeTableViewController.swift; sourceTree = "<group>"; };
+		E3E4EFF226C6083800427B69 /* ChefsHand.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ChefsHand.xcdatamodel; sourceTree = "<group>"; };
 		E3F27673269E991100CA78D8 /* IngredientsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientsController.swift; sourceTree = "<group>"; };
 		E3F27675269E9BE900CA78D8 /* MethodController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MethodController.swift; sourceTree = "<group>"; };
 		E3F27678269E9F5800CA78D8 /* IngredientsRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientsRowController.swift; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 				E36709402693FC75001E708B /* LaunchScreen.storyboard */,
 				E36709432693FC76001E708B /* Info.plist */,
 				E381E42D26C5140E0042D4EE /* RecipeTableViewController.swift */,
+				E3E4EFF126C6083800427B69 /* ChefsHand.xcdatamodeld */,
 			);
 			path = ChefsHand;
 			sourceTree = "<group>";
@@ -367,6 +370,7 @@
 				E381E42E26C5140E0042D4EE /* RecipeTableViewController.swift in Sources */,
 				E367093A2693FC74001E708B /* SendToWatchController.swift in Sources */,
 				E36709362693FC74001E708B /* AppDelegate.swift in Sources */,
+				E3E4EFF326C6083800427B69 /* ChefsHand.xcdatamodeld in Sources */,
 				E36709382693FC74001E708B /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -731,6 +735,19 @@
 			productName = SwiftSoup;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		E3E4EFF126C6083800427B69 /* ChefsHand.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				E3E4EFF226C6083800427B69 /* ChefsHand.xcdatamodel */,
+			);
+			currentVersion = E3E4EFF226C6083800427B69 /* ChefsHand.xcdatamodel */;
+			path = ChefsHand.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = E367092A2693FC73001E708B /* Project object */;
 }

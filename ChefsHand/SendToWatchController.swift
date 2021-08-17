@@ -8,6 +8,7 @@
 import UIKit
 import WatchConnectivity
 import SwiftSoup
+import CoreData
 
 struct Recipe: Encodable {
     var name: String
@@ -39,6 +40,7 @@ struct TasteRecipe: Decodable {
 
 class SendToWatchController: UIViewController {
     var session: WCSession?
+    var container: NSPersistentContainer!
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var urlField: UITextField!
     @IBAction func tapSendDataToWatch(_ sender: Any){
@@ -135,7 +137,7 @@ class SendToWatchController: UIViewController {
     }
     
     func showErrorAlert(_ messsage: String) {
-        let alert = UIAlertController(title: "Error", message: messsage, preferredStyle:   UIAlertController.Style.alert)
+        let alert = UIAlertController(title: "Error", message: messsage, preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
@@ -144,7 +146,11 @@ class SendToWatchController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.configureWatchKitSession()
+        guard container != nil else {
+            fatalError("This view requires a persistent container")
+        }
     }
+    
     
     func configureWatchKitSession() {
         if WCSession.isSupported() {

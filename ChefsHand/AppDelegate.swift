@@ -6,11 +6,20 @@
 //
 
 import UIKit
+import CoreData
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
+    lazy var persisitentContainer: NSPersistentContainer = {
+        let container = NSPersistentContainer(name: "ChefsHand")
+        container.loadPersistentStores(completionHandler: {desc, error in
+            if let error = error as NSError? {
+                fatalError("Something went wrong with the persistent data store: \(error)")
+            }
+        })
+        return container
+    }()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
