@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E337B63B26CB5CE300604C3C /* StructuredRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = E337B63A26CB5CE300604C3C /* StructuredRecipe.swift */; };
 		E3635BCB269E5DCB000BC63F /* StructuredRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3635BCA269E5DCB000BC63F /* StructuredRecipe.swift */; };
 		E3665EF426A0305600071844 /* MethodRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3665EF326A0305600071844 /* MethodRowController.swift */; };
 		E36709362693FC74001E708B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36709352693FC74001E708B /* AppDelegate.swift */; };
@@ -78,6 +79,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E337B63A26CB5CE300604C3C /* StructuredRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructuredRecipe.swift; sourceTree = "<group>"; };
 		E3635BCA269E5DCB000BC63F /* StructuredRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructuredRecipe.swift; sourceTree = "<group>"; };
 		E3665EF326A0305600071844 /* MethodRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MethodRowController.swift; sourceTree = "<group>"; };
 		E36709322693FC74001E708B /* ChefsHand.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChefsHand.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -180,6 +182,7 @@
 				E36709432693FC76001E708B /* Info.plist */,
 				E381E42D26C5140E0042D4EE /* RecipeTableViewController.swift */,
 				E3E4EFF126C6083800427B69 /* ChefsHand.xcdatamodeld */,
+				E337B63A26CB5CE300604C3C /* StructuredRecipe.swift */,
 			);
 			path = ChefsHand;
 			sourceTree = "<group>";
@@ -369,6 +372,7 @@
 			files = (
 				E381E42E26C5140E0042D4EE /* RecipeTableViewController.swift in Sources */,
 				E367093A2693FC74001E708B /* SendToWatchController.swift in Sources */,
+				E337B63B26CB5CE300604C3C /* StructuredRecipe.swift in Sources */,
 				E36709362693FC74001E708B /* AppDelegate.swift in Sources */,
 				E3E4EFF326C6083800427B69 /* ChefsHand.xcdatamodeld in Sources */,
 				E36709382693FC74001E708B /* SceneDelegate.swift in Sources */,

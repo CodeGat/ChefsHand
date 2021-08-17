@@ -10,37 +10,9 @@ import WatchConnectivity
 import SwiftSoup
 import CoreData
 
-struct Recipe: Encodable {
-    var name: String
-    var ingredients: [Ingredient]
-    var method: [Step]
-    
-    struct Ingredient: Encodable {
-        var text: String
-        var isDone: Bool
-    }
-    
-    struct Step: Encodable {
-        var instruction: String
-        var isDone: Bool
-        var cookingTimes: [CookingTimer]
-    }
-    
-    struct CookingTimer: Encodable {
-        let time: Int
-        let timeDefStart: Int
-        let timeDefEnd: Int
-    }
-}
-
-struct TasteRecipe: Decodable {
-    var recipeInstructions: [String]
-    var recipeIngredient: [String]
-}
-
 class SendToWatchController: UIViewController {
     var session: WCSession?
-    var container: NSPersistentContainer!
+    var context: NSManagedObjectContext?
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var urlField: UITextField!
     @IBAction func tapSendDataToWatch(_ sender: Any){
@@ -49,6 +21,9 @@ class SendToWatchController: UIViewController {
         let recipe: Recipe? = createRecipe(from: recipeUrl)
         
         if let validSession = self.session, let validRecipe = recipe {
+            
+            saveToPhone(validRecipe)
+            
             let data: [String: Any] = ["recipe": validRecipe.dictionary as Any]
             if (validSession.isReachable){
                 validSession.sendMessage(data, replyHandler: nil, errorHandler: {(error) -> Void in print{":( error: \(error.localizedDescription)"}})
@@ -60,6 +35,22 @@ class SendToWatchController: UIViewController {
                 }
                 
             }
+        }
+    }
+    
+    func saveToPhone(_ recipe: Recipe) {
+        guard let validContext = context else {
+            fatalError("Context not found")
+        }
+        
+        let recipeEntity = NSEntityDescription.entity(forEntityName: "Recipes", in: validContext)
+        let newRecipe = NSManagedObject(entity: recipeEntity!, insertInto: validContext)
+        newRecipe.setValuesForKeys(recipe.dictionary!)
+        
+        do {
+            try validContext.save()
+        } catch {
+            fatalError("Context failed to save! \(error)")
         }
     }
     
@@ -146,9 +137,9 @@ class SendToWatchController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.configureWatchKitSession()
-        guard container != nil else {
-            fatalError("This view requires a persistent container")
-        }
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        self.context = appDelegate.persistentContainer.viewContext
     }
     
     
@@ -183,12 +174,5 @@ extension SendToWatchController: WCSessionDelegate {
                 self.label.text = value
             }
         }
-    }
-}
-
-extension Encodable {
-    var dictionary: [String: Any]? {
-        guard let data = try? JSONEncoder().encode(self) else { return nil }
-        return (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)).flatMap { $0 as? [String: Any] }
     }
 }
