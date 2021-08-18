@@ -19,16 +19,17 @@ class RecipeTableViewController: UITableViewController {
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-         self.navigationItem.rightBarButtonItem = self.editButtonItem
+        self.navigationItem.rightBarButtonItem = self.editButtonItem
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Recipes")
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "CoreRecipe")
         request.returnsObjectsAsFaults = false
         
         do {
             let result = try context.fetch(request)
             numOfRows = result.count
+            print("Result: \(result)")
         } catch {
             print("Failed: \(error)")
         }

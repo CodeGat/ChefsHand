@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20F71" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="CookingTimes" representedClassName="CookingTimes" syncable="YES" codeGenerationType="class">
+    <entity name="CookingTime" representedClassName="CookingTime" syncable="YES" codeGenerationType="class">
         <attribute name="time" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="timeDefEnd" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="timeDefStart" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="areContainedIn" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Steps" inverseName="hasCookingTimes" inverseEntity="Steps"/>
+        <relationship name="isContainedIn" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Step" inverseName="hasCookingTime" inverseEntity="Step"/>
     </entity>
-    <entity name="Ingredients" representedClassName="Ingredients" syncable="YES" codeGenerationType="class">
-        <attribute name="isDone" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="text" optional="YES" attributeType="String"/>
-        <relationship name="areUsedIn" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StructuredRecipes" inverseName="hasIngredients" inverseEntity="StructuredRecipes"/>
-    </entity>
-    <entity name="Steps" representedClassName="Steps" syncable="YES" codeGenerationType="class">
-        <attribute name="instruction" optional="YES" attributeType="String"/>
-        <attribute name="isDone" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <relationship name="arePartOf" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StructuredRecipes" inverseName="hasSteps" inverseEntity="StructuredRecipes"/>
-        <relationship name="hasCookingTimes" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="CookingTimes" inverseName="areContainedIn" inverseEntity="CookingTimes"/>
-    </entity>
-    <entity name="StructuredRecipes" representedClassName="StructuredRecipes" syncable="YES" codeGenerationType="class">
+    <entity name="CoreRecipe" representedClassName="CoreRecipe" syncable="YES" codeGenerationType="class">
         <attribute name="image" optional="YES" attributeType="Binary" customClassName="UIImage"/>
         <attribute name="name" attributeType="String"/>
-        <relationship name="hasIngredients" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Ingredients" inverseName="areUsedIn" inverseEntity="Ingredients"/>
-        <relationship name="hasSteps" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Steps" inverseName="arePartOf" inverseEntity="Steps"/>
+        <relationship name="hasIngredient" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Ingredient" inverseName="isUsedIn" inverseEntity="Ingredient"/>
+        <relationship name="hasStep" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Step" inverseName="isPartOf" inverseEntity="Step"/>
+    </entity>
+    <entity name="Ingredient" representedClassName="Ingredient" syncable="YES" codeGenerationType="class">
+        <attribute name="isDone" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="text" optional="YES" attributeType="String"/>
+        <relationship name="isUsedIn" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CoreRecipe" inverseName="hasIngredient" inverseEntity="CoreRecipe"/>
+    </entity>
+    <entity name="Step" representedClassName="Step" syncable="YES" codeGenerationType="class">
+        <attribute name="instruction" optional="YES" attributeType="String"/>
+        <attribute name="isDone" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <relationship name="hasCookingTime" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="CookingTime" inverseName="isContainedIn" inverseEntity="CookingTime"/>
+        <relationship name="isPartOf" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CoreRecipe" inverseName="hasStep" inverseEntity="CoreRecipe"/>
     </entity>
     <elements>
-        <element name="CookingTimes" positionX="-27" positionY="45" width="128" height="89"/>
-        <element name="Ingredients" positionX="-54" positionY="18" width="128" height="74"/>
-        <element name="StructuredRecipes" positionX="-54" positionY="-9" width="128" height="89"/>
-        <element name="Steps" positionX="-45" positionY="27" width="128" height="89"/>
+        <element name="CookingTime" positionX="-27" positionY="45" width="128" height="14"/>
+        <element name="Ingredient" positionX="-54" positionY="18" width="128" height="14"/>
+        <element name="CoreRecipe" positionX="-54" positionY="-9" width="128" height="14"/>
+        <element name="Step" positionX="-45" positionY="27" width="128" height="14"/>
     </elements>
 </model>

@@ -22,7 +22,7 @@ class SendToWatchController: UIViewController {
         
         if let validSession = self.session, let validRecipe = recipe {
             
-            saveToPhone(validRecipe)
+            saveToDataStore(validRecipe)
             
             let data: [String: Any] = ["recipe": validRecipe.dictionary as Any]
             if (validSession.isReachable){
@@ -36,19 +36,20 @@ class SendToWatchController: UIViewController {
                 
             }
         }
+        
+        self.urlField.resignFirstResponder()
     }
     
-    func saveToPhone(_ recipe: StructuredRecipe) {
+    func saveToDataStore(_ recipe: StructuredRecipe) {
         guard let validContext = context else {
             fatalError("Context not found")
         }
         
-        let recipeEntity = NSEntityDescription.entity(forEntityName: "Recipes", in: validContext)
-        let newRecipe = NSManagedObject(entity: recipeEntity!, insertInto: validContext)
-        newRecipe.setValuesForKeys(recipe.dictionary!)
+        let newRecipe: NSManagedObject = recipe.convertToNSManagedObject(usingContext: validContext)
         
         do {
             try validContext.save()
+            print("Attempted Save")
         } catch {
             fatalError("Context failed to save! \(error)")
         }
@@ -140,6 +141,8 @@ class SendToWatchController: UIViewController {
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         self.context = appDelegate.persistentContainer.viewContext
+        
+        self.urlField.delegate = self
     }
     
     
@@ -174,5 +177,12 @@ extension SendToWatchController: WCSessionDelegate {
                 self.label.text = value
             }
         }
+    }
+}
+
+extension SendToWatchController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return false
     }
 }
