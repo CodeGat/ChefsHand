@@ -72,10 +72,10 @@
             </objects>
             <point key="canvasLocation" x="-298" y="349"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Recipe Table View Controller-->
         <scene sceneID="eLU-qn-eL1">
             <objects>
-                <tableViewController id="OK5-yx-Tza" sceneMemberID="viewController">
+                <tableViewController id="OK5-yx-Tza" customClass="RecipeTableViewController" customModule="ChefsHand" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="24N-sr-nHr">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

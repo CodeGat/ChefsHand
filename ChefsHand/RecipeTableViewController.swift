@@ -10,16 +10,18 @@ import CoreData
 
 class RecipeTableViewController: UITableViewController {
     
+    var recipes: [NSManagedObject] = []
     var numOfRows = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellIdentifier")
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
@@ -28,6 +30,7 @@ class RecipeTableViewController: UITableViewController {
         
         do {
             let result = try context.fetch(request)
+            recipes = result as! [NSManagedObject]
             numOfRows = result.count
             print("Result: \(result)")
         } catch {
@@ -47,15 +50,19 @@ class RecipeTableViewController: UITableViewController {
         return numOfRows
     }
 
-    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        var cell = tableView.dequeueReusableCell(withIdentifier: "cellIdentifier")
+        
+        let recipe = self.recipes[indexPath.row]
+        
+        if cell == nil {
+            cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cellIdentifier")
+            cell!.textLabel?.text = recipe.value(forKey: "name") as? String
+            cell!.detailTextLabel?.text = recipe.value(forKey: "name") as? String
+        }
 
-        // Configure the cell...
-
-        return cell
+        return cell!
     }
-    */
 
     /*
     // Override to support conditional editing of the table view.
