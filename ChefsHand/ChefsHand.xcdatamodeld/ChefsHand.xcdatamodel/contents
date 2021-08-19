@@ -8,6 +8,7 @@
     </entity>
     <entity name="CoreRecipe" representedClassName="CoreRecipe" syncable="YES" codeGenerationType="class">
         <attribute name="image" optional="YES" attributeType="Binary" customClassName="UIImage"/>
+        <attribute name="location" optional="YES" attributeType="String"/>
         <attribute name="name" attributeType="String"/>
         <relationship name="hasIngredient" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Ingredient" inverseName="isUsedIn" inverseEntity="Ingredient"/>
         <relationship name="hasStep" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Step" inverseName="isPartOf" inverseEntity="Step"/>
@@ -25,8 +26,8 @@
     </entity>
     <elements>
         <element name="CookingTime" positionX="-27" positionY="45" width="128" height="14"/>
+        <element name="CoreRecipe" positionX="-54" positionY="-9" width="128" height="104"/>
         <element name="Ingredient" positionX="-54" positionY="18" width="128" height="14"/>
-        <element name="CoreRecipe" positionX="-54" positionY="-9" width="128" height="14"/>
         <element name="Step" positionX="-45" positionY="27" width="128" height="14"/>
     </elements>
 </model>

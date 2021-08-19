@@ -21,7 +21,9 @@ class RecipeTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         self.navigationItem.rightBarButtonItem = self.editButtonItem
         
-        tableView.register(RecipeTableCell.self, forCellReuseIdentifier: "recipeCellIdentifier")
+        tableView.delegate = self
+        tableView.dataSource = self
+//        tableView.register(RecipeTableCell.self, forCellReuseIdentifier: "recipeCell")
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
@@ -32,7 +34,6 @@ class RecipeTableViewController: UITableViewController {
             let result = try context.fetch(request)
             recipes = result as! [NSManagedObject]
             numOfRows = result.count
-            print("Result: \(result)")
         } catch {
             print("Failed: \(error)")
         }
@@ -49,7 +50,7 @@ class RecipeTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: RecipeTableCell = tableView.dequeueReusableCell(withIdentifier: "recipeCellIdentifier") as! RecipeTableCell
+        let cell: RecipeTableCell = tableView.dequeueReusableCell(withIdentifier: "recipeCell") as! RecipeTableCell
         let recipe = self.recipes[indexPath.row]
         
         cell.updateCell(using: recipe)

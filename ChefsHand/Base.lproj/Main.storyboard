@@ -92,7 +92,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="recipeCellIdentifier" rowHeight="70" id="Bhw-ax-hNJ" customClass="RecipeTableCell" customModule="ChefsHand" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="recipeCell" rowHeight="70" id="Bhw-ax-hNJ" customClass="RecipeTableCell" customModule="ChefsHand" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="24.5" width="414" height="70"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Bhw-ax-hNJ" id="J1X-3V-5od">
@@ -100,7 +100,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jq6-0J-7XT">
-                                            <rect key="frame" x="20" y="11" width="33" height="21"/>
+                                            <rect key="frame" x="20" y="11" width="279" height="29"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -112,22 +112,26 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xox-69-QHD">
-                                            <rect key="frame" x="20" y="38" width="52" height="16"/>
+                                            <rect key="frame" x="20" y="43" width="279" height="27"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="27" id="wLZ-be-UR4"/>
+                                            </constraints>
                                             <fontDescription key="fontDescription" type="system" weight="light" pointSize="13"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="RJJ-Nx-vca" firstAttribute="leading" secondItem="jq6-0J-7XT" secondAttribute="trailing" constant="254" id="Kew-Mi-PSi"/>
                                         <constraint firstAttribute="bottom" secondItem="RJJ-Nx-vca" secondAttribute="bottom" id="OF6-NV-nTW"/>
+                                        <constraint firstItem="RJJ-Nx-vca" firstAttribute="leading" secondItem="jq6-0J-7XT" secondAttribute="trailing" constant="8" symbolic="YES" id="OY4-Ru-mbQ"/>
+                                        <constraint firstItem="jq6-0J-7XT" firstAttribute="leading" secondItem="J1X-3V-5od" secondAttribute="leadingMargin" id="XiS-iQ-rRt"/>
                                         <constraint firstItem="RJJ-Nx-vca" firstAttribute="top" secondItem="J1X-3V-5od" secondAttribute="top" id="baj-KO-nkf"/>
-                                        <constraint firstItem="jq6-0J-7XT" firstAttribute="leading" secondItem="Xox-69-QHD" secondAttribute="leading" id="ddt-0E-oQj"/>
-                                        <constraint firstItem="jq6-0J-7XT" firstAttribute="leading" secondItem="J1X-3V-5od" secondAttribute="leadingMargin" id="hyX-6y-jms"/>
+                                        <constraint firstItem="Xox-69-QHD" firstAttribute="top" secondItem="jq6-0J-7XT" secondAttribute="bottom" constant="3" id="f2D-fY-BQs"/>
+                                        <constraint firstItem="jq6-0J-7XT" firstAttribute="top" secondItem="J1X-3V-5od" secondAttribute="topMargin" id="fgS-tO-cJq"/>
                                         <constraint firstAttribute="trailing" secondItem="RJJ-Nx-vca" secondAttribute="trailing" id="iSd-av-gaC"/>
-                                        <constraint firstItem="jq6-0J-7XT" firstAttribute="top" secondItem="J1X-3V-5od" secondAttribute="topMargin" id="o5x-iW-FyR"/>
-                                        <constraint firstItem="Xox-69-QHD" firstAttribute="top" secondItem="jq6-0J-7XT" secondAttribute="bottom" constant="6" id="uIA-Or-G3t"/>
-                                        <constraint firstItem="RJJ-Nx-vca" firstAttribute="leading" secondItem="Xox-69-QHD" secondAttribute="trailing" constant="235" id="zQm-sU-TnX"/>
+                                        <constraint firstItem="Xox-69-QHD" firstAttribute="bottom" secondItem="RJJ-Nx-vca" secondAttribute="bottom" id="l3v-1o-HyE"/>
+                                        <constraint firstItem="RJJ-Nx-vca" firstAttribute="leading" secondItem="Xox-69-QHD" secondAttribute="trailing" constant="8" symbolic="YES" id="tKw-Iz-PAW"/>
+                                        <constraint firstItem="Xox-69-QHD" firstAttribute="leading" secondItem="jq6-0J-7XT" secondAttribute="leading" id="y0b-M3-VhR"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
