@@ -45,7 +45,7 @@ class SendToWatchController: UIViewController {
             fatalError("Context not found")
         }
         
-        let newRecipe: NSManagedObject = recipe.convertToNSManagedObject(usingContext: validContext)
+        let _: NSManagedObject = recipe.convertToNSManagedObject(usingContext: validContext)
         
         do {
             try validContext.save()

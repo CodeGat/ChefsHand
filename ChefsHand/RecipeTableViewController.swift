@@ -21,7 +21,7 @@ class RecipeTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         self.navigationItem.rightBarButtonItem = self.editButtonItem
         
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellIdentifier")
+        tableView.register(RecipeTableCell.self, forCellReuseIdentifier: "recipeCellIdentifier")
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
@@ -41,27 +41,20 @@ class RecipeTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return numOfRows
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCell(withIdentifier: "cellIdentifier")
-        
+        let cell: RecipeTableCell = tableView.dequeueReusableCell(withIdentifier: "recipeCellIdentifier") as! RecipeTableCell
         let recipe = self.recipes[indexPath.row]
         
-        if cell == nil {
-            cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cellIdentifier")
-            cell!.textLabel?.text = recipe.value(forKey: "name") as? String
-            cell!.detailTextLabel?.text = recipe.value(forKey: "name") as? String
-        }
+        cell.updateCell(using: recipe)
 
-        return cell!
+        return cell
     }
 
     /*
@@ -109,4 +102,18 @@ class RecipeTableViewController: UITableViewController {
     }
     */
 
+}
+
+class RecipeTableCell: UITableViewCell {
+    @IBOutlet weak var recipeTitleLabel: UILabel!
+    @IBOutlet weak var recipeLocationLabel: UILabel!
+    @IBOutlet weak var recipeImage: UIImageView!
+    
+    func updateCell(using recipe: NSManagedObject) {
+        self.recipeTitleLabel?.text = recipe.value(forKey: "name") as? String ?? "Unknown Recipe"
+        self.recipeLocationLabel?.text = recipe.value(forKey: "location") as? String ?? "Unknown Location"
+        if let imageData = recipe.value(forKey: "image") as? Data {
+            self.recipeImage?.image = UIImage(data: imageData)
+        }
+    }
 }
