@@ -9,9 +9,18 @@ import UIKit
 import CoreData
 
 class RecipeTableViewController: UITableViewController {
+//    var context: NSManagedObjectContext!
     
-    var recipes: [NSManagedObject] = []
-    var numOfRows = 0
+    fileprivate lazy var fetchedResultContainer: NSFetchedResultsController<CoreRecipe> = {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        let fetchRequest: NSFetchRequest<CoreRecipe> = CoreRecipe.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: false)]
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        fetchedResultsController.delegate = self
+        
+        return fetchedResultsController
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,17 +34,20 @@ class RecipeTableViewController: UITableViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "CoreRecipe")
-        request.returnsObjectsAsFaults = false
-        
         do {
-            let result = try context.fetch(request)
-            recipes = result as! [NSManagedObject]
-            numOfRows = result.count
+            try fetchedResultContainer.performFetch()
         } catch {
-            print("Failed: \(error)")
+            fatalError("Failed to fetch recipes")
+        }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        do {
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            let context = appDelegate.persistentContainer.viewContext
+            try context.save()
+        } catch {
+            fatalError("Failed to save")
         }
     }
 
@@ -46,12 +58,13 @@ class RecipeTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return numOfRows
+        guard let recipes = fetchedResultContainer.fetchedObjects else {return 0}
+        return recipes.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: RecipeTableCell = tableView.dequeueReusableCell(withIdentifier: "recipeCell") as! RecipeTableCell
-        let recipe = self.recipes[indexPath.row]
+        let recipe = fetchedResultContainer.object(at: indexPath)
         
         cell.updateCell(using: recipe)
 
@@ -66,17 +79,14 @@ class RecipeTableViewController: UITableViewController {
     }
     */
 
-    /*
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+            let quoteToDelete = fetchedResultContainer.object(at: indexPath)
+            quoteToDelete.managedObjectContext?.delete(quoteToDelete)
+        }
     }
-    */
 
     /*
     // Override to support rearranging the table view.
@@ -105,15 +115,40 @@ class RecipeTableViewController: UITableViewController {
 
 }
 
+extension RecipeTableViewController: NSFetchedResultsControllerDelegate  {
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.beginUpdates()
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.endUpdates()
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch(type){
+        case .delete:
+            if let indexPath = indexPath {
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            }
+        case .move:
+            break
+        case .update:
+            break
+        default:
+            break
+        }
+    }
+}
+
 class RecipeTableCell: UITableViewCell {
     @IBOutlet weak var recipeTitleLabel: UILabel!
     @IBOutlet weak var recipeLocationLabel: UILabel!
     @IBOutlet weak var recipeImage: UIImageView!
     
-    func updateCell(using recipe: NSManagedObject) {
-        self.recipeTitleLabel?.text = recipe.value(forKey: "name") as? String ?? "Unknown Recipe"
-        self.recipeLocationLabel?.text = recipe.value(forKey: "location") as? String ?? "Unknown Location"
-        if let imageData = recipe.value(forKey: "image") as? Data {
+    func updateCell(using recipe: CoreRecipe) {
+        self.recipeTitleLabel?.text = recipe.name ?? "Unknown Recipe"
+        self.recipeLocationLabel?.text = recipe.location ?? "Unknown Location"
+        if let imageData = recipe.image {
             self.recipeImage?.image = UIImage(data: imageData)
         }
     }
