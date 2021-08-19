@@ -26,7 +26,7 @@ class SendToWatchController: UIViewController {
             
             let data: [String: Any] = ["recipe": validRecipe.dictionary as Any]
             if (validSession.isReachable){
-                validSession.sendMessage(data, replyHandler: nil, errorHandler: {(error) -> Void in print{":( error: \(error.localizedDescription)"}})
+                validSession.sendMessage(data, replyHandler: nil, errorHandler: nil)
             } else {
                 do {
                     try validSession.updateApplicationContext(data)
@@ -49,7 +49,6 @@ class SendToWatchController: UIViewController {
         
         do {
             try validContext.save()
-            print("Attempted Save")
         } catch {
             fatalError("Context failed to save! \(error)")
         }

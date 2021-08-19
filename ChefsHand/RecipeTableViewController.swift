@@ -20,10 +20,10 @@ class RecipeTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         self.navigationItem.rightBarButtonItem = self.editButtonItem
+        self.navigationItem.title = "Downloads"
         
         tableView.delegate = self
         tableView.dataSource = self
-//        tableView.register(RecipeTableCell.self, forCellReuseIdentifier: "recipeCell")
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
