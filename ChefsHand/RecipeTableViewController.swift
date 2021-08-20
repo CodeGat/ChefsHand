@@ -64,20 +64,11 @@ class RecipeTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: RecipeTableCell = tableView.dequeueReusableCell(withIdentifier: "recipeCell") as! RecipeTableCell
-        let recipe = fetchedResultContainer.object(at: indexPath)
         
-        cell.updateCell(using: recipe)
+        cell.updateInfo(using: fetchedResultContainer, at: indexPath)
 
         return cell
     }
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
 
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -92,14 +83,6 @@ class RecipeTableViewController: UITableViewController {
     // Override to support rearranging the table view.
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
 
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
     }
     */
 
@@ -131,9 +114,16 @@ extension RecipeTableViewController: NSFetchedResultsControllerDelegate  {
                 tableView.deleteRows(at: [indexPath], with: .fade)
             }
         case .move:
-            break
+            if let indexPath = indexPath, let newIndexPath = newIndexPath {
+                tableView.deleteRows(at: [indexPath], with: .fade)
+                tableView.insertRows(at: [newIndexPath], with: .fade)
+            }
         case .update:
-            break
+            if let indexPath = indexPath {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "recipeCell", for: indexPath) as! RecipeTableCell
+                cell.updateInfo(using: fetchedResultContainer, at: indexPath)
+                tableView.reloadRows(at: [indexPath], with: .fade)
+            }
         default:
             break
         }
@@ -145,7 +135,9 @@ class RecipeTableCell: UITableViewCell {
     @IBOutlet weak var recipeLocationLabel: UILabel!
     @IBOutlet weak var recipeImage: UIImageView!
     
-    func updateCell(using recipe: CoreRecipe) {
+    func updateInfo(using controller: NSFetchedResultsController<CoreRecipe>, at indexPath: IndexPath) {
+        let recipe = controller.object(at: indexPath)
+        
         self.recipeTitleLabel?.text = recipe.name ?? "Unknown Recipe"
         self.recipeLocationLabel?.text = recipe.location ?? "Unknown Location"
         if let imageData = recipe.image {
