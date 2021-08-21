@@ -7,10 +7,9 @@
 
 import UIKit
 import CoreData
+import WatchConnectivity
 
 class RecipeTableViewController: UITableViewController {
-//    var context: NSManagedObjectContext!
-    
     fileprivate lazy var fetchedResultContainer: NSFetchedResultsController<CoreRecipe> = {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
@@ -21,6 +20,7 @@ class RecipeTableViewController: UITableViewController {
         
         return fetchedResultsController
     }()
+    var connectivitySession = WatchConnectivityManager.shared
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,13 +80,6 @@ class RecipeTableViewController: UITableViewController {
     }
 
     /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -126,6 +119,21 @@ extension RecipeTableViewController: NSFetchedResultsControllerDelegate  {
             }
         default:
             break
+        }
+    }
+}
+
+extension RecipeTableViewController: PhoneConnectivityDelegate {
+    func recievedMessage(session: WCSession, message: [String : Any], replyHandler: (([String : Any]) -> Void)?) {
+        //handle msg
+        print("message recieved in RTVC")
+        if let numRecipeNamesRequest = message["recipeNamesRequest"] as? Int, let recipes: [CoreRecipe] = fetchedResultContainer.fetchedObjects {
+            let index: Int = numRecipeNamesRequest < recipes.count ? numRecipeNamesRequest : recipes.count
+            let recipeNames: [String] = recipes[..<index].map{$0.name!}
+            let recipeNamesMessage: [String: [String]] = ["recipeNamesResponse": recipeNames]
+            
+            guard let reply = replyHandler else {return}
+            reply(recipeNamesMessage)
         }
     }
 }

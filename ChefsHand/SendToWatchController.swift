@@ -11,7 +11,7 @@ import SwiftSoup
 import CoreData
 
 class SendToWatchController: UIViewController {
-    var session: WCSession?
+    var connectivityHandler = WatchConnectivityManager.shared
     var context: NSManagedObjectContext?
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var urlField: UITextField!
@@ -20,21 +20,32 @@ class SendToWatchController: UIViewController {
         
         let recipe: StructuredRecipe? = createRecipe(from: recipeUrl)
         
-        if let validSession = self.session, let validRecipe = recipe {
+        if let validRecipe = recipe {
             
             saveToDataStore(validRecipe)
             
             let data: [String: Any] = ["recipe": validRecipe.dictionary as Any]
-            if (validSession.isReachable){
-                validSession.sendMessage(data, replyHandler: nil, errorHandler: nil)
-            } else {
-                do {
-                    try validSession.updateApplicationContext(data)
-                } catch {
-                    print("Something happened when updating application context: \(error.localizedDescription)")
-                }
-                
-            }
+            
+            print("About to send")
+            
+            connectivityHandler.sendMessage(message: data, replyHandler: {reply in
+                print("got some reply")
+            }, errorHandler: {error in
+                print("In STWC there was an error sending the message: \(error)")
+            })
+            print("Should have sent the message!")
+            
+            //MARK: if not reachable, send application context
+//            if (validSession.isReachable){
+//                validSession.sendMessage(data, replyHandler: nil, errorHandler: nil)
+//            } else {
+//                do {
+//                    try validSession.updateApplicationContext(data)
+//                } catch {
+//                    print("Something happened when updating application context: \(error.localizedDescription)")
+//                }
+//
+//            }
         }
         
         self.urlField.resignFirstResponder()
@@ -136,7 +147,8 @@ class SendToWatchController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.configureWatchKitSession()
+        connectivityHandler.phoneDelegate = self
+        
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         self.context = appDelegate.persistentContainer.viewContext
@@ -144,38 +156,46 @@ class SendToWatchController: UIViewController {
         self.urlField.delegate = self
     }
     
-    
-    func configureWatchKitSession() {
-        if WCSession.isSupported() {
-            session = WCSession.default
-            session?.delegate = self
-            session?.activate()
-        }
-    }
+    // MARK: do we need to move this to other controller?
+//    func configureWatchKitSession() {
+//        if WCSession.isSupported() {
+//            session = WCSession.default
+//            session?.delegate = self
+//            session?.activate()
+//        }
+//    }
 }
+
+//extension SendToWatchController: WCSessionDelegate {
+//    func sessionDidBecomeInactive(_ session: WCSession) {
+//        print("Session in SendToWatchController did become inactive")
+//    }
+//
+//    func sessionDidDeactivate(_ session: WCSession) {
+//        print("Session in SendToWatchController did become deactivated")
+//    }
+//
+//    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+//        print("Activation in SendToWatchController did complete with \(activationState)")
+//    }
+//
+//    func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
+//       if let numRecipeNamesRequest = message["recipeNamesRequest"] as? Int, let recipes: [CoreRecipe] = fetchedResultContainer.fetchedObjects {
+//            let index: Int = numRecipeNamesRequest < recipes.count ? numRecipeNamesRequest : recipes.count
+//            let recipeNames: [String] = recipes[..<index].map{$0.name!}
+//            let recipeNamesMessage: [String: [String]] = ["recipeNamesResponse": recipeNames]
+//            replyHandler(recipeNamesMessage)
+//        }
+//        print("message recieved in STWC")
+//    }
+//
+//}
 
 //todo: make an extension for Recipie generics
 
-extension SendToWatchController: WCSessionDelegate {
-    func sessionDidBecomeInactive(_ session: WCSession) {
-        print("Session between watch and iPhone was deactivated")
-    }
-    
-    func sessionDidDeactivate(_ session: WCSession) {
-        
-    }
-    
-    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
-        
-    }
-    
-    func session(_ session: WCSession, didReceiveMessage message: [String: Any]){
-        print("got message: \(message)")
-        DispatchQueue.main.async {
-            if let value = message["watch"] as? String {
-                self.label.text = value
-            }
-        }
+extension SendToWatchController: PhoneConnectivityDelegate {
+    func recievedMessage(session: WCSession, message: [String : Any], replyHandler: (([String : Any]) -> Void)?) {
+        print("STWC: Got message from WCM! - not doing anything with it.")
     }
 }
 

@@ -34,6 +34,8 @@
 		E3F27674269E991100CA78D8 /* IngredientsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F27673269E991100CA78D8 /* IngredientsController.swift */; };
 		E3F27676269E9BE900CA78D8 /* MethodController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F27675269E9BE900CA78D8 /* MethodController.swift */; };
 		E3F27679269E9F5800CA78D8 /* IngredientsRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F27678269E9F5800CA78D8 /* IngredientsRowController.swift */; };
+		E3F8A0DA26D0A73100CB3AC7 /* WatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F8A0D926D0A73100CB3AC7 /* WatchConnectivityManager.swift */; };
+		E3F8A0DB26D0A73100CB3AC7 /* WatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F8A0D926D0A73100CB3AC7 /* WatchConnectivityManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -110,6 +112,7 @@
 		E3F27673269E991100CA78D8 /* IngredientsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientsController.swift; sourceTree = "<group>"; };
 		E3F27675269E9BE900CA78D8 /* MethodController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MethodController.swift; sourceTree = "<group>"; };
 		E3F27678269E9F5800CA78D8 /* IngredientsRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientsRowController.swift; sourceTree = "<group>"; };
+		E3F8A0D926D0A73100CB3AC7 /* WatchConnectivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchConnectivityManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +155,7 @@
 		E36709292693FC73001E708B = {
 			isa = PBXGroup;
 			children = (
+				E3F8A0DC26D0A75900CB3AC7 /* Commons */,
 				E36709342693FC74001E708B /* ChefsHand */,
 				E367094A2693FC76001E708B /* ChefsHand WatchKit App */,
 				E36709592693FC78001E708B /* ChefsHand WatchKit Extension */,
@@ -230,6 +234,14 @@
 				E381E42926C2376D0042D4EE /* DeveloperSettingsController.swift */,
 			);
 			path = Developer;
+			sourceTree = "<group>";
+		};
+		E3F8A0DC26D0A75900CB3AC7 /* Commons */ = {
+			isa = PBXGroup;
+			children = (
+				E3F8A0D926D0A73100CB3AC7 /* WatchConnectivityManager.swift */,
+			);
+			path = Commons;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -375,6 +387,7 @@
 				E337B63B26CB5CE300604C3C /* StructuredRecipe.swift in Sources */,
 				E36709362693FC74001E708B /* AppDelegate.swift in Sources */,
 				E3E4EFF326C6083800427B69 /* ChefsHand.xcdatamodeld in Sources */,
+				E3F8A0DA26D0A73100CB3AC7 /* WatchConnectivityManager.swift in Sources */,
 				E36709382693FC74001E708B /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -393,6 +406,7 @@
 				E367095B2693FC78001E708B /* InterfaceController.swift in Sources */,
 				E3F27674269E991100CA78D8 /* IngredientsController.swift in Sources */,
 				E3635BCB269E5DCB000BC63F /* StructuredRecipe.swift in Sources */,
+				E3F8A0DB26D0A73100CB3AC7 /* WatchConnectivityManager.swift in Sources */,
 				E3F27676269E9BE900CA78D8 /* MethodController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
