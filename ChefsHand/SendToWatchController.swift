@@ -17,7 +17,6 @@ class SendToWatchController: UIViewController {
     @IBOutlet weak var urlField: UITextField!
     @IBAction func tapSendDataToWatch(_ sender: Any){
         let recipeUrl = urlField.text
-        
         let recipe: StructuredRecipe? = createRecipe(from: recipeUrl)
         
         if let validRecipe = recipe {
@@ -28,12 +27,9 @@ class SendToWatchController: UIViewController {
             
             print("About to send")
             
-            connectivityHandler.sendMessage(message: data, replyHandler: {reply in
-                print("got some reply")
-            }, errorHandler: {error in
+            connectivityHandler.sendMessage(message: data, replyHandler: nil, errorHandler: {error in
                 print("In STWC there was an error sending the message: \(error)")
             })
-            print("Should have sent the message!")
             
             //MARK: if not reachable, send application context
 //            if (validSession.isReachable){

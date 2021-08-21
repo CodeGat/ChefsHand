@@ -56,10 +56,19 @@ class WatchConnectivityManager: NSObject {
     
     // sender
     func sendMessage(message: [String: Any], replyHandler: (([String: Any]) -> Void)? = nil, errorHandler: ((Error) -> Void)? = nil) {
+        print("About to send message with replyHandler: \(String(describing: replyHandler))")
         validReachableSession?.sendMessage(message, replyHandler: replyHandler, errorHandler: errorHandler)
     }
     
     //reciever
+    func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
+        #if os(iOS)
+        phoneDelegate?.recievedMessage(session: session, message: message, replyHandler: nil)
+        #elseif os(watchOS)
+        watchDelegate?.recievedMessage(session: session, message: message, replyHandler: nil)
+        #endif
+    }
+    
     func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
         #if os(iOS)
         phoneDelegate?.recievedMessage(session: session, message: message, replyHandler: replyHandler)
@@ -83,8 +92,4 @@ extension WatchConnectivityManager: WCSessionDelegate {
         print("iOSs session did deactivate")
     }
     #endif
-}
-
-extension WatchConnectivityManager {
-
 }
