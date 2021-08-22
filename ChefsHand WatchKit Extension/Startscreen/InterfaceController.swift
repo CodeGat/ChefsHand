@@ -12,6 +12,8 @@ import WatchConnectivity
 
 class InterfaceController: WKInterfaceController {
     let connectivityHandler = WatchConnectivityManager.shared
+    let defaults = UserDefaults.standard
+    var recipeNames = [String]()
     
     @IBOutlet weak var label: WKInterfaceLabel!
     @IBOutlet weak var recipeTable: WKInterfaceTable!
@@ -30,9 +32,6 @@ class InterfaceController: WKInterfaceController {
             extensionDelegate.extendedRuntimeSession.invalidate()
         }
     }
-//    let session = WCSession.default
-    let defaults = UserDefaults.standard
-    var numOfRecipeNames: Int = 0
     
     override func table(_ table: WKInterfaceTable, didSelectRowAt rowIndex: Int) {
         let selectedRow = recipeTable.rowController(at: rowIndex) as! RecipeRowController
@@ -61,27 +60,31 @@ class InterfaceController: WKInterfaceController {
     }
     
     func loadRecipeNamesFromIphone() {
-        connectivityHandler.sendMessage(message: ["recipeNamesRequest": numOfRecipeNames], replyHandler: {reply in
-            let recipeNames = reply["recipeNamesResponse"] as! [String]
-            print("Got the names from the watch: ")
-            print(recipeNames) //MARK: send to table
+        let recipeNamesToRequest = recipeNames.count + 3
+        connectivityHandler.sendMessage(message: ["recipeNamesRequest": recipeNamesToRequest], replyHandler: {reply in
+            self.recipeNames = reply["recipeNamesResponse"] as! [String]
         }, errorHandler: {error in
             print(error)
         })
-//        if connectivityHandler.isReady() {
-//            
-//        }
+        refreshTable()
     }
     
     func loadRecipeIntoCacheFromIphone(named name: String) {
-        print("stub loadRecipeIntoCacheFromIphone")
+        connectivityHandler.sendMessage(message: ["recipeRequest": name], replyHandler: {reply in
+            if let recipeResponse = reply["recipeResponse"] {
+                Recipe.shared.setRecipe(givenData: recipeResponse)
+            }
+        }, errorHandler: {error in
+            print(error)
+        })
     }
     
     // MARK: Need to decide on if retriving/getting recipe should be possibly nil or not (check Recipe.getRecipe)
     func refreshTable() {
         var tableRowIx: Int = 0
+        let numberOfRows: Int = 1 + recipeNames.count + (Recipe.shared.recipeExists() || defaults.recipeKeyExists() ? 1 : 0)
         
-        recipeTable.setNumberOfRows(1 + (Recipe.shared.recipeExists() || defaults.recipeKeyExists() ? 1 : 0), withRowType: "Recipe Row")
+        recipeTable.setNumberOfRows(numberOfRows, withRowType: "Recipe Row")
         
         if let recipe: Recipe.StructuredRecipe = Recipe.shared.getRecipe() {
             let cachedController = recipeTable.rowController(at: tableRowIx) as! RecipeRowController
@@ -94,11 +97,20 @@ class InterfaceController: WKInterfaceController {
             cachedController.type = .cached
             tableRowIx += 1
         }
+        
+        for recipeName in recipeNames {
+            let nameController = recipeTable.rowController(at: tableRowIx) as! RecipeRowController
+            nameController.name = recipeName
+            nameController.type = .phone
+            tableRowIx += 1
+        }
+        
         let moreController = recipeTable.rowController(at: tableRowIx) as! RecipeRowController
         moreController.name = "Load more..."
         moreController.type = .more
     }
 
+    // MARK: reimplement applicationcontext
 //    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
 //        Recipe.shared.setRecipe(givenData: applicationContext["recipe"] as Any)
 //        refreshTable()
@@ -118,16 +130,3 @@ extension InterfaceController: WatchConnectivityDelegate {
     
     
 }
-
-//extension InterfaceController: WCSessionDelegate {
-//    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
-//
-//    }
-//
-//    func session(_ session: WCSession, didReceiveMessage message: [String: Any]) {
-//        let recipe = message["recipe"] as Any
-//        Recipe.shared.setRecipe(givenData: recipe)
-//        label.setText("A new recipe is up - swipe to the right!")
-//        refreshTable()
-//    }
-//}

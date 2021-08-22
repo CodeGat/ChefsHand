@@ -20,13 +20,9 @@ class SendToWatchController: UIViewController {
         let recipe: StructuredRecipe? = createRecipe(from: recipeUrl)
         
         if let validRecipe = recipe {
-            
             saveToDataStore(validRecipe)
             
             let data: [String: Any] = ["recipe": validRecipe.dictionary as Any]
-            
-            print("About to send")
-            
             connectivityHandler.sendMessage(message: data, replyHandler: nil, errorHandler: {error in
                 print("In STWC there was an error sending the message: \(error)")
             })
@@ -62,7 +58,7 @@ class SendToWatchController: UIViewController {
     }
     
     func createRecipe(from urlString: String?) -> StructuredRecipe? {
-        var tasteRecipeName: String = "Recipe"
+        var tasteRecipeName: String = "Unknown Recipe"
         var tasteRecipe: TasteRecipe?
         
         guard let url = URL(string: urlString ?? "") else {
