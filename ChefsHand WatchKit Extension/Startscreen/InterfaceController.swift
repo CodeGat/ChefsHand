@@ -61,15 +61,16 @@ class InterfaceController: WKInterfaceController {
     }
     
     func loadRecipeNamesFromIphone() {
-        if connectivityHandler.isReady() {
-            connectivityHandler.sendMessage(message: ["recipeNamesRequest": numOfRecipeNames], replyHandler: {reply in
-                let recipeNames = reply["recipeNamesResponse"] as! [String]
-                print("Got the names from the watch: ")
-                print(recipeNames) //MARK: send to table
-            }, errorHandler: {error in
-                print(error)
-            })
-        }
+        connectivityHandler.sendMessage(message: ["recipeNamesRequest": numOfRecipeNames], replyHandler: {reply in
+            let recipeNames = reply["recipeNamesResponse"] as! [String]
+            print("Got the names from the watch: ")
+            print(recipeNames) //MARK: send to table
+        }, errorHandler: {error in
+            print(error)
+        })
+//        if connectivityHandler.isReady() {
+//            
+//        }
     }
     
     func loadRecipeIntoCacheFromIphone(named name: String) {
@@ -106,7 +107,6 @@ class InterfaceController: WKInterfaceController {
 
 extension InterfaceController: WatchConnectivityDelegate {
     func recievedMessage(session: WCSession, message: [String : Any], replyHandler: (([String : Any]) -> Void)?) {
-        print("Got a message from phone to watch!")
         if let recipeData = message["recipe"] {
             Recipe.shared.setRecipe(givenData: recipeData)
             label.setText("A new recipe is up - swipe to the right!")

@@ -20,12 +20,13 @@ class RecipeTableViewController: UITableViewController {
         
         return fetchedResultsController
     }()
-    var connectivitySession = WatchConnectivityManager.shared
+    var connectivityHandler = WatchConnectivityManager.shared
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
+        connectivityHandler.phoneDelegate = self
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         self.navigationItem.rightBarButtonItem = self.editButtonItem

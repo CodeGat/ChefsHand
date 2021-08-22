@@ -21,14 +21,12 @@ class WatchConnectivityManager: NSObject {
     weak var watchDelegate: WatchConnectivityDelegate?
     weak var phoneDelegate: PhoneConnectivityDelegate?
     fileprivate let session: WCSession? = WCSession.isSupported() ? WCSession.default : nil
-    private var sessionReady: Bool = false
     
     private override init(){}
     
     var validSession: WCSession? {
         #if os(iOS)
         if let session = session, session.isPaired && session.isWatchAppInstalled {
-            self.sessionReady = true
             return session
         }
         return nil
@@ -48,10 +46,6 @@ class WatchConnectivityManager: NSObject {
     func startSession() {
         session?.delegate = self
         session?.activate()
-    }
-    
-    func isReady() -> Bool {
-        return sessionReady
     }
     
     // sender
