@@ -147,6 +147,10 @@ extension RecipeTableViewController: PhoneConnectivityDelegate {
     }
 }
 
+extension Recipe {
+    
+}
+
 class RecipeTableCell: UITableViewCell {
     @IBOutlet weak var recipeTitleLabel: UILabel!
     @IBOutlet weak var recipeLocationLabel: UILabel!

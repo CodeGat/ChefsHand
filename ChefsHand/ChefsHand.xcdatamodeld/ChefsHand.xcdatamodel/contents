@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20F71" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="CookingTime" representedClassName="CookingTime" syncable="YES" codeGenerationType="class">
-        <attribute name="time" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="timeDefEnd" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="timeDefStart" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="isContainedIn" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Step" inverseName="hasCookingTime" inverseEntity="Step"/>
+    <entity name="CoreCookingTime" representedClassName="CoreCookingTime" syncable="YES" codeGenerationType="class">
+        <attribute name="time" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="timeDefEnd" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="timeDefStart" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="isContainedIn" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CoreStep" inverseName="hasCookingTime" inverseEntity="CoreStep"/>
+    </entity>
+    <entity name="CoreIngredient" representedClassName="CoreIngredient" syncable="YES" codeGenerationType="class">
+        <attribute name="isDone" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="text" optional="YES" attributeType="String"/>
+        <relationship name="isUsedIn" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CoreRecipe" inverseName="hasIngredient" inverseEntity="CoreRecipe"/>
     </entity>
     <entity name="CoreRecipe" representedClassName="CoreRecipe" syncable="YES" codeGenerationType="class">
         <attribute name="image" optional="YES" attributeType="Binary" customClassName="UIImage"/>
         <attribute name="location" optional="YES" attributeType="String"/>
         <attribute name="name" attributeType="String"/>
-        <relationship name="hasIngredient" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Ingredient" inverseName="isUsedIn" inverseEntity="Ingredient"/>
-        <relationship name="hasStep" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Step" inverseName="isPartOf" inverseEntity="Step"/>
+        <relationship name="hasIngredient" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="CoreIngredient" inverseName="isUsedIn" inverseEntity="CoreIngredient"/>
+        <relationship name="hasStep" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="CoreStep" inverseName="isPartOf" inverseEntity="CoreStep"/>
     </entity>
-    <entity name="Ingredient" representedClassName="Ingredient" syncable="YES" codeGenerationType="class">
+    <entity name="CoreStep" representedClassName="CoreStep" syncable="YES" codeGenerationType="class">
         <attribute name="isDone" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="text" optional="YES" attributeType="String"/>
-        <relationship name="isUsedIn" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CoreRecipe" inverseName="hasIngredient" inverseEntity="CoreRecipe"/>
-    </entity>
-    <entity name="Step" representedClassName="Step" syncable="YES" codeGenerationType="class">
-        <attribute name="instruction" optional="YES" attributeType="String"/>
-        <attribute name="isDone" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <relationship name="hasCookingTime" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="CookingTime" inverseName="isContainedIn" inverseEntity="CookingTime"/>
+        <relationship name="hasCookingTime" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="CoreCookingTime" inverseName="isContainedIn" inverseEntity="CoreCookingTime"/>
         <relationship name="isPartOf" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CoreRecipe" inverseName="hasStep" inverseEntity="CoreRecipe"/>
     </entity>
     <elements>
-        <element name="CookingTime" positionX="-27" positionY="45" width="128" height="14"/>
+        <element name="CoreCookingTime" positionX="-27" positionY="45" width="128" height="89"/>
         <element name="CoreRecipe" positionX="-54" positionY="-9" width="128" height="104"/>
-        <element name="Ingredient" positionX="-54" positionY="18" width="128" height="14"/>
-        <element name="Step" positionX="-45" positionY="27" width="128" height="14"/>
+        <element name="CoreIngredient" positionX="-54" positionY="18" width="128" height="74"/>
+        <element name="CoreStep" positionX="-45" positionY="27" width="128" height="89"/>
     </elements>
 </model>

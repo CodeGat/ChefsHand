@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E337B63B26CB5CE300604C3C /* StructuredRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = E337B63A26CB5CE300604C3C /* StructuredRecipe.swift */; };
-		E3635BCB269E5DCB000BC63F /* StructuredRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3635BCA269E5DCB000BC63F /* StructuredRecipe.swift */; };
 		E3665EF426A0305600071844 /* MethodRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3665EF326A0305600071844 /* MethodRowController.swift */; };
 		E36709362693FC74001E708B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36709352693FC74001E708B /* AppDelegate.swift */; };
 		E36709382693FC74001E708B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36709372693FC74001E708B /* SceneDelegate.swift */; };
@@ -36,6 +34,9 @@
 		E3F27679269E9F5800CA78D8 /* IngredientsRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F27678269E9F5800CA78D8 /* IngredientsRowController.swift */; };
 		E3F8A0DA26D0A73100CB3AC7 /* WatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F8A0D926D0A73100CB3AC7 /* WatchConnectivityManager.swift */; };
 		E3F8A0DB26D0A73100CB3AC7 /* WatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F8A0D926D0A73100CB3AC7 /* WatchConnectivityManager.swift */; };
+		E3F8A0DE26D21E3100CB3AC7 /* TransferrableRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F8A0DD26D21E3100CB3AC7 /* TransferrableRecipe.swift */; };
+		E3F8A0DF26D21E3100CB3AC7 /* TransferrableRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F8A0DD26D21E3100CB3AC7 /* TransferrableRecipe.swift */; };
+		E3F8A0E126D22DB400CB3AC7 /* UserDefaultsRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F8A0E026D22DB400CB3AC7 /* UserDefaultsRecipe.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,8 +82,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		E337B63A26CB5CE300604C3C /* StructuredRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructuredRecipe.swift; sourceTree = "<group>"; };
-		E3635BCA269E5DCB000BC63F /* StructuredRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructuredRecipe.swift; sourceTree = "<group>"; };
 		E3665EF326A0305600071844 /* MethodRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MethodRowController.swift; sourceTree = "<group>"; };
 		E36709322693FC74001E708B /* ChefsHand.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChefsHand.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E36709352693FC74001E708B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -113,6 +112,8 @@
 		E3F27675269E9BE900CA78D8 /* MethodController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MethodController.swift; sourceTree = "<group>"; };
 		E3F27678269E9F5800CA78D8 /* IngredientsRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientsRowController.swift; sourceTree = "<group>"; };
 		E3F8A0D926D0A73100CB3AC7 /* WatchConnectivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchConnectivityManager.swift; sourceTree = "<group>"; };
+		E3F8A0DD26D21E3100CB3AC7 /* TransferrableRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferrableRecipe.swift; sourceTree = "<group>"; };
+		E3F8A0E026D22DB400CB3AC7 /* UserDefaultsRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsRecipe.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -186,7 +187,6 @@
 				E36709432693FC76001E708B /* Info.plist */,
 				E381E42D26C5140E0042D4EE /* RecipeTableViewController.swift */,
 				E3E4EFF126C6083800427B69 /* ChefsHand.xcdatamodeld */,
-				E337B63A26CB5CE300604C3C /* StructuredRecipe.swift */,
 			);
 			path = ChefsHand;
 			sourceTree = "<group>";
@@ -212,9 +212,9 @@
 				E36709622693FC79001E708B /* Assets.xcassets */,
 				E36709642693FC79001E708B /* Info.plist */,
 				E36709652693FC79001E708B /* PushNotificationPayload.apns */,
-				E3635BCA269E5DCB000BC63F /* StructuredRecipe.swift */,
 				E3665EF126A027CA00071844 /* Ingredients */,
 				E3665EF226A027F400071844 /* Method */,
+				E3F8A0E026D22DB400CB3AC7 /* UserDefaultsRecipe.swift */,
 			);
 			path = "ChefsHand WatchKit Extension";
 			sourceTree = "<group>";
@@ -240,6 +240,7 @@
 			isa = PBXGroup;
 			children = (
 				E3F8A0D926D0A73100CB3AC7 /* WatchConnectivityManager.swift */,
+				E3F8A0DD26D21E3100CB3AC7 /* TransferrableRecipe.swift */,
 			);
 			path = Commons;
 			sourceTree = "<group>";
@@ -384,11 +385,11 @@
 			files = (
 				E381E42E26C5140E0042D4EE /* RecipeTableViewController.swift in Sources */,
 				E367093A2693FC74001E708B /* SendToWatchController.swift in Sources */,
-				E337B63B26CB5CE300604C3C /* StructuredRecipe.swift in Sources */,
 				E36709362693FC74001E708B /* AppDelegate.swift in Sources */,
 				E3E4EFF326C6083800427B69 /* ChefsHand.xcdatamodeld in Sources */,
 				E3F8A0DA26D0A73100CB3AC7 /* WatchConnectivityManager.swift in Sources */,
 				E36709382693FC74001E708B /* SceneDelegate.swift in Sources */,
+				E3F8A0DE26D21E3100CB3AC7 /* TransferrableRecipe.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -405,7 +406,8 @@
 				E367095D2693FC78001E708B /* ExtensionDelegate.swift in Sources */,
 				E367095B2693FC78001E708B /* InterfaceController.swift in Sources */,
 				E3F27674269E991100CA78D8 /* IngredientsController.swift in Sources */,
-				E3635BCB269E5DCB000BC63F /* StructuredRecipe.swift in Sources */,
+				E3F8A0E126D22DB400CB3AC7 /* UserDefaultsRecipe.swift in Sources */,
+				E3F8A0DF26D21E3100CB3AC7 /* TransferrableRecipe.swift in Sources */,
 				E3F8A0DB26D0A73100CB3AC7 /* WatchConnectivityManager.swift in Sources */,
 				E3F27676269E9BE900CA78D8 /* MethodController.swift in Sources */,
 			);
