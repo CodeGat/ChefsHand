@@ -7,26 +7,32 @@
 
 import UIKit
 import WatchConnectivity
-import SwiftSoup
+//import SwiftSoup
 import CoreData
 
 class SendToWatchController: UIViewController {
-    var connectivityHandler = WatchConnectivityManager.shared
+    var connectivityManager = WatchConnectivityManager.shared
     var context: NSManagedObjectContext?
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var urlField: UITextField!
     @IBAction func tapSendDataToWatch(_ sender: Any){
-        let recipeUrl = urlField.text
-        let recipe: StructuredRecipe? = createRecipe(from: recipeUrl)
-        
-        if let validRecipe = recipe {
-            saveToDataStore(validRecipe)
+        guard let urlString = urlField.text, let recipeUrl = URL(string: urlString) else {
+            showErrorAlert("URL wasn't valid, check the URL and try again")
+            return
+        }
+        do {
+            let recipe: Recipe = try URLRecipe(url: recipeUrl)
+            let recipeMessage: [String: Any] = ["recipe": recipe.dictionary as Any]
             
-            let data: [String: Any] = ["recipe": validRecipe.dictionary as Any]
-            connectivityHandler.sendMessage(message: data, replyHandler: nil, errorHandler: {error in
+            saveToDataStore(recipe)
+            connectivityManager.sendMessage(message: recipeMessage, replyHandler: nil, errorHandler: {error in
                 print("In STWC there was an error sending the message: \(error)")
             })
             
+            self.urlField.resignFirstResponder()
+        } catch {
+            // do magic with error
+        }
             //MARK: if not reachable, send application context
 //            if (validSession.isReachable){
 //                validSession.sendMessage(data, replyHandler: nil, errorHandler: nil)
@@ -38,17 +44,14 @@ class SendToWatchController: UIViewController {
 //                }
 //
 //            }
-        }
-        
-        self.urlField.resignFirstResponder()
     }
     
-    func saveToDataStore(_ recipe: StructuredRecipe) {
+    func saveToDataStore(_ recipe: Recipe) {
         guard let validContext = context else {
             fatalError("Context not found")
         }
         
-        let _: NSManagedObject = recipe.convertToNSManagedObject(usingContext: validContext)
+        let _: NSManagedObject = recipe.convert(given: validContext)
         
         do {
             try validContext.save()
@@ -57,44 +60,8 @@ class SendToWatchController: UIViewController {
         }
     }
     
-    func createRecipe(from urlString: String?) -> StructuredRecipe? {
-        var tasteRecipeName: String = "Unknown Recipe"
-        var tasteRecipe: TasteRecipe?
-        
-        guard let url = URL(string: urlString ?? "") else {
-            showErrorAlert("URL wasn't valid, check the URL and try again")
-            return nil
-        }
-        do {
-            let html: String = try String(contentsOf: url, encoding: .ascii)
-            let decoder = JSONDecoder()
-            let doc: Document = try SwiftSoup.parse(html)
-            
-            let nameElement: Element = try doc.select("title").first()!
-            tasteRecipeName = try nameElement.text()
-            
-            let recipeElement: Element = try doc.select("script[data-schema-entity=recipe]").first()!
-            let recipeString: String = recipeElement.data()
-            let recipeData: Data = recipeString.data(using: .utf8)!
-            tasteRecipe = try decoder.decode(TasteRecipe.self, from: recipeData)
-        } catch {
-            print(error)
-        }
-        
-        let ingredients: [String] = tasteRecipe!.recipeIngredient
-        let recipeIngredients: [StructuredIngredient] = ingredients.map { StructuredIngredient(text: $0, isDone: false) }
-        print(recipeIngredients)
-        
-        var steps: [StructuredStep] = []
-        for instruction: String in tasteRecipe!.recipeInstructions {
-            steps.append(StructuredStep(instruction: instruction, isDone: false, cookingTimes: getCookingTimes(in: instruction)))
-        }
-        
-        return StructuredRecipe(name: tasteRecipeName, ingredients: recipeIngredients, method: steps)
-    }
-    
-    func getCookingTimes(in instruction: String) -> [CookingTimer] {
-        var cookingTimers: [CookingTimer] = []
+    func getCookingTimes(in instruction: String) -> [CookingTime] {
+        var cookingTimers = [CookingTime]()
         
         do {
             let regex = try NSRegularExpression(pattern: #"[0-9]+ ?(h(ou)?r|min(ute)?|sec(ond)?)s?"#, options: []) //TODO: only integers
@@ -105,7 +72,7 @@ class SendToWatchController: UIViewController {
                 if let substringRange: Range = Range(matchRange, in: instruction) {
                     let cookingTimeString: String = String(instruction[substringRange])
                     let cookingTime: Int = getCookingTimeInSeconds(of: cookingTimeString)
-                    let cookingTimer = CookingTimer(time: cookingTime, timeDefStart: matchRange.lowerBound, timeDefEnd: matchRange.upperBound)
+                    let cookingTimer = CookingTime(time: cookingTime, timeDefStart: matchRange.lowerBound, timeDefEnd: matchRange.upperBound)
                     cookingTimers.append(cookingTimer)
                 }
             }
@@ -139,52 +106,49 @@ class SendToWatchController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        connectivityHandler.phoneDelegate = self
-        
+        connectivityManager.phoneDelegate = self
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         self.context = appDelegate.persistentContainer.viewContext
         
         self.urlField.delegate = self
     }
-    
-    // MARK: do we need to move this to other controller?
-//    func configureWatchKitSession() {
-//        if WCSession.isSupported() {
-//            session = WCSession.default
-//            session?.delegate = self
-//            session?.activate()
-//        }
-//    }
 }
 
-//extension SendToWatchController: WCSessionDelegate {
-//    func sessionDidBecomeInactive(_ session: WCSession) {
-//        print("Session in SendToWatchController did become inactive")
-//    }
-//
-//    func sessionDidDeactivate(_ session: WCSession) {
-//        print("Session in SendToWatchController did become deactivated")
-//    }
-//
-//    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
-//        print("Activation in SendToWatchController did complete with \(activationState)")
-//    }
-//
-//    func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
-//       if let numRecipeNamesRequest = message["recipeNamesRequest"] as? Int, let recipes: [CoreRecipe] = fetchedResultContainer.fetchedObjects {
-//            let index: Int = numRecipeNamesRequest < recipes.count ? numRecipeNamesRequest : recipes.count
-//            let recipeNames: [String] = recipes[..<index].map{$0.name!}
-//            let recipeNamesMessage: [String: [String]] = ["recipeNamesResponse": recipeNames]
-//            replyHandler(recipeNamesMessage)
-//        }
-//        print("message recieved in STWC")
-//    }
-//
-//}
+extension Recipe: NSManagedObjectConvertable {
+    func convert(given context: NSManagedObjectContext) -> NSManagedObject {
+        let recipeObject = CoreRecipe.init(context: context)
+        recipeObject.name = self.name
+        recipeObject.location = self.location
+        recipeObject.image = self.image
+        
+        for ingredient in self.ingredients {
+            let ingredientObject = CoreIngredient(context: context)
+            ingredientObject.text = ingredient.text
+            ingredientObject.isDone = ingredient.isDone
+            recipeObject.addToHasIngredient(ingredientObject)
+        }
+        
+        for step in self.method {
+            let stepObject = CoreStep(context: context)
+            stepObject.text = step.text
+            stepObject.isDone = step.isDone
+            
+            for cookingTime in step.cookingTimes {
+                let cookingTimeObject = CoreCookingTime(context: context)
+                cookingTimeObject.time = Int32(cookingTime.time)
+                cookingTimeObject.timeDefStart = Int32(cookingTime.timeDefStart)
+                cookingTimeObject.timeDefEnd = Int32(cookingTime.timeDefEnd)
+                stepObject.addToHasCookingTime(cookingTimeObject)
+            }
+            recipeObject.addToHasStep(stepObject)
+        }
+        
+        return recipeObject
+    }
+}
 
 //todo: make an extension for Recipie generics
-
 extension SendToWatchController: PhoneConnectivityDelegate {
     func recievedMessage(session: WCSession, message: [String : Any], replyHandler: (([String : Any]) -> Void)?) {
         print("STWC: Got message from WCM! - not doing anything with it.")

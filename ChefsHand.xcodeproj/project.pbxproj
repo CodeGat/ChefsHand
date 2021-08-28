@@ -28,14 +28,15 @@
 		E381E42C26C366F70042D4EE /* ChefsHand.png in Resources */ = {isa = PBXBuildFile; fileRef = E381E42B26C366F70042D4EE /* ChefsHand.png */; };
 		E381E42E26C5140E0042D4EE /* RecipeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E381E42D26C5140E0042D4EE /* RecipeTableViewController.swift */; };
 		E39CD101269ABE060054AF60 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = E39CD100269ABE060054AF60 /* SwiftSoup */; };
+		E3CC898126D9F12A007A0003 /* URLRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CC898026D9F12A007A0003 /* URLRecipe.swift */; };
 		E3E4EFF326C6083800427B69 /* ChefsHand.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E3E4EFF126C6083800427B69 /* ChefsHand.xcdatamodeld */; };
 		E3F27674269E991100CA78D8 /* IngredientsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F27673269E991100CA78D8 /* IngredientsController.swift */; };
 		E3F27676269E9BE900CA78D8 /* MethodController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F27675269E9BE900CA78D8 /* MethodController.swift */; };
 		E3F27679269E9F5800CA78D8 /* IngredientsRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F27678269E9F5800CA78D8 /* IngredientsRowController.swift */; };
 		E3F8A0DA26D0A73100CB3AC7 /* WatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F8A0D926D0A73100CB3AC7 /* WatchConnectivityManager.swift */; };
 		E3F8A0DB26D0A73100CB3AC7 /* WatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F8A0D926D0A73100CB3AC7 /* WatchConnectivityManager.swift */; };
-		E3F8A0DE26D21E3100CB3AC7 /* TransferrableRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F8A0DD26D21E3100CB3AC7 /* TransferrableRecipe.swift */; };
-		E3F8A0DF26D21E3100CB3AC7 /* TransferrableRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F8A0DD26D21E3100CB3AC7 /* TransferrableRecipe.swift */; };
+		E3F8A0DE26D21E3100CB3AC7 /* TransferableRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F8A0DD26D21E3100CB3AC7 /* TransferableRecipe.swift */; };
+		E3F8A0DF26D21E3100CB3AC7 /* TransferableRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F8A0DD26D21E3100CB3AC7 /* TransferableRecipe.swift */; };
 		E3F8A0E126D22DB400CB3AC7 /* UserDefaultsRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F8A0E026D22DB400CB3AC7 /* UserDefaultsRecipe.swift */; };
 /* End PBXBuildFile section */
 
@@ -107,12 +108,13 @@
 		E381E42926C2376D0042D4EE /* DeveloperSettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperSettingsController.swift; sourceTree = "<group>"; };
 		E381E42B26C366F70042D4EE /* ChefsHand.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChefsHand.png; sourceTree = "<group>"; };
 		E381E42D26C5140E0042D4EE /* RecipeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeTableViewController.swift; sourceTree = "<group>"; };
+		E3CC898026D9F12A007A0003 /* URLRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRecipe.swift; sourceTree = "<group>"; };
 		E3E4EFF226C6083800427B69 /* ChefsHand.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ChefsHand.xcdatamodel; sourceTree = "<group>"; };
 		E3F27673269E991100CA78D8 /* IngredientsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientsController.swift; sourceTree = "<group>"; };
 		E3F27675269E9BE900CA78D8 /* MethodController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MethodController.swift; sourceTree = "<group>"; };
 		E3F27678269E9F5800CA78D8 /* IngredientsRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientsRowController.swift; sourceTree = "<group>"; };
 		E3F8A0D926D0A73100CB3AC7 /* WatchConnectivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchConnectivityManager.swift; sourceTree = "<group>"; };
-		E3F8A0DD26D21E3100CB3AC7 /* TransferrableRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferrableRecipe.swift; sourceTree = "<group>"; };
+		E3F8A0DD26D21E3100CB3AC7 /* TransferableRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferableRecipe.swift; sourceTree = "<group>"; };
 		E3F8A0E026D22DB400CB3AC7 /* UserDefaultsRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsRecipe.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -187,6 +189,7 @@
 				E36709432693FC76001E708B /* Info.plist */,
 				E381E42D26C5140E0042D4EE /* RecipeTableViewController.swift */,
 				E3E4EFF126C6083800427B69 /* ChefsHand.xcdatamodeld */,
+				E3CC898026D9F12A007A0003 /* URLRecipe.swift */,
 			);
 			path = ChefsHand;
 			sourceTree = "<group>";
@@ -240,7 +243,7 @@
 			isa = PBXGroup;
 			children = (
 				E3F8A0D926D0A73100CB3AC7 /* WatchConnectivityManager.swift */,
-				E3F8A0DD26D21E3100CB3AC7 /* TransferrableRecipe.swift */,
+				E3F8A0DD26D21E3100CB3AC7 /* TransferableRecipe.swift */,
 			);
 			path = Commons;
 			sourceTree = "<group>";
@@ -388,8 +391,9 @@
 				E36709362693FC74001E708B /* AppDelegate.swift in Sources */,
 				E3E4EFF326C6083800427B69 /* ChefsHand.xcdatamodeld in Sources */,
 				E3F8A0DA26D0A73100CB3AC7 /* WatchConnectivityManager.swift in Sources */,
+				E3CC898126D9F12A007A0003 /* URLRecipe.swift in Sources */,
 				E36709382693FC74001E708B /* SceneDelegate.swift in Sources */,
-				E3F8A0DE26D21E3100CB3AC7 /* TransferrableRecipe.swift in Sources */,
+				E3F8A0DE26D21E3100CB3AC7 /* TransferableRecipe.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -407,7 +411,7 @@
 				E367095B2693FC78001E708B /* InterfaceController.swift in Sources */,
 				E3F27674269E991100CA78D8 /* IngredientsController.swift in Sources */,
 				E3F8A0E126D22DB400CB3AC7 /* UserDefaultsRecipe.swift in Sources */,
-				E3F8A0DF26D21E3100CB3AC7 /* TransferrableRecipe.swift in Sources */,
+				E3F8A0DF26D21E3100CB3AC7 /* TransferableRecipe.swift in Sources */,
 				E3F8A0DB26D0A73100CB3AC7 /* WatchConnectivityManager.swift in Sources */,
 				E3F27676269E9BE900CA78D8 /* MethodController.swift in Sources */,
 			);

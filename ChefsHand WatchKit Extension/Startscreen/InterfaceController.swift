@@ -11,8 +11,9 @@ import WatchConnectivity
 
 
 class InterfaceController: WKInterfaceController {
-    let connectivityHandler = WatchConnectivityManager.shared
-    let defaults = UserDefaults.standard
+    let connectivityManager = WatchConnectivityManager.shared
+    let recipeManager = UserDefaultsRecipe.shared
+//    let defaults = UserDefaults.standard
     var recipeNames = [String]()
     
     @IBOutlet weak var label: WKInterfaceLabel!
@@ -38,7 +39,7 @@ class InterfaceController: WKInterfaceController {
         
         switch selectedRow.type {
         case .cached:
-            Recipe.shared.setRecipe(givenRecipe: defaults.retrieveRecipe()!)
+            recipeManager.setRecipe(givenRecipe: recipeManager.retrieveRecipe()!)
         case .more:
             loadRecipeNamesFromIphone()
         case .phone:
@@ -50,8 +51,8 @@ class InterfaceController: WKInterfaceController {
 
     override func awake(withContext context: Any?) {
         // Configure interface objects here.
-        connectivityHandler.watchDelegate = self
-        connectivityHandler.startSession()
+        connectivityManager.watchDelegate = self
+        connectivityManager.startSession()
     }
     
     override func willActivate() {
@@ -61,7 +62,7 @@ class InterfaceController: WKInterfaceController {
     
     func loadRecipeNamesFromIphone() {
         let recipeNamesToRequest = recipeNames.count + 3
-        connectivityHandler.sendMessage(message: ["recipeNamesRequest": recipeNamesToRequest], replyHandler: {reply in
+        connectivityManager.sendMessage(message: ["recipeNamesRequest": recipeNamesToRequest], replyHandler: {reply in
             self.recipeNames = reply["recipeNamesResponse"] as! [String]
         }, errorHandler: {error in
             print(error)
@@ -70,9 +71,9 @@ class InterfaceController: WKInterfaceController {
     }
     
     func loadRecipeIntoCacheFromIphone(named name: String) {
-        connectivityHandler.sendMessage(message: ["recipeRequest": name], replyHandler: {reply in
+        connectivityManager.sendMessage(message: ["recipeRequest": name], replyHandler: {reply in
             if let recipeResponse = reply["recipeResponse"] {
-                Recipe.shared.setRecipe(givenData: recipeResponse)
+                UserDefaultsRecipe.shared.setRecipe(givenData: recipeResponse)
             }
         }, errorHandler: {error in
             print(error)
@@ -86,12 +87,12 @@ class InterfaceController: WKInterfaceController {
         
         recipeTable.setNumberOfRows(numberOfRows, withRowType: "Recipe Row")
         
-        if let recipe: Recipe.StructuredRecipe = Recipe.shared.getRecipe() {
+        if let recipe: Recipe = Recipe.shared.getRecipe() {
             let cachedController = recipeTable.rowController(at: tableRowIx) as! RecipeRowController
             cachedController.name = recipe.name
             cachedController.type = .cached
             tableRowIx += 1
-        } else if let recipe: Recipe.StructuredRecipe = defaults.retrieveRecipe() {
+        } else if let recipe: Recipe = defaults.retrieveRecipe() {
             let cachedController = recipeTable.rowController(at: tableRowIx) as! RecipeRowController
             cachedController.name = recipe.name
             cachedController.type = .cached
