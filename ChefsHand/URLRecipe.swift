@@ -8,19 +8,21 @@
 import Foundation
 import SwiftSoup
 
-class URLRecipe: Recipe {
-    init(url: URL) throws {
+class URLRecipe: RecipeConvertable {
+    var url: URL
+    
+    init(url: URL) {
+        self.url = url
+    }
+    
+    func convert() throws -> Recipe {
         do {
-            //MARK: Maybe make a typealiased tuple of (String, String, Data, [Ingredient], [Step])?
-            let info: RecipeInfo = try getRecipeData(using: url)
-            super.init(name: info.name, location: info.location, url: url, image: info.image, ingredients: info.ingredients, method: info.method)
+            let info = try getRecipeData(using: url)
+            
+            return Recipe(name: info.name, location: info.location, url: self.url, image: info.image, ingredients: info.ingredients, method: info.method)
         } catch {
             throw error
         }
-    }
-    
-    required init(from decoder: Decoder) throws {
-        try super.init(from: decoder)
     }
     
     struct RecipeInfo {

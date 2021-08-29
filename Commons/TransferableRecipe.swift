@@ -9,12 +9,12 @@ import Foundation
 import CoreData
 
 public class Recipe: NSObject, Codable {
-    var name: String
+    var name: String = "Unknown"
     var location: String?
     var url: URL?
     var image: Data?
-    var ingredients: [Ingredient]
-    var method: [Step]
+    var ingredients: [Ingredient] = []
+    var method: [Step] = []
 
     init(name: String, location: String?, url: URL?, image: Data?, ingredients: [Ingredient], method: [Step]){
         self.name = name
@@ -58,6 +58,10 @@ public class CookingTime: NSObject, Codable {
         self.timeDefStart = timeDefStart
         self.timeDefEnd = timeDefEnd
     }
+}
+
+protocol RecipeConvertable: AnyObject {
+    func convert() throws -> Recipe
 }
 
 protocol NSManagedObjectConvertable: AnyObject {

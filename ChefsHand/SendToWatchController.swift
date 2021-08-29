@@ -20,19 +20,28 @@ class SendToWatchController: UIViewController {
             showErrorAlert("URL wasn't valid, check the URL and try again")
             return
         }
+        let urlRecipe: URLRecipe = URLRecipe(url: recipeUrl)
         do {
-            let recipe: Recipe = try URLRecipe(url: recipeUrl)
+            let recipe = try urlRecipe.convert()
             let recipeMessage: [String: Any] = ["recipe": recipe.dictionary as Any]
+            
+            print(recipeMessage)
             
             saveToDataStore(recipe)
             connectivityManager.sendMessage(message: recipeMessage, replyHandler: nil, errorHandler: {error in
                 print("In STWC there was an error sending the message: \(error)")
             })
-            
-            self.urlField.resignFirstResponder()
+        } catch RecipeError.unknownHostError {
+            showErrorAlert(description)
+        } catch RecipeError.tasteRecipeUnconvertableError {
+            showErrorAlert(description)
+        } catch RecipeError.genericRecipeUnconvertableError(host: let host) {
+            showErrorAlert("From \(host): " + description)
         } catch {
-            // do magic with error
+            showErrorAlert(error.localizedDescription)
         }
+        
+        self.urlField.resignFirstResponder()
             //MARK: if not reachable, send application context
 //            if (validSession.isReachable){
 //                validSession.sendMessage(data, replyHandler: nil, errorHandler: nil)
