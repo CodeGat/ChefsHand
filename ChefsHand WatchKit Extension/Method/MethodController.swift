@@ -11,13 +11,14 @@ import WatchKit
 class MethodController: WKInterfaceController {
     @IBOutlet weak var methodTable: WKInterfaceTable!
     
+    let recipeManager = UserDefaultsRecipe.shared
     let defaults = UserDefaults.standard
     
     override func table(_ table: WKInterfaceTable, didSelectRowAt rowIndex: Int) {
         let selectedRow = methodTable.rowController(at: rowIndex) as! MethodRowController
-        let selectedRowStep: Recipe.StructuredRecipe.Step = Recipe.shared.getRecipe()!.method[rowIndex]
+        let selectedRowStep: Step = recipeManager.getRecipe()!.method[rowIndex]
         
-        Recipe.shared.setRecipeStepIsDone(at: rowIndex, to: !selectedRowStep.isDone)
+        recipeManager.setRecipeStepIsDone(at: rowIndex, to: !selectedRowStep.isDone)
         setMethodRowVisuals(using: selectedRow, to: !selectedRowStep.isDone)
         if (rowIndex < methodTable.numberOfRows - 1 && !selectedRowStep.isDone) {
             methodTable.scrollToRow(at: rowIndex + 1)
@@ -26,13 +27,13 @@ class MethodController: WKInterfaceController {
     }
     
     override func willActivate() {
-        let steps: [Recipe.StructuredRecipe.Step] = Recipe.shared.getRecipe()!.method
+        let steps: [Step] = recipeManager.getRecipe()!.method
         methodTable.setNumberOfRows(steps.count, withRowType: "Method Row")
         
         for (index, step) in steps.enumerated() {
             let rowController  = methodTable.rowController(at: index) as! MethodRowController
             
-            let attributedString = NSMutableAttributedString(string: step.instruction)
+            let attributedString = NSMutableAttributedString(string: step.text)
             for cookingTimer in step.cookingTimes {
                 let start: Int = cookingTimer.timeDefStart
                 let length: Int = cookingTimer.timeDefEnd - start
@@ -44,7 +45,7 @@ class MethodController: WKInterfaceController {
     }
     
     override func willDisappear() {
-        defaults.storeRecipe(Recipe.shared.getRecipe()!)
+        defaults.storeRecipe(recipeManager.getRecipe()!)
     }
     
     func setMethodRowVisuals(using rowController: MethodRowController, to isDone: Bool) {

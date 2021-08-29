@@ -13,7 +13,7 @@ import WatchConnectivity
 class InterfaceController: WKInterfaceController {
     let connectivityManager = WatchConnectivityManager.shared
     let recipeManager = UserDefaultsRecipe.shared
-//    let defaults = UserDefaults.standard
+    let defaults = UserDefaults.standard
     var recipeNames = [String]()
     
     @IBOutlet weak var label: WKInterfaceLabel!
@@ -39,7 +39,7 @@ class InterfaceController: WKInterfaceController {
         
         switch selectedRow.type {
         case .cached:
-            recipeManager.setRecipe(givenRecipe: recipeManager.retrieveRecipe()!)
+            recipeManager.setRecipe(givenRecipe: defaults.retrieveRecipe()!)
         case .more:
             loadRecipeNamesFromIphone()
         case .phone:
@@ -83,11 +83,11 @@ class InterfaceController: WKInterfaceController {
     // MARK: Need to decide on if retriving/getting recipe should be possibly nil or not (check Recipe.getRecipe)
     func refreshTable() {
         var tableRowIx: Int = 0
-        let numberOfRows: Int = 1 + recipeNames.count + (Recipe.shared.recipeExists() || defaults.recipeKeyExists() ? 1 : 0)
+        let numberOfRows: Int = 1 + recipeNames.count + (recipeManager.recipeExists() || defaults.recipeKeyExists() ? 1 : 0)
         
         recipeTable.setNumberOfRows(numberOfRows, withRowType: "Recipe Row")
         
-        if let recipe: Recipe = Recipe.shared.getRecipe() {
+        if let recipe: Recipe = recipeManager.getRecipe() {
             let cachedController = recipeTable.rowController(at: tableRowIx) as! RecipeRowController
             cachedController.name = recipe.name
             cachedController.type = .cached
@@ -121,7 +121,7 @@ class InterfaceController: WKInterfaceController {
 extension InterfaceController: WatchConnectivityDelegate {
     func recievedMessage(session: WCSession, message: [String : Any], replyHandler: (([String : Any]) -> Void)?) {
         if let recipeData = message["recipe"] {
-            Recipe.shared.setRecipe(givenData: recipeData)
+            recipeManager.setRecipe(givenData: recipeData)
             label.setText("A new recipe is up - swipe to the right!")
             refreshTable()
         } else {

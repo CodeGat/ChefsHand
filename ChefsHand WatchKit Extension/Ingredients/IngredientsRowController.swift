@@ -12,7 +12,7 @@ class IngredientsRowController: NSObject {
     @IBOutlet weak var ingredientGroup: WKInterfaceGroup!
     @IBOutlet weak var doneImage: WKInterfaceImage!
     
-    var ingredient: Recipe.StructuredRecipe.Ingredient? {
+    var ingredient: Ingredient? {
         didSet {
             guard let ingredient = ingredient else {return}
             self.ingredientsLabel.setText(ingredient.text)
