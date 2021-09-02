@@ -17,7 +17,7 @@ class URLRecipe: RecipeConvertable {
     
     func convert() throws -> Recipe {
         do {
-            let info = try getRecipeData(using: url)
+            let info: RecipeInfo = try getRecipeData(using: url)
             
             return Recipe(name: info.name, location: info.location, url: self.url, image: info.image, ingredients: info.ingredients, method: info.method)
         } catch {
@@ -39,7 +39,7 @@ class URLRecipe: RecipeConvertable {
         }
         do {
             switch(host){
-            case "taste.com.au":
+            case "www.taste.com.au":
                 return try generateTasteRecipe(using: url, from: host)
             default:
                 return try generateGenericRecipe(using: url, from: host)
@@ -88,7 +88,7 @@ class URLRecipe: RecipeConvertable {
     
     private func generateTasteRecipe(using url: URL, from host: String) throws -> RecipeInfo {
         struct TasteRecipe: Decodable {
-            var recipeIngredients: [String]
+            var recipeIngredient: [String]
             var recipeInstructions: [String]
         }
         
@@ -104,12 +104,13 @@ class URLRecipe: RecipeConvertable {
             let recipeData: Data = recipeElementString.data(using: .utf8)!
             let tasteRecipe = try decoder.decode(TasteRecipe.self, from: recipeData)
             
-            let tasteRecipeIngredients: [Ingredient] = tasteRecipe.recipeIngredients.map{Ingredient(text: $0, isDone: false)}
+            let tasteRecipeIngredients: [Ingredient] = tasteRecipe.recipeIngredient.map{Ingredient(text: $0, isDone: false)}
             
             let tasteRecipeSteps: [Step] = tasteRecipe.recipeInstructions.map{Step(text: $0, isDone: false, cookingTimes: getCookingTimes(in: $0))}
             
             return RecipeInfo(name: name, location: host, image: nil, ingredients: tasteRecipeIngredients, method: tasteRecipeSteps)
         } catch {
+            print("Tried parsing HTML: \(error.localizedDescription)")
             throw RecipeError.tasteRecipeUnconvertableError
         }
     }
@@ -135,7 +136,7 @@ enum RecipeError: Error {
 }
 
 extension RecipeError: CustomStringConvertible {
-    var description: String {
+    public var description: String {
         switch self {
         case .unknownHostError:
             return "Host was not given or valid"

@@ -7,7 +7,6 @@
 
 import UIKit
 import WatchConnectivity
-//import SwiftSoup
 import CoreData
 
 class SendToWatchController: UIViewController {
@@ -25,18 +24,12 @@ class SendToWatchController: UIViewController {
             let recipe = try urlRecipe.convert()
             let recipeMessage: [String: Any] = ["recipe": recipe.dictionary as Any]
             
-            print(recipeMessage)
-            
             saveToDataStore(recipe)
             connectivityManager.sendMessage(message: recipeMessage, replyHandler: nil, errorHandler: {error in
                 print("In STWC there was an error sending the message: \(error)")
             })
-        } catch RecipeError.unknownHostError {
-            showErrorAlert(description)
-        } catch RecipeError.tasteRecipeUnconvertableError {
-            showErrorAlert(description)
-        } catch RecipeError.genericRecipeUnconvertableError(host: let host) {
-            showErrorAlert("From \(host): " + description)
+        } catch let error as RecipeError {
+            showErrorAlert(error.description)
         } catch {
             showErrorAlert(error.localizedDescription)
         }
@@ -66,43 +59,6 @@ class SendToWatchController: UIViewController {
             try validContext.save()
         } catch {
             fatalError("Context failed to save! \(error)")
-        }
-    }
-    
-    func getCookingTimes(in instruction: String) -> [CookingTime] {
-        var cookingTimers = [CookingTime]()
-        
-        do {
-            let regex = try NSRegularExpression(pattern: #"[0-9]+ ?(h(ou)?r|min(ute)?|sec(ond)?)s?"#, options: []) //TODO: only integers
-            let matches = regex.matches(in: instruction, options: [], range: NSRange(location: 0, length: instruction.count))
-            
-            for match in matches {
-                let matchRange: NSRange = match.range(at: 0) // get the first match (the largest one)
-                if let substringRange: Range = Range(matchRange, in: instruction) {
-                    let cookingTimeString: String = String(instruction[substringRange])
-                    let cookingTime: Int = getCookingTimeInSeconds(of: cookingTimeString)
-                    let cookingTimer = CookingTime(time: cookingTime, timeDefStart: matchRange.lowerBound, timeDefEnd: matchRange.upperBound)
-                    cookingTimers.append(cookingTimer)
-                }
-            }
-        } catch {
-            print(error)
-        }
-        
-        return cookingTimers
-    }
-    
-    func getCookingTimeInSeconds(of timeString: String) -> Int {
-        let timeComponents: [String] = timeString.components(separatedBy: " ")
-        let time: Int = Int(timeComponents[0])!
-        
-        switch timeComponents[1] {
-        case let unit where unit.contains("h"):
-            return time * 60 * 60
-        case let unit where unit.contains("m"):
-            return time * 60
-        default:
-            return time
         }
     }
     

@@ -71,6 +71,7 @@ class InterfaceController: WKInterfaceController {
     }
     
     func loadRecipeIntoCacheFromIphone(named name: String) {
+        print("going to send:\(["recipeRequest": name])")
         connectivityManager.sendMessage(message: ["recipeRequest": name], replyHandler: {reply in
             if let recipeResponse = reply["recipeResponse"] {
                 UserDefaultsRecipe.shared.setRecipe(givenData: recipeResponse)
@@ -79,14 +80,17 @@ class InterfaceController: WKInterfaceController {
             print(error)
         })
     }
-    
-    // MARK: Need to decide on if retriving/getting recipe should be possibly nil or not (check Recipe.getRecipe)
+
     func refreshTable() {
         var tableRowIx: Int = 0
-        let numberOfRows: Int = 1 + recipeNames.count + (recipeManager.recipeExists() || defaults.recipeKeyExists() ? 1 : 0)
+        let cachedRecipesNum: Int = recipeManager.recipeExists() || defaults.recipeKeyExists() ? 1 : 0
+        let phoneRecipesNum: Int = recipeNames.count != 0 ? recipeNames.count - 1 : 0
+        let numberOfRows: Int = 1 + cachedRecipesNum + phoneRecipesNum
         
-        recipeTable.setNumberOfRows(numberOfRows, withRowType: "Recipe Row")
+        print("1 + \(cachedRecipesNum) (c) + \(phoneRecipesNum) (p) = \(numberOfRows)")
         
+        recipeTable.setNumberOfRows(Int(numberOfRows), withRowType: "Recipe Row")
+
         if let recipe: Recipe = recipeManager.getRecipe() {
             let cachedController = recipeTable.rowController(at: tableRowIx) as! RecipeRowController
             cachedController.name = recipe.name
@@ -99,11 +103,14 @@ class InterfaceController: WKInterfaceController {
             tableRowIx += 1
         }
         
+        let cachedRecipeController: RecipeRowController? = recipeTable.rowController(at: 0) as? RecipeRowController // this will be the cached recipe row, if it exists
         for recipeName in recipeNames {
-            let nameController = recipeTable.rowController(at: tableRowIx) as! RecipeRowController
-            nameController.name = recipeName
-            nameController.type = .phone
-            tableRowIx += 1
+            if (recipeName != cachedRecipeController?.name) {
+                let nameController = recipeTable.rowController(at: tableRowIx) as! RecipeRowController
+                nameController.name = recipeName
+                nameController.type = .phone
+                tableRowIx += 1
+            }
         }
         
         let moreController = recipeTable.rowController(at: tableRowIx) as! RecipeRowController
@@ -111,7 +118,7 @@ class InterfaceController: WKInterfaceController {
         moreController.type = .more
     }
 
-    // MARK: reimplement applicationcontext
+    // MARK: reimplement applicationcontext in WatchConnectivityManager
 //    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
 //        Recipe.shared.setRecipe(givenData: applicationContext["recipe"] as Any)
 //        refreshTable()
