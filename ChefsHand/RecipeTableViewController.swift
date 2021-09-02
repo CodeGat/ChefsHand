@@ -129,7 +129,7 @@ extension RecipeTableViewController: PhoneConnectivityDelegate {
         //handle msg
         print("message recieved in RTVC")
         if let numRecipeNamesRequest = message["recipeNamesRequest"] as? Int, let recipes: [CoreRecipe] = fetchedResultContainer.fetchedObjects {
-            print("recieved connection")
+
             let index: Int = numRecipeNamesRequest < recipes.count ? numRecipeNamesRequest : recipes.count
             let recipeNames: [String] = recipes[..<index].map{$0.name!}
             let recipeNamesMessage: [String: [String]] = ["recipeNamesResponse": recipeNames]
@@ -139,9 +139,11 @@ extension RecipeTableViewController: PhoneConnectivityDelegate {
         }
         if let recipeName = message["recipeRequest"] as? String, let recipes: [CoreRecipe] = fetchedResultContainer.fetchedObjects {
             //MARK: convert and send coredata obj
-            guard let requestedRecipe: CoreRecipe = recipes.first(where: {$0.name == recipeName}) else {return}
-            let requestedRecipeResponse: [String: CoreRecipe] = ["recipeResponse": requestedRecipe]
+            guard let requestedCoreRecipe: CoreRecipe = recipes.first(where: {$0.name == recipeName}) else {return}
+            let requestedRecipe: [String: Any] = requestedCoreRecipe.dictionaryWithValues(forKeys: ["name", "hasStep", "hasIngredient"])
+            let requestedRecipeResponse: [String: Any] = ["recipeResponse": requestedRecipe]
             guard let reply = replyHandler else {return}
+            print("Going to send \(requestedRecipeResponse)")
             reply(requestedRecipeResponse)
         }
     }
