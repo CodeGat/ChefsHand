@@ -64,8 +64,9 @@ protocol RecipeConvertable: AnyObject {
     func convert() throws -> Recipe
 }
 
-protocol NSManagedObjectConvertable: AnyObject {
+protocol NSManagedObjectCodable: AnyObject {
     func convert(given context: NSManagedObjectContext) -> NSManagedObject
+    static func convert(using coreRecipeObject: NSManagedObject) -> Recipe
 }
 
 protocol UserDefaultSavable: AnyObject {
