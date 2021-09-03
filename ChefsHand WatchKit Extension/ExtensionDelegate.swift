@@ -20,6 +20,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WKExtendedRuntimeSession
         
     }
     
+    let recipeManager = UserDefaultsRecipe.shared
     let defaults = UserDefaults.standard
     var extendedRuntimeSession: WKExtendedRuntimeSession!
     var cookingModeSwitchState: Bool = false
@@ -30,7 +31,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WKExtendedRuntimeSession
         extendedRuntimeSession.delegate = self
         	
         if let recipe = defaults.retrieveRecipe() {
-            Recipe.shared.setRecipe(givenRecipe: recipe)
+            recipeManager.setRecipe(givenRecipe: recipe)
         } else {
             print("Couldn't find recipe")
         }

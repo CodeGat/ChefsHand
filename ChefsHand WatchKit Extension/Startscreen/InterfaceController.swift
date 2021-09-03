@@ -11,6 +11,11 @@ import WatchConnectivity
 
 
 class InterfaceController: WKInterfaceController {
+    let connectivityManager = WatchConnectivityManager.shared
+    let recipeManager = UserDefaultsRecipe.shared
+    let defaults = UserDefaults.standard
+    var recipeNames = [String]()
+    
     @IBOutlet weak var label: WKInterfaceLabel!
     @IBOutlet weak var recipeTable: WKInterfaceTable!
     
@@ -28,17 +33,15 @@ class InterfaceController: WKInterfaceController {
             extensionDelegate.extendedRuntimeSession.invalidate()
         }
     }
-    let session = WCSession.default
-    let defaults = UserDefaults.standard
     
     override func table(_ table: WKInterfaceTable, didSelectRowAt rowIndex: Int) {
         let selectedRow = recipeTable.rowController(at: rowIndex) as! RecipeRowController
         
         switch selectedRow.type {
         case .cached:
-            Recipe.shared.setRecipe(givenRecipe: defaults.retrieveRecipe()!)
+            recipeManager.setRecipe(givenRecipe: defaults.retrieveRecipe()!)
         case .more:
-            loadRecipeNamesFromIphone(amount: 5)
+            loadRecipeNamesFromIphone()
         case .phone:
             loadRecipeIntoCacheFromIphone(named: selectedRow.name!)
         case .none:
@@ -48,8 +51,8 @@ class InterfaceController: WKInterfaceController {
 
     override func awake(withContext context: Any?) {
         // Configure interface objects here.
-        session.delegate = self
-        session.activate()
+        connectivityManager.watchDelegate = self
+        connectivityManager.startSession()
     }
     
     override func willActivate() {
@@ -57,51 +60,81 @@ class InterfaceController: WKInterfaceController {
         refreshTable()
     }
     
-    func loadRecipeNamesFromIphone(amount: Int) {
-        print("stub loadRecipeNamesFromIphone")
+    func loadRecipeNamesFromIphone() {
+        let recipeNamesToRequest = recipeNames.count + 3
+        connectivityManager.sendMessage(message: ["recipeNamesRequest": recipeNamesToRequest], replyHandler: {reply in
+            self.recipeNames = reply["recipeNamesResponse"] as! [String]
+        }, errorHandler: {error in
+            print(error)
+        })
+        refreshTable()
     }
     
     func loadRecipeIntoCacheFromIphone(named name: String) {
-        print("stub loadRecipeIntoCacheFromIphone")
+        print("going to send:\(["recipeRequest": name])")
+        connectivityManager.sendMessage(message: ["recipeRequest": name], replyHandler: {reply in
+            if let recipeResponse = reply["recipeResponse"] {
+                UserDefaultsRecipe.shared.setRecipe(givenData: recipeResponse)
+            }
+        }, errorHandler: {error in
+            print(error)
+        })
     }
-    
-    // MARK: Need to decide on if retriving/getting recipe should be possibly nil or not (check Recipe.getRecipe)
+
     func refreshTable() {
         var tableRowIx: Int = 0
+        let cachedRecipesNum: Int = recipeManager.recipeExists() || defaults.recipeKeyExists() ? 1 : 0
+        let phoneRecipesNum: Int = recipeNames.count != 0 ? recipeNames.count - 1 : 0
+        let numberOfRows: Int = 1 + cachedRecipesNum + phoneRecipesNum
         
-        recipeTable.setNumberOfRows(1 + (Recipe.shared.recipeExists() || defaults.recipeKeyExists() ? 1 : 0), withRowType: "Recipe Row")
+        print("1 + \(cachedRecipesNum) (c) + \(phoneRecipesNum) (p) = \(numberOfRows)")
         
-        if let recipe: Recipe.StructuredRecipe = Recipe.shared.getRecipe() {
+        recipeTable.setNumberOfRows(Int(numberOfRows), withRowType: "Recipe Row")
+
+        if let recipe: Recipe = recipeManager.getRecipe() {
             let cachedController = recipeTable.rowController(at: tableRowIx) as! RecipeRowController
             cachedController.name = recipe.name
             cachedController.type = .cached
             tableRowIx += 1
-        } else if let recipe: Recipe.StructuredRecipe = defaults.retrieveRecipe() {
+        } else if let recipe: Recipe = defaults.retrieveRecipe() {
             let cachedController = recipeTable.rowController(at: tableRowIx) as! RecipeRowController
             cachedController.name = recipe.name
             cachedController.type = .cached
             tableRowIx += 1
         }
+        
+        let cachedRecipeController: RecipeRowController? = recipeTable.rowController(at: 0) as? RecipeRowController // this will be the cached recipe row, if it exists
+        for recipeName in recipeNames {
+            if (recipeName != cachedRecipeController?.name) {
+                let nameController = recipeTable.rowController(at: tableRowIx) as! RecipeRowController
+                nameController.name = recipeName
+                nameController.type = .phone
+                tableRowIx += 1
+            }
+        }
+        
         let moreController = recipeTable.rowController(at: tableRowIx) as! RecipeRowController
         moreController.name = "Load more..."
         moreController.type = .more
     }
 
-    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
-        Recipe.shared.setRecipe(givenData: applicationContext["recipe"] as Any)
-        refreshTable()
-    }
+    // MARK: reimplement applicationcontext in WatchConnectivityManager
+//    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
+//        Recipe.shared.setRecipe(givenData: applicationContext["recipe"] as Any)
+//        refreshTable()
+//    }
 }
 
-extension InterfaceController: WCSessionDelegate {
-    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
-        
+extension InterfaceController: WatchConnectivityDelegate {
+    func recievedMessage(session: WCSession, message: [String : Any], replyHandler: (([String : Any]) -> Void)?) {
+        if let recipeData = message["recipe"] {
+            recipeManager.setRecipe(givenData: recipeData)
+            label.setText("A new recipe is up - swipe to the right!")
+            refreshTable()
+        } else {
+            print("got some other message")
+        }
     }
     
-    func session(_ session: WCSession, didReceiveMessage message: [String: Any]) {
-        let recipe = message["recipe"] as Any
-        Recipe.shared.setRecipe(givenData: recipe)
-        label.setText("A new recipe is up - swipe to the right!")
-        refreshTable()
-    }
+    
 }

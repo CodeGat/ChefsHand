@@ -11,10 +11,10 @@ class MethodRowController: NSObject {
     @IBOutlet weak var methodLabel: WKInterfaceLabel!
     @IBOutlet weak var methodGroup: WKInterfaceGroup!
     
-    var step: Recipe.StructuredRecipe.Step? {
+    var step: Step? {
         didSet {
             guard let step = step else {return}
-            self.methodLabel.setText(step.instruction)
+            self.methodLabel.setText(step.text)
         }
     }
 }
