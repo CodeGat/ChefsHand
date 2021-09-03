@@ -21,7 +21,7 @@ class SendToWatchController: UIViewController {
         }
         let urlRecipe: URLRecipe = URLRecipe(url: recipeUrl)
         do {
-            let recipe = try urlRecipe.convert()
+            let recipe: Recipe = try urlRecipe.convert()
             let recipeMessage: [String: Any] = ["recipe": recipe.dictionary as Any]
             
             saveToDataStore(recipe)
@@ -80,7 +80,26 @@ class SendToWatchController: UIViewController {
     }
 }
 
-extension Recipe: NSManagedObjectConvertable {
+extension Recipe: NSManagedObjectCodable {
+    static func convert(using coreRecipeObject: NSManagedObject) -> Recipe {
+        let coreRecipe = coreRecipeObject as! CoreRecipe
+        
+        let coreIngredients = coreRecipe.hasIngredient?.array as! [CoreIngredient]
+        
+        let ingredients: [Ingredient] = coreIngredients.map{Ingredient(text: $0.text!, isDone: $0.isDone)}
+        
+        let coreSteps = coreRecipe.hasStep?.array as! [CoreStep]
+        var steps = [Step]()
+        for coreStep in coreSteps {
+            let coreCookingTimes = coreStep.hasCookingTime?.array as! [CoreCookingTime]
+            let cookingTimes: [CookingTime] = coreCookingTimes.map{CookingTime(time: Int($0.time), timeDefStart: Int($0.timeDefStart), timeDefEnd: Int($0.timeDefEnd))}
+            
+            steps.append(Step(text: coreStep.text!, isDone: coreStep.isDone, cookingTimes: cookingTimes))
+        }
+        
+        return Recipe(name: coreRecipe.name!, location: coreRecipe.location, url: coreRecipe.url, image: coreRecipe.image, ingredients: ingredients, method: steps)
+    }
+    
     func convert(given context: NSManagedObjectContext) -> NSManagedObject {
         let recipeObject = CoreRecipe.init(context: context)
         recipeObject.name = self.name

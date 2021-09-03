@@ -127,7 +127,6 @@ extension RecipeTableViewController: NSFetchedResultsControllerDelegate  {
 extension RecipeTableViewController: PhoneConnectivityDelegate {
     func recievedMessage(session: WCSession, message: [String : Any], replyHandler: (([String : Any]) -> Void)?) {
         //handle msg
-        print("message recieved in RTVC")
         if let numRecipeNamesRequest = message["recipeNamesRequest"] as? Int, let recipes: [CoreRecipe] = fetchedResultContainer.fetchedObjects {
 
             let index: Int = numRecipeNamesRequest < recipes.count ? numRecipeNamesRequest : recipes.count
@@ -140,17 +139,13 @@ extension RecipeTableViewController: PhoneConnectivityDelegate {
         if let recipeName = message["recipeRequest"] as? String, let recipes: [CoreRecipe] = fetchedResultContainer.fetchedObjects {
             //MARK: convert and send coredata obj
             guard let requestedCoreRecipe: CoreRecipe = recipes.first(where: {$0.name == recipeName}) else {return}
-            let requestedRecipe: [String: Any] = requestedCoreRecipe.dictionaryWithValues(forKeys: ["name", "hasStep", "hasIngredient"])
-            let requestedRecipeResponse: [String: Any] = ["recipeResponse": requestedRecipe]
+            
+            let requestedRecipe: Recipe = Recipe.convert(using: requestedCoreRecipe)
+            let requestedRecipeResponse: [String: Any] = ["recipeResponse": requestedRecipe.dictionary as Any]
             guard let reply = replyHandler else {return}
-            print("Going to send \(requestedRecipeResponse)")
             reply(requestedRecipeResponse)
         }
     }
-}
-
-extension Recipe {
-    
 }
 
 class RecipeTableCell: UITableViewCell {
