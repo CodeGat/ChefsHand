@@ -64,10 +64,10 @@
             </objects>
             <point key="canvasLocation" x="1062" y="-35"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Tab Menu Controller-->
         <scene sceneID="yK3-3d-aty">
             <objects>
-                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="Irk-Ua-u5n" sceneMemberID="viewController">
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="Irk-Ua-u5n" customClass="TabMenuController" customModule="ChefsHand" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="cQh-bB-c3h">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>

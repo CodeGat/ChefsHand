@@ -17,6 +17,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let _ = (scene as? UIWindowScene) else { return }
+        
+        guard let rootVC = window?.rootViewController as? TabMenuController else {fatalError("rootVC not established properly!")}
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        rootVC.context = appDelegate.persistentContainer.viewContext
+        print("Set the rootVC(TBC) context")
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

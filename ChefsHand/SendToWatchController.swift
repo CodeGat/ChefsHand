@@ -73,10 +73,18 @@ class SendToWatchController: UIViewController {
         // Do any additional setup after loading the view.
         connectivityManager.phoneDelegate = self
         
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        self.context = appDelegate.persistentContainer.viewContext
+//        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//        self.context = appDelegate.persistentContainer.viewContext
         
         self.urlField.delegate = self
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("Preparing for a segue (STWC)")
+        if let nextVC = segue.destination as? RecipeTableViewController {
+            print("Context sent to RTVC via STWC")
+            nextVC.context = self.context
+        }
     }
 }
 

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E3516E5626E5F673007A9D52 /* TabMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3516E5526E5F673007A9D52 /* TabMenuController.swift */; };
 		E3665EF426A0305600071844 /* MethodRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3665EF326A0305600071844 /* MethodRowController.swift */; };
 		E36709362693FC74001E708B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36709352693FC74001E708B /* AppDelegate.swift */; };
 		E36709382693FC74001E708B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36709372693FC74001E708B /* SceneDelegate.swift */; };
@@ -83,6 +84,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E3516E5526E5F673007A9D52 /* TabMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabMenuController.swift; sourceTree = "<group>"; };
 		E3665EF326A0305600071844 /* MethodRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MethodRowController.swift; sourceTree = "<group>"; };
 		E36709322693FC74001E708B /* ChefsHand.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChefsHand.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E36709352693FC74001E708B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -190,6 +192,7 @@
 				E381E42D26C5140E0042D4EE /* RecipeTableViewController.swift */,
 				E3E4EFF126C6083800427B69 /* ChefsHand.xcdatamodeld */,
 				E3CC898026D9F12A007A0003 /* URLRecipe.swift */,
+				E3516E5526E5F673007A9D52 /* TabMenuController.swift */,
 			);
 			path = ChefsHand;
 			sourceTree = "<group>";
@@ -393,6 +396,7 @@
 				E3F8A0DA26D0A73100CB3AC7 /* WatchConnectivityManager.swift in Sources */,
 				E3CC898126D9F12A007A0003 /* URLRecipe.swift in Sources */,
 				E36709382693FC74001E708B /* SceneDelegate.swift in Sources */,
+				E3516E5626E5F673007A9D52 /* TabMenuController.swift in Sources */,
 				E3F8A0DE26D21E3100CB3AC7 /* TransferableRecipe.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

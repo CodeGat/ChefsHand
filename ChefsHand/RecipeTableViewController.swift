@@ -10,12 +10,13 @@ import CoreData
 import WatchConnectivity
 
 class RecipeTableViewController: UITableViewController {
+    var context: NSManagedObjectContext?
     fileprivate lazy var fetchedResultContainer: NSFetchedResultsController<CoreRecipe> = {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
         let fetchRequest: NSFetchRequest<CoreRecipe> = CoreRecipe.fetchRequest()
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: false)]
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        
+        guard let validContext = context else {fatalError("Couldn't get context in time from rootVC, exiting...")}
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: validContext, sectionNameKeyPath: nil, cacheName: nil)
         fetchedResultsController.delegate = self
         
         return fetchedResultsController
