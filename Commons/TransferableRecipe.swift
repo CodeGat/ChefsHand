@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import CoreData
 
 public class Recipe: NSObject, Codable {
     var name: String = "Unknown"
@@ -61,12 +60,14 @@ public class CookingTime: NSObject, Codable {
 }
 
 protocol RecipeConvertable: AnyObject {
-    func convert() throws -> Recipe
+    func convertToTransferrableRecipe() throws -> Recipe
 }
 
-protocol NSManagedObjectCodable: AnyObject {
-    func convert(given context: NSManagedObjectContext) -> NSManagedObject
-    static func convert(using coreRecipeObject: NSManagedObject) -> Recipe
+protocol DatabaseObjectConvertable: AnyObject {
+    associatedtype DBObject
+    
+    func convert() -> DBObject
+    static func convert(given object: DBObject) -> Recipe
 }
 
 protocol UserDefaultSavable: AnyObject {
