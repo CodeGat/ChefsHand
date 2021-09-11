@@ -21,11 +21,14 @@ public class RealmRecipe: Object, DatabaseObjectDecodable {
         self.name = name ?? "Unknown"
         self.location = location ?? "Unknown Location"
         self.url = url.absoluteString
-        do {
-            self.ingredients = try List<RealmIngredient>(from: ingredients)
-            self.method = try List<RealmStep>(from: method)
-        } catch {
-            print(error.localizedDescription)
+        
+        self.ingredients = List<RealmIngredient>()
+        let realmIngredients = ingredients.map{RealmIngredient(text: $0.text, isDone: $0.isDone)}
+        self.ingredients.append(objectsIn: realmIngredients)
+        
+        self.method = List<RealmStep>()
+        for step in method {
+            self.method.append(RealmStep(text: step.text, isDone: step.isDone, cookingTimes: step.cookingTimes))
         }
     }
     
@@ -66,11 +69,10 @@ class RealmStep: Object, Decodable {
         self.init()
         self.text = text
         self.isDone = isDone
-        do {
-            self.cookingTimes = try List<RealmCookingTime>(from: cookingTimes)
-        } catch {
-            print(error.localizedDescription)
-        }
+        
+        self.cookingTimes = List<RealmCookingTime>()
+        let realmCookingTimes = cookingTimes.map{RealmCookingTime(time: $0.time, timeDefStart: $0.timeDefStart, timeDefEnd: $0.timeDefEnd)}
+        self.cookingTimes.append(objectsIn: realmCookingTimes)
     }
 }
 
