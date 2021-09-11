@@ -56,8 +56,10 @@
       allowLocationSimulation = "YES"
       launchAutomaticallySubstyle = "8"
       notificationPayloadFile = "ChefsHand WatchKit Extension/PushNotificationPayload.apns">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <RemoteRunnable
+         runnableDebuggingMode = "2"
+         BundleIdentifier = "com.apple.Carousel"
+         RemotePath = "/ChefsHand">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E36709452693FC76001E708B"
@@ -65,7 +67,7 @@
             BlueprintName = "ChefsHand WatchKit App"
             ReferencedContainer = "container:ChefsHand.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </RemoteRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -75,8 +77,10 @@
       debugDocumentVersioning = "YES"
       launchAutomaticallySubstyle = "8"
       notificationPayloadFile = "ChefsHand WatchKit Extension/PushNotificationPayload.apns">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <RemoteRunnable
+         runnableDebuggingMode = "2"
+         BundleIdentifier = "com.apple.Carousel"
+         RemotePath = "/ChefsHand">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E36709452693FC76001E708B"
@@ -84,7 +88,16 @@
             BlueprintName = "ChefsHand WatchKit App"
             ReferencedContainer = "container:ChefsHand.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </RemoteRunnable>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "E36709452693FC76001E708B"
+            BuildableName = "ChefsHand WatchKit App.app"
+            BlueprintName = "ChefsHand WatchKit App"
+            ReferencedContainer = "container:ChefsHand.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

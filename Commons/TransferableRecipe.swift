@@ -63,11 +63,13 @@ protocol RecipeConvertable: AnyObject {
     func convertToTransferrableRecipe() throws -> Recipe
 }
 
-protocol DatabaseObjectConvertable: AnyObject {
+protocol DatabaseObjectEncodable: AnyObject {
     associatedtype DBObject
-    
-    func convert() -> DBObject
-    static func convert(given object: DBObject) -> Recipe
+    func dbEncode() -> DBObject
+}
+
+protocol DatabaseObjectDecodable: AnyObject {
+    func dbDecode() -> Recipe
 }
 
 protocol UserDefaultSavable: AnyObject {

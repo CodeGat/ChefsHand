@@ -27,16 +27,19 @@
 		E381E42A26C2376D0042D4EE /* DeveloperSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E381E42926C2376D0042D4EE /* DeveloperSettingsController.swift */; };
 		E381E42C26C366F70042D4EE /* ChefsHand.png in Resources */ = {isa = PBXBuildFile; fileRef = E381E42B26C366F70042D4EE /* ChefsHand.png */; };
 		E381E42E26C5140E0042D4EE /* RecipeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E381E42D26C5140E0042D4EE /* RecipeTableViewController.swift */; };
-		E39CD101269ABE060054AF60 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = E39CD100269ABE060054AF60 /* SwiftSoup */; };
+		E3AE4A1326EB08B5002954E4 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = E3AE4A1226EB08B5002954E4 /* SwiftSoup */; };
+		E3AE4A1626EB0B5B002954E4 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = E3AE4A1526EB0B5B002954E4 /* Realm */; };
+		E3AE4A1826EB0B5B002954E4 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E3AE4A1726EB0B5B002954E4 /* RealmSwift */; };
+		E3AE4A1926EB0D90002954E4 /* TransferableRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F8A0DD26D21E3100CB3AC7 /* TransferableRecipe.swift */; };
+		E3AE4A1B26EB44BB002954E4 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AE4A1A26EB44BB002954E4 /* RealmManager.swift */; };
+		E3AE4A1D26EC4BAD002954E4 /* RealmRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AE4A1C26EC4BAD002954E4 /* RealmRecipe.swift */; };
 		E3CC898126D9F12A007A0003 /* URLRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CC898026D9F12A007A0003 /* URLRecipe.swift */; };
-		E3E4EFF326C6083800427B69 /* ChefsHand.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E3E4EFF126C6083800427B69 /* ChefsHand.xcdatamodeld */; };
 		E3F27674269E991100CA78D8 /* IngredientsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F27673269E991100CA78D8 /* IngredientsController.swift */; };
 		E3F27676269E9BE900CA78D8 /* MethodController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F27675269E9BE900CA78D8 /* MethodController.swift */; };
 		E3F27679269E9F5800CA78D8 /* IngredientsRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F27678269E9F5800CA78D8 /* IngredientsRowController.swift */; };
 		E3F8A0DA26D0A73100CB3AC7 /* WatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F8A0D926D0A73100CB3AC7 /* WatchConnectivityManager.swift */; };
 		E3F8A0DB26D0A73100CB3AC7 /* WatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F8A0D926D0A73100CB3AC7 /* WatchConnectivityManager.swift */; };
 		E3F8A0DE26D21E3100CB3AC7 /* TransferableRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F8A0DD26D21E3100CB3AC7 /* TransferableRecipe.swift */; };
-		E3F8A0DF26D21E3100CB3AC7 /* TransferableRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F8A0DD26D21E3100CB3AC7 /* TransferableRecipe.swift */; };
 		E3F8A0E126D22DB400CB3AC7 /* UserDefaultsRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F8A0E026D22DB400CB3AC7 /* UserDefaultsRecipe.swift */; };
 /* End PBXBuildFile section */
 
@@ -108,8 +111,9 @@
 		E381E42926C2376D0042D4EE /* DeveloperSettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperSettingsController.swift; sourceTree = "<group>"; };
 		E381E42B26C366F70042D4EE /* ChefsHand.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChefsHand.png; sourceTree = "<group>"; };
 		E381E42D26C5140E0042D4EE /* RecipeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeTableViewController.swift; sourceTree = "<group>"; };
+		E3AE4A1A26EB44BB002954E4 /* RealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
+		E3AE4A1C26EC4BAD002954E4 /* RealmRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmRecipe.swift; sourceTree = "<group>"; };
 		E3CC898026D9F12A007A0003 /* URLRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRecipe.swift; sourceTree = "<group>"; };
-		E3E4EFF226C6083800427B69 /* ChefsHand.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ChefsHand.xcdatamodel; sourceTree = "<group>"; };
 		E3F27673269E991100CA78D8 /* IngredientsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientsController.swift; sourceTree = "<group>"; };
 		E3F27675269E9BE900CA78D8 /* MethodController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MethodController.swift; sourceTree = "<group>"; };
 		E3F27678269E9F5800CA78D8 /* IngredientsRowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientsRowController.swift; sourceTree = "<group>"; };
@@ -123,7 +127,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E39CD101269ABE060054AF60 /* SwiftSoup in Frameworks */,
+				E3AE4A1826EB0B5B002954E4 /* RealmSwift in Frameworks */,
+				E3AE4A1626EB0B5B002954E4 /* Realm in Frameworks */,
+				E3AE4A1326EB08B5002954E4 /* SwiftSoup in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -188,8 +194,9 @@
 				E36709402693FC75001E708B /* LaunchScreen.storyboard */,
 				E36709432693FC76001E708B /* Info.plist */,
 				E381E42D26C5140E0042D4EE /* RecipeTableViewController.swift */,
-				E3E4EFF126C6083800427B69 /* ChefsHand.xcdatamodeld */,
 				E3CC898026D9F12A007A0003 /* URLRecipe.swift */,
+				E3AE4A1A26EB44BB002954E4 /* RealmManager.swift */,
+				E3AE4A1C26EC4BAD002954E4 /* RealmRecipe.swift */,
 			);
 			path = ChefsHand;
 			sourceTree = "<group>";
@@ -267,7 +274,9 @@
 			);
 			name = ChefsHand;
 			packageProductDependencies = (
-				E39CD100269ABE060054AF60 /* SwiftSoup */,
+				E3AE4A1226EB08B5002954E4 /* SwiftSoup */,
+				E3AE4A1526EB0B5B002954E4 /* Realm */,
+				E3AE4A1726EB0B5B002954E4 /* RealmSwift */,
 			);
 			productName = ChefsHand;
 			productReference = E36709322693FC74001E708B /* ChefsHand.app */;
@@ -337,7 +346,8 @@
 			);
 			mainGroup = E36709292693FC73001E708B;
 			packageReferences = (
-				E39CD0FF269ABE060054AF60 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
+				E3AE4A1126EB08B4002954E4 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
+				E3AE4A1426EB0B5B002954E4 /* XCRemoteSwiftPackageReference "realm-cocoa" */,
 			);
 			productRefGroup = E36709332693FC74001E708B /* Products */;
 			projectDirPath = "";
@@ -387,12 +397,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				E381E42E26C5140E0042D4EE /* RecipeTableViewController.swift in Sources */,
+				E3AE4A1B26EB44BB002954E4 /* RealmManager.swift in Sources */,
 				E367093A2693FC74001E708B /* SendToWatchController.swift in Sources */,
 				E36709362693FC74001E708B /* AppDelegate.swift in Sources */,
-				E3E4EFF326C6083800427B69 /* ChefsHand.xcdatamodeld in Sources */,
 				E3F8A0DA26D0A73100CB3AC7 /* WatchConnectivityManager.swift in Sources */,
 				E3CC898126D9F12A007A0003 /* URLRecipe.swift in Sources */,
 				E36709382693FC74001E708B /* SceneDelegate.swift in Sources */,
+				E3AE4A1D26EC4BAD002954E4 /* RealmRecipe.swift in Sources */,
 				E3F8A0DE26D21E3100CB3AC7 /* TransferableRecipe.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -405,13 +416,13 @@
 				E367095F2693FC78001E708B /* NotificationController.swift in Sources */,
 				E381E42A26C2376D0042D4EE /* DeveloperSettingsController.swift in Sources */,
 				E3F27679269E9F5800CA78D8 /* IngredientsRowController.swift in Sources */,
+				E3AE4A1926EB0D90002954E4 /* TransferableRecipe.swift in Sources */,
 				E3665EF426A0305600071844 /* MethodRowController.swift in Sources */,
 				E36709612693FC78001E708B /* ComplicationController.swift in Sources */,
 				E367095D2693FC78001E708B /* ExtensionDelegate.swift in Sources */,
 				E367095B2693FC78001E708B /* InterfaceController.swift in Sources */,
 				E3F27674269E991100CA78D8 /* IngredientsController.swift in Sources */,
 				E3F8A0E126D22DB400CB3AC7 /* UserDefaultsRecipe.swift in Sources */,
-				E3F8A0DF26D21E3100CB3AC7 /* TransferableRecipe.swift in Sources */,
 				E3F8A0DB26D0A73100CB3AC7 /* WatchConnectivityManager.swift in Sources */,
 				E3F27676269E9BE900CA78D8 /* MethodController.swift in Sources */,
 			);
@@ -742,36 +753,41 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		E39CD0FF269ABE060054AF60 /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
+		E3AE4A1126EB08B4002954E4 /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/scinfu/SwiftSoup.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.3.2;
+				minimumVersion = 2.3.3;
+			};
+		};
+		E3AE4A1426EB0B5B002954E4 /* XCRemoteSwiftPackageReference "realm-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-cocoa.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.14.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		E39CD100269ABE060054AF60 /* SwiftSoup */ = {
+		E3AE4A1226EB08B5002954E4 /* SwiftSoup */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E39CD0FF269ABE060054AF60 /* XCRemoteSwiftPackageReference "SwiftSoup" */;
+			package = E3AE4A1126EB08B4002954E4 /* XCRemoteSwiftPackageReference "SwiftSoup" */;
 			productName = SwiftSoup;
 		};
-/* End XCSwiftPackageProductDependency section */
-
-/* Begin XCVersionGroup section */
-		E3E4EFF126C6083800427B69 /* ChefsHand.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				E3E4EFF226C6083800427B69 /* ChefsHand.xcdatamodel */,
-			);
-			currentVersion = E3E4EFF226C6083800427B69 /* ChefsHand.xcdatamodel */;
-			path = ChefsHand.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
+		E3AE4A1526EB0B5B002954E4 /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E3AE4A1426EB0B5B002954E4 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			productName = Realm;
 		};
-/* End XCVersionGroup section */
+		E3AE4A1726EB0B5B002954E4 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E3AE4A1426EB0B5B002954E4 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			productName = RealmSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E367092A2693FC73001E708B /* Project object */;
 }
