@@ -6,18 +6,36 @@
 //
 
 import UIKit
-import CoreData
+import RealmSwift
 import WatchConnectivity
 
 class RecipeTableViewController: UITableViewController {
     var realmHandler = RealmManager.shared
     var connectivityHandler = WatchConnectivityManager.shared
+    var realmResults: Results<RealmRecipe>?
+    var realmToken: NotificationToken?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         connectivityHandler.phoneDelegate = self
+        
+        self.realmResults = realmHandler.read(RealmRecipe.self)?.sorted(byKeyPath: "name")
+        self.realmToken = realmResults?.observe { change in
+            switch(change){
+            case .initial:
+                self.tableView.reloadData()
+            case .update(_, let deletions, let insertions, let modifications):
+                self.tableView.beginUpdates()
+                self.tableView.insertRows(at: insertions.map{ IndexPath(row: $0, section: 0)}, with: .fade)
+                self.tableView.deleteRows(at: deletions.map{ IndexPath(row: $0, section: 0)}, with: .fade)
+                self.tableView.reloadRows(at: modifications.map{ IndexPath(row: $0, section: 0)}, with: .fade)
+                self.tableView.endUpdates()
+            case .error(let error):
+                print(error)
+            }
+        }
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         self.navigationItem.rightBarButtonItem = self.editButtonItem
@@ -26,13 +44,8 @@ class RecipeTableViewController: UITableViewController {
         tableView.delegate = self
         tableView.dataSource = self
     }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        //MARK: maybe force save realm?
-    }
 
     // MARK: - Table view data source
-
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -45,7 +58,7 @@ class RecipeTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: RecipeTableCell = tableView.dequeueReusableCell(withIdentifier: "recipeCell") as! RecipeTableCell
         print(indexPath.debugDescription)
-        let recipe = realmHandler.read(RealmRecipe.self, at: indexPath.item)!
+        let recipe = realmHandler.read(RealmRecipe.self, at: indexPath.row)!
         cell.updateInfo(using: recipe)
 
         return cell
@@ -55,7 +68,7 @@ class RecipeTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            realmHandler.delete(RealmRecipe.self, at: indexPath.item)
+            realmHandler.delete(RealmRecipe.self, at: indexPath.row)
         }
     }
 
@@ -71,34 +84,6 @@ class RecipeTableViewController: UITableViewController {
 
 }
 
-extension RecipeTableViewController: NSFetchedResultsControllerDelegate  {
-    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.beginUpdates()
-    }
-    
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.endUpdates()
-    }
-    
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        switch(type){
-        case .delete:
-            if let indexPath = indexPath {
-                tableView.deleteRows(at: [indexPath], with: .fade)
-            }
-        case .update:
-            if let indexPath = indexPath {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "recipeCell", for: indexPath) as! RecipeTableCell
-                let recipe = realmHandler.read(RealmRecipe.self, at: indexPath.item)!
-                cell.updateInfo(using: recipe)
-                tableView.reloadRows(at: [indexPath], with: .fade)
-            }
-        default:
-            break
-        }
-    }
-}
-
 extension RecipeTableViewController: PhoneConnectivityDelegate {
     func recievedMessage(session: WCSession, message: [String : Any], replyHandler: (([String : Any]) -> Void)?) {
         //handle msg
@@ -112,7 +97,6 @@ extension RecipeTableViewController: PhoneConnectivityDelegate {
             reply(recipeNamesMessage)
         }
         if let recipeName = message["recipeRequest"] as? String, let recipes = realmHandler.read(RealmRecipe.self) {
-            //MARK: convert and send coredata obj
             guard let requestedRealmRecipe: RealmRecipe = recipes.first(where: {$0.name == recipeName}) else {return}
             
             let requestedRecipe: Recipe = requestedRealmRecipe.dbDecode()
