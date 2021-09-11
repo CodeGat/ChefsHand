@@ -12,19 +12,23 @@ import RealmSwift
 class URLRecipe: RecipeConvertable, DatabaseObjectEncodable {
     typealias DBObject = RealmRecipe
     var url: URL
-    var info: RecipeInfo
+    var info: RecipeInfo?
     
     init(url: URL) throws {
         self.url = url
-        self.info = try getRecipeData(using: url)
+        do {
+            self.info = try getRecipeData(using: url)
+        } catch {
+            throw error
+        }
     }
     
     func dbEncode() -> RealmRecipe {
-        return RealmRecipe(name: info.name, location: info.location, url: self.url, image: info.image, ingredients: info.ingredients, method: info.method)
+        return RealmRecipe(name: info!.name, location: info!.location, url: self.url, image: info!.image, ingredients: info!.ingredients, method: info!.method)
     }
     
     func convertToTransferrableRecipe() -> Recipe {
-        return Recipe(name: info.name, location: info.location, url: self.url, image: info.image, ingredients: info.ingredients, method: info.method)
+        return Recipe(name: info!.name, location: info!.location, url: self.url, image: info!.image, ingredients: info!.ingredients, method: info!.method)
     }
     
     struct RecipeInfo {

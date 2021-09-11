@@ -16,7 +16,8 @@ public class RealmRecipe: Object, DatabaseObjectDecodable {
     @Persisted var ingredients: List<RealmIngredient>
     @Persisted var method: List<RealmStep>
     
-    init(name: String?, location: String?, url: URL, image: Data?, ingredients: [Ingredient], method: [Step]){
+    convenience init(name: String?, location: String?, url: URL, image: Data?, ingredients: [Ingredient], method: [Step]){
+        self.init()
         self.name = name ?? "Unknown"
         self.location = location ?? "Unknown Location"
         self.url = url.absoluteString
@@ -49,7 +50,8 @@ class RealmIngredient: Object, Decodable {
     @Persisted var text: String
     @Persisted var isDone: Bool
     
-    init(text: String, isDone: Bool){
+    convenience init(text: String, isDone: Bool){
+        self.init()
         self.text = text
         self.isDone = isDone
     }
@@ -60,7 +62,8 @@ class RealmStep: Object, Decodable {
     @Persisted var isDone: Bool
     @Persisted var cookingTimes: List<RealmCookingTime>
     
-    init(text: String, isDone: Bool, cookingTimes: [CookingTime]){
+    convenience init(text: String, isDone: Bool, cookingTimes: [CookingTime]){
+        self.init()
         self.text = text
         self.isDone = isDone
         do {
@@ -76,7 +79,8 @@ class RealmCookingTime: Object, Decodable {
     @Persisted var timeDefStart: Int
     @Persisted var timeDefEnd: Int
     
-    init(time: Int, timeDefStart: Int, timeDefEnd: Int){
+    convenience init(time: Int, timeDefStart: Int, timeDefEnd: Int){
+        self.init()
         self.time = time
         self.timeDefStart = timeDefStart
         self.timeDefEnd = timeDefEnd

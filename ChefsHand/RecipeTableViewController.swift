@@ -10,16 +10,7 @@ import CoreData
 import WatchConnectivity
 
 class RecipeTableViewController: UITableViewController {
-    fileprivate lazy var fetchedResultContainer: NSFetchedResultsController<CoreRecipe> = {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
-        let fetchRequest: NSFetchRequest<CoreRecipe> = CoreRecipe.fetchRequest()
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: false)]
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
-        fetchedResultsController.delegate = self
-        
-        return fetchedResultsController
-    }()
+    var realmHandler = RealmManager.shared
     var connectivityHandler = WatchConnectivityManager.shared
 
     override func viewDidLoad() {
@@ -34,22 +25,10 @@ class RecipeTableViewController: UITableViewController {
         
         tableView.delegate = self
         tableView.dataSource = self
-        
-        do {
-            try fetchedResultContainer.performFetch()
-        } catch {
-            fatalError("Failed to fetch recipes")
-        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-        do {
-            let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            let context = appDelegate.persistentContainer.viewContext
-            try context.save()
-        } catch {
-            fatalError("Failed to save")
-        }
+        //MARK: maybe force save realm?
     }
 
     // MARK: - Table view data source
@@ -59,14 +38,15 @@ class RecipeTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let recipes = fetchedResultContainer.fetchedObjects else {return 0}
+        guard let recipes = realmHandler.read(RealmRecipe.self) else {fatalError("Couldn't read RealmRecipes")}
         return recipes.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: RecipeTableCell = tableView.dequeueReusableCell(withIdentifier: "recipeCell") as! RecipeTableCell
-        
-        cell.updateInfo(using: fetchedResultContainer, at: indexPath)
+        print(indexPath.debugDescription)
+        let recipe = realmHandler.read(RealmRecipe.self, at: indexPath.item)!
+        cell.updateInfo(using: recipe)
 
         return cell
     }
@@ -75,8 +55,7 @@ class RecipeTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            let quoteToDelete = fetchedResultContainer.object(at: indexPath)
-            quoteToDelete.managedObjectContext?.delete(quoteToDelete)
+            realmHandler.delete(RealmRecipe.self, at: indexPath.item)
         }
     }
 
@@ -107,15 +86,11 @@ extension RecipeTableViewController: NSFetchedResultsControllerDelegate  {
             if let indexPath = indexPath {
                 tableView.deleteRows(at: [indexPath], with: .fade)
             }
-        case .move:
-            if let indexPath = indexPath, let newIndexPath = newIndexPath {
-                tableView.deleteRows(at: [indexPath], with: .fade)
-                tableView.insertRows(at: [newIndexPath], with: .fade)
-            }
         case .update:
             if let indexPath = indexPath {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "recipeCell", for: indexPath) as! RecipeTableCell
-                cell.updateInfo(using: fetchedResultContainer, at: indexPath)
+                let recipe = realmHandler.read(RealmRecipe.self, at: indexPath.item)!
+                cell.updateInfo(using: recipe)
                 tableView.reloadRows(at: [indexPath], with: .fade)
             }
         default:
@@ -127,20 +102,20 @@ extension RecipeTableViewController: NSFetchedResultsControllerDelegate  {
 extension RecipeTableViewController: PhoneConnectivityDelegate {
     func recievedMessage(session: WCSession, message: [String : Any], replyHandler: (([String : Any]) -> Void)?) {
         //handle msg
-        if let numRecipeNamesRequest = message["recipeNamesRequest"] as? Int, let recipes: [CoreRecipe] = fetchedResultContainer.fetchedObjects {
+        if let numRecipeNamesRequest = message["recipeNamesRequest"] as? Int, let recipes = realmHandler.read(RealmRecipe.self) {
 
             let index: Int = numRecipeNamesRequest < recipes.count ? numRecipeNamesRequest : recipes.count
-            let recipeNames: [String] = recipes[..<index].map{$0.name!}
+            let recipeNames: [String] = recipes[..<index].map{$0.name}
             let recipeNamesMessage: [String: [String]] = ["recipeNamesResponse": recipeNames]
             
             guard let reply = replyHandler else {return}
             reply(recipeNamesMessage)
         }
-        if let recipeName = message["recipeRequest"] as? String, let recipes: [CoreRecipe] = fetchedResultContainer.fetchedObjects {
+        if let recipeName = message["recipeRequest"] as? String, let recipes = realmHandler.read(RealmRecipe.self) {
             //MARK: convert and send coredata obj
-            guard let requestedCoreRecipe: CoreRecipe = recipes.first(where: {$0.name == recipeName}) else {return}
+            guard let requestedRealmRecipe: RealmRecipe = recipes.first(where: {$0.name == recipeName}) else {return}
             
-            let requestedRecipe: Recipe = Recipe.convert(using: requestedCoreRecipe)
+            let requestedRecipe: Recipe = requestedRealmRecipe.dbDecode()
             let requestedRecipeResponse: [String: Any] = ["recipeResponse": requestedRecipe.dictionary as Any]
             guard let reply = replyHandler else {return}
             reply(requestedRecipeResponse)
@@ -153,11 +128,9 @@ class RecipeTableCell: UITableViewCell {
     @IBOutlet weak var recipeLocationLabel: UILabel!
     @IBOutlet weak var recipeImage: UIImageView!
     
-    func updateInfo(using controller: NSFetchedResultsController<CoreRecipe>, at indexPath: IndexPath) {
-        let recipe = controller.object(at: indexPath)
-        
-        self.recipeTitleLabel?.text = recipe.name ?? "Unknown Recipe"
-        self.recipeLocationLabel?.text = recipe.location ?? "Unknown Location"
+    func updateInfo(using recipe: RealmRecipe) {
+        self.recipeTitleLabel?.text = recipe.name
+        self.recipeLocationLabel?.text = recipe.location
         if let imageData = recipe.image {
             self.recipeImage?.image = UIImage(data: imageData)
         }

@@ -24,7 +24,11 @@ class RealmManager {
         }
     }
     
-    func read(_ type: Object.Type, filter: String?) -> Results<Object>? {
+    func read<T>(_ type: T.Type) -> Results<T>? where T: Object  {
+        return read(type, filter: nil)
+    }
+    
+    func read<T>(_ type: T.Type, filter: String?) -> Results<T>? where T: Object {
         let objects = realm?.objects(type)
         if filter != nil {
             return objects?.filter(filter!)
@@ -33,13 +37,26 @@ class RealmManager {
         }
     }
     
-    func update(_ block: () throws -> Results<Object>){
+    func read<T>(_ type: T.Type, at index: Int) -> T? where T: Object {
+        let objects = realm?.objects(type)
+        
+        return objects?[index]
+    }
+    
+    func update<T>(_ block: () throws -> Results<T>) where T: Object {
         try! realm?.write(block)
     }
     
     func delete(_ object: Object){
         try! realm?.write {
             realm?.delete(object)
+        }
+    }
+    
+    func delete(_ type: Object.Type, at index: Int) {
+        guard let objectToDelete: Object = realm?.objects(type)[index] else {fatalError("Failed to get object to delete")}
+        try! realm?.write{
+            realm?.delete(objectToDelete)
         }
     }
 }
