@@ -15,7 +15,7 @@ class URLRecipe: RecipeConvertable {
         self.url = url
     }
     
-    func convert() throws -> Recipe {
+    func convertToTransferrableRecipe() throws -> Recipe {
         do {
             let info: RecipeInfo = try getRecipeData(using: url)
             
@@ -95,7 +95,7 @@ class URLRecipe: RecipeConvertable {
         do {
             let html: String = try String(contentsOf: url, encoding: .ascii)
             let decoder = JSONDecoder()
-            let doc: Document = try SwiftSoup.parse(html)
+            let doc: SwiftSoup.Document = try SwiftSoup.parse(html)
             
             let name: String = try doc.select("title").first()?.text() ?? "Unknown"
             
@@ -118,7 +118,7 @@ class URLRecipe: RecipeConvertable {
     private func generateGenericRecipe(using url: URL, from host: String) throws -> RecipeInfo {
         do {
             let html: String = try String(contentsOf: url, encoding: .ascii)
-            let doc: Document = try SwiftSoup.parse(html)
+            let doc: SwiftSoup.Document = try SwiftSoup.parse(html)
             
             let name: String = try doc.select("title").first()?.text() ?? "Unknown"
             
