@@ -87,7 +87,7 @@ class RecipeTableViewController: UITableViewController {
 extension RecipeTableViewController: PhoneConnectivityDelegate {
     func recievedMessage(session: WCSession, message: [String : Any], replyHandler: (([String : Any]) -> Void)?) {
         //handle msg
-        if let numRecipeNamesRequest = message["recipeNamesRequest"] as? Int, let recipes = realmHandler.read(RealmRecipe.self) {
+        if let numRecipeNamesRequest = message["recipeNamesRequest"] as? Int, let recipes = self.realmResults {
 
             let index: Int = numRecipeNamesRequest < recipes.count ? numRecipeNamesRequest : recipes.count
             let recipeNames: [String] = recipes[..<index].map{$0.name}
@@ -96,7 +96,7 @@ extension RecipeTableViewController: PhoneConnectivityDelegate {
             guard let reply = replyHandler else {return}
             reply(recipeNamesMessage)
         }
-        if let recipeName = message["recipeRequest"] as? String, let recipes = realmHandler.read(RealmRecipe.self) {
+        if let recipeName = message["recipeRequest"] as? String, let recipes = self.realmResults {
             guard let requestedRealmRecipe: RealmRecipe = recipes.first(where: {$0.name == recipeName}) else {return}
             
             let requestedRecipe: Recipe = requestedRealmRecipe.dbDecode()

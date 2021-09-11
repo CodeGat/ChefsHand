@@ -12,6 +12,7 @@ import RealmSwift
 class SendToWatchController: UIViewController {
     var connectivityManager = WatchConnectivityManager.shared
     let realmManager = RealmManager.shared
+    var realmResults: Results<RealmRecipe>?
     
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var urlField: UITextField!
@@ -64,17 +65,31 @@ class SendToWatchController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         connectivityManager.phoneDelegate = self
-        
-        
+        self.realmResults = realmManager.read(RealmRecipe.self)?.sorted(byKeyPath: "name")
         
         self.urlField.delegate = self
     }
 }
 
-//todo: make an extension for Recipie generics
 extension SendToWatchController: PhoneConnectivityDelegate {
     func recievedMessage(session: WCSession, message: [String : Any], replyHandler: (([String : Any]) -> Void)?) {
-        print("STWC: Got message from WCM! - not doing anything with it.")
+        if let numRecipeNamesRequest = message["recipeNamesRequest"] as? Int, let recipes = self.realmResults {
+
+            let index: Int = numRecipeNamesRequest < recipes.count ? numRecipeNamesRequest : recipes.count
+            let recipeNames: [String] = recipes[..<index].map{$0.name}
+            let recipeNamesMessage: [String: [String]] = ["recipeNamesResponse": recipeNames]
+
+            guard let reply = replyHandler else {return}
+            reply(recipeNamesMessage)
+        }
+        if let recipeName = message["recipeRequest"] as? String, let recipes = self.realmResults {
+            guard let requestedRealmRecipe: RealmRecipe = recipes.first(where: {$0.name == recipeName}) else {return}
+
+            let requestedRecipe: Recipe = requestedRealmRecipe.dbDecode()
+            let requestedRecipeResponse: [String: Any] = ["recipeResponse": requestedRecipe.dictionary as Any]
+            guard let reply = replyHandler else {return}
+            reply(requestedRecipeResponse)
+        }
     }
 }
 
