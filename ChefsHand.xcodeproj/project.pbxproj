@@ -31,7 +31,6 @@
 		E3AE4A1626EB0B5B002954E4 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = E3AE4A1526EB0B5B002954E4 /* Realm */; };
 		E3AE4A1826EB0B5B002954E4 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E3AE4A1726EB0B5B002954E4 /* RealmSwift */; };
 		E3AE4A1926EB0D90002954E4 /* TransferableRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F8A0DD26D21E3100CB3AC7 /* TransferableRecipe.swift */; };
-		E3AE4A1B26EB44BB002954E4 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AE4A1A26EB44BB002954E4 /* RealmManager.swift */; };
 		E3AE4A1D26EC4BAD002954E4 /* RealmRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AE4A1C26EC4BAD002954E4 /* RealmRecipe.swift */; };
 		E3CC898126D9F12A007A0003 /* URLRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CC898026D9F12A007A0003 /* URLRecipe.swift */; };
 		E3F27674269E991100CA78D8 /* IngredientsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F27673269E991100CA78D8 /* IngredientsController.swift */; };
@@ -111,7 +110,6 @@
 		E381E42926C2376D0042D4EE /* DeveloperSettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperSettingsController.swift; sourceTree = "<group>"; };
 		E381E42B26C366F70042D4EE /* ChefsHand.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChefsHand.png; sourceTree = "<group>"; };
 		E381E42D26C5140E0042D4EE /* RecipeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeTableViewController.swift; sourceTree = "<group>"; };
-		E3AE4A1A26EB44BB002954E4 /* RealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
 		E3AE4A1C26EC4BAD002954E4 /* RealmRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmRecipe.swift; sourceTree = "<group>"; };
 		E3CC898026D9F12A007A0003 /* URLRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRecipe.swift; sourceTree = "<group>"; };
 		E3F27673269E991100CA78D8 /* IngredientsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientsController.swift; sourceTree = "<group>"; };
@@ -195,7 +193,6 @@
 				E36709432693FC76001E708B /* Info.plist */,
 				E381E42D26C5140E0042D4EE /* RecipeTableViewController.swift */,
 				E3CC898026D9F12A007A0003 /* URLRecipe.swift */,
-				E3AE4A1A26EB44BB002954E4 /* RealmManager.swift */,
 				E3AE4A1C26EC4BAD002954E4 /* RealmRecipe.swift */,
 			);
 			path = ChefsHand;
@@ -397,7 +394,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E381E42E26C5140E0042D4EE /* RecipeTableViewController.swift in Sources */,
-				E3AE4A1B26EB44BB002954E4 /* RealmManager.swift in Sources */,
 				E367093A2693FC74001E708B /* SendToWatchController.swift in Sources */,
 				E36709362693FC74001E708B /* AppDelegate.swift in Sources */,
 				E3F8A0DA26D0A73100CB3AC7 /* WatchConnectivityManager.swift in Sources */,

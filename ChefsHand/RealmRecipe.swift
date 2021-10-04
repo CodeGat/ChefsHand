@@ -9,6 +9,7 @@ import Foundation
 import RealmSwift
 
 public class RealmRecipe: Object, DatabaseObjectDecodable {
+    @Persisted(primaryKey: true) var _id: ObjectId
     @Persisted var name: String
     @Persisted var location: String
     @Persisted var url: String?

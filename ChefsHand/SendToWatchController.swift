@@ -11,7 +11,8 @@ import RealmSwift
 
 class SendToWatchController: UIViewController {
     var connectivityManager = WatchConnectivityManager.shared
-    let realmManager = RealmManager.shared
+//    let realmManager = RealmManager.shared
+    var realm: Realm?
     var realmResults: Results<RealmRecipe>?
     
     @IBOutlet weak var label: UILabel!
@@ -52,7 +53,10 @@ class SendToWatchController: UIViewController {
     
     func saveToDataStore(_ recipe: URLRecipe) {
         let realmRecipe = recipe.dbEncode()
-        realmManager.create(realmRecipe)
+        
+        try! self.realm?.write {
+            self.realm?.add(realmRecipe)
+        }
     }
     
     func showErrorAlert(_ messsage: String) {
@@ -65,7 +69,18 @@ class SendToWatchController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         connectivityManager.phoneDelegate = self
-        self.realmResults = realmManager.read(RealmRecipe.self)?.sorted(byKeyPath: "name")
+        self.realm = try! Realm()
+        
+        let _ = self.realm?.objects(RealmRecipe.self).observe{change in
+            switch change {
+            case .initial(let results):
+                print("result: \(results)")
+            case .update(let results, _, _, _):
+                print("Update: \(results)")
+            case .error(let error):
+                print("Error: \(error)")
+            }
+        }
         
         self.urlField.delegate = self
     }
@@ -73,7 +88,10 @@ class SendToWatchController: UIViewController {
 
 extension SendToWatchController: PhoneConnectivityDelegate {
     func recievedMessage(session: WCSession, message: [String : Any], replyHandler: (([String : Any]) -> Void)?) {
-        if let numRecipeNamesRequest = message["recipeNamesRequest"] as? Int, let recipes = self.realmResults {
+        let connectivityRealm = try! Realm()
+        let recipes = connectivityRealm.objects(RealmRecipe.self)
+        
+        if let numRecipeNamesRequest = message["recipeNamesRequest"] as? Int {
 
             let index: Int = numRecipeNamesRequest < recipes.count ? numRecipeNamesRequest : recipes.count
             let recipeNames: [String] = recipes[..<index].map{$0.name}
@@ -82,7 +100,7 @@ extension SendToWatchController: PhoneConnectivityDelegate {
             guard let reply = replyHandler else {return}
             reply(recipeNamesMessage)
         }
-        if let recipeName = message["recipeRequest"] as? String, let recipes = self.realmResults {
+        if let recipeName = message["recipeRequest"] as? String {
             guard let requestedRealmRecipe: RealmRecipe = recipes.first(where: {$0.name == recipeName}) else {return}
 
             let requestedRecipe: Recipe = requestedRealmRecipe.dbDecode()

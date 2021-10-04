@@ -10,7 +10,8 @@ import RealmSwift
 import WatchConnectivity
 
 class RecipeTableViewController: UITableViewController {
-    var realmHandler = RealmManager.shared
+//    var realmHandler = RealmManager.shared
+    var realm: Realm?
     var connectivityHandler = WatchConnectivityManager.shared
     var realmResults: Results<RealmRecipe>?
     var realmToken: NotificationToken?
@@ -21,8 +22,10 @@ class RecipeTableViewController: UITableViewController {
         // self.clearsSelectionOnViewWillAppear = false
         connectivityHandler.phoneDelegate = self
         
-        self.realmResults = realmHandler.read(RealmRecipe.self)?.sorted(byKeyPath: "name")
-        self.realmToken = realmResults?.observe { change in
+        self.realm = try! Realm()
+        
+        self.realmResults = realm?.objects(RealmRecipe.self).sorted(byKeyPath: "name")
+        self.realmToken = realmResults?.observe { change in //MARK: Should I use the results..?
             switch(change){
             case .initial:
                 self.tableView.reloadData()
@@ -51,14 +54,15 @@ class RecipeTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let recipes = realmHandler.read(RealmRecipe.self) else {fatalError("Couldn't read RealmRecipes")}
+        guard let recipes = self.realmResults else {fatalError("Couldn't read RealmRecipes")}
         return recipes.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: RecipeTableCell = tableView.dequeueReusableCell(withIdentifier: "recipeCell") as! RecipeTableCell
-        print(indexPath.debugDescription)
-        let recipe = realmHandler.read(RealmRecipe.self, at: indexPath.row)!
+        print("cell is: \(cell.primaryKey?.debugDescription ?? "nothing")")
+        let recipe: RealmRecipe = (realmResults?.objects(at: IndexSet(integer: indexPath.row))[0])!
+        //let recipe = (realm?.object(ofType: RealmRecipe.self, forPrimaryKey: cell.primaryKey))! //MARK: If first then cell won't have the id!
         cell.updateInfo(using: recipe)
 
         return cell
@@ -68,7 +72,13 @@ class RecipeTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            realmHandler.delete(RealmRecipe.self, at: indexPath.row)
+            let cell: RecipeTableCell = tableView.dequeueReusableCell(withIdentifier: "recipeCell") as! RecipeTableCell
+            
+            try! self.realm?.write{
+                let recipeToBeDeleted: RealmRecipe = (self.realm?.object(ofType: RealmRecipe.self, forPrimaryKey: cell.primaryKey))!
+                realm?.delete(recipeToBeDeleted)
+            }
+            
         }
     }
 
@@ -87,8 +97,10 @@ class RecipeTableViewController: UITableViewController {
 extension RecipeTableViewController: PhoneConnectivityDelegate {
     func recievedMessage(session: WCSession, message: [String : Any], replyHandler: (([String : Any]) -> Void)?) {
         //handle msg
-        if let numRecipeNamesRequest = message["recipeNamesRequest"] as? Int, let recipes = self.realmResults {
-
+        let connectivityRealm = try! Realm()
+        let recipes = connectivityRealm.objects(RealmRecipe.self)
+        
+        if let numRecipeNamesRequest = message["recipeNamesRequest"] as? Int {
             let index: Int = numRecipeNamesRequest < recipes.count ? numRecipeNamesRequest : recipes.count
             let recipeNames: [String] = recipes[..<index].map{$0.name}
             let recipeNamesMessage: [String: [String]] = ["recipeNamesResponse": recipeNames]
@@ -96,7 +108,7 @@ extension RecipeTableViewController: PhoneConnectivityDelegate {
             guard let reply = replyHandler else {return}
             reply(recipeNamesMessage)
         }
-        if let recipeName = message["recipeRequest"] as? String, let recipes = self.realmResults {
+        if let recipeName = message["recipeRequest"] as? String {
             guard let requestedRealmRecipe: RealmRecipe = recipes.first(where: {$0.name == recipeName}) else {return}
             
             let requestedRecipe: Recipe = requestedRealmRecipe.dbDecode()
@@ -111,8 +123,10 @@ class RecipeTableCell: UITableViewCell {
     @IBOutlet weak var recipeTitleLabel: UILabel!
     @IBOutlet weak var recipeLocationLabel: UILabel!
     @IBOutlet weak var recipeImage: UIImageView!
+    var primaryKey: ObjectId!
     
     func updateInfo(using recipe: RealmRecipe) {
+        self.primaryKey = recipe._id
         self.recipeTitleLabel?.text = recipe.name
         self.recipeLocationLabel?.text = recipe.location
         if let imageData = recipe.image {
