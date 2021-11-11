@@ -20,5 +20,15 @@ class RecipeRowController: NSObject {
             recipeLabel.setText(name)
         }
     }
-    var type: RowType?
+    var type: RowType? {
+        didSet {
+            guard let type = type else {return}
+
+            if type == .cached {
+                recipeLabel.setTextColor(UIColor(red: 0.678, green: 0.714, blue: 1, alpha: 1))
+            } else {
+                recipeLabel.setTextColor(.white)
+            }
+        }
+    }
 }

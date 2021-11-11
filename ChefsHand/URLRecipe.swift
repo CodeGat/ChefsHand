@@ -7,22 +7,28 @@
 
 import Foundation
 import SwiftSoup
+import RealmSwift
 
-class URLRecipe: RecipeConvertable {
+class URLRecipe: RecipeConvertable, DatabaseObjectEncodable {
+    typealias DBObject = RealmRecipe
     var url: URL
+    var info: RecipeInfo?
     
-    init(url: URL) {
+    init(url: URL) throws {
         self.url = url
-    }
-    
-    func convert() throws -> Recipe {
         do {
-            let info: RecipeInfo = try getRecipeData(using: url)
-            
-            return Recipe(name: info.name, location: info.location, url: self.url, image: info.image, ingredients: info.ingredients, method: info.method)
+            self.info = try getRecipeData(using: url)
         } catch {
             throw error
         }
+    }
+    
+    func dbEncode() -> RealmRecipe {
+        return RealmRecipe(name: info!.name, location: info!.location, url: self.url, image: info!.image, ingredients: info!.ingredients, method: info!.method)
+    }
+    
+    func convertToTransferrableRecipe() -> Recipe {
+        return Recipe(name: info!.name, location: info!.location, url: self.url, image: info!.image, ingredients: info!.ingredients, method: info!.method)
     }
     
     struct RecipeInfo {
@@ -72,7 +78,7 @@ class URLRecipe: RecipeConvertable {
         return cookingTimes
     }
     
-    func getCookingTimeInSeconds(of timeString: String) -> Int {
+    private func getCookingTimeInSeconds(of timeString: String) -> Int {
         let timeComponents: [String] = timeString.components(separatedBy: " ")
         let time: Int = Int(timeComponents[0])!
         
@@ -95,7 +101,7 @@ class URLRecipe: RecipeConvertable {
         do {
             let html: String = try String(contentsOf: url, encoding: .ascii)
             let decoder = JSONDecoder()
-            let doc: Document = try SwiftSoup.parse(html)
+            let doc: SwiftSoup.Document = try SwiftSoup.parse(html)
             
             let name: String = try doc.select("title").first()?.text() ?? "Unknown"
             
@@ -118,7 +124,7 @@ class URLRecipe: RecipeConvertable {
     private func generateGenericRecipe(using url: URL, from host: String) throws -> RecipeInfo {
         do {
             let html: String = try String(contentsOf: url, encoding: .ascii)
-            let doc: Document = try SwiftSoup.parse(html)
+            let doc: SwiftSoup.Document = try SwiftSoup.parse(html)
             
             let name: String = try doc.select("title").first()?.text() ?? "Unknown"
             
@@ -129,6 +135,7 @@ class URLRecipe: RecipeConvertable {
     }
 }
 
+//MARK: Error-related stuff
 enum RecipeError: Error {
     case unknownHostError
     case genericRecipeUnconvertableError(host: String)

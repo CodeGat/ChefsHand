@@ -64,17 +64,17 @@ class InterfaceController: WKInterfaceController {
         let recipeNamesToRequest = recipeNames.count + 3
         connectivityManager.sendMessage(message: ["recipeNamesRequest": recipeNamesToRequest], replyHandler: {reply in
             self.recipeNames = reply["recipeNamesResponse"] as! [String]
+            self.refreshTable()
         }, errorHandler: {error in
             print(error)
         })
-        refreshTable()
     }
     
     func loadRecipeIntoCacheFromIphone(named name: String) {
-        print("going to send:\(["recipeRequest": name])")
         connectivityManager.sendMessage(message: ["recipeRequest": name], replyHandler: {reply in
             if let recipeResponse = reply["recipeResponse"] {
                 UserDefaultsRecipe.shared.setRecipe(givenData: recipeResponse)
+                self.refreshTable()
             }
         }, errorHandler: {error in
             print(error)
@@ -84,10 +84,15 @@ class InterfaceController: WKInterfaceController {
     func refreshTable() {
         var tableRowIx: Int = 0
         let cachedRecipesNum: Int = recipeManager.recipeExists() || defaults.recipeKeyExists() ? 1 : 0
-        let phoneRecipesNum: Int = recipeNames.count != 0 ? recipeNames.count - 1 : 0
+        var phoneRecipesNum: Int = 0
+        if recipeNames.count != 0 {
+            if cachedRecipesNum != 0 {
+                phoneRecipesNum = recipeNames.count - 1
+            } else {
+                phoneRecipesNum = recipeNames.count
+            }
+        }
         let numberOfRows: Int = 1 + cachedRecipesNum + phoneRecipesNum
-        
-        print("1 + \(cachedRecipesNum) (c) + \(phoneRecipesNum) (p) = \(numberOfRows)")
         
         recipeTable.setNumberOfRows(Int(numberOfRows), withRowType: "Recipe Row")
 

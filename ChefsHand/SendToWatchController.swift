@@ -7,11 +7,14 @@
 
 import UIKit
 import WatchConnectivity
-import CoreData
+import RealmSwift
 
 class SendToWatchController: UIViewController {
     var connectivityManager = WatchConnectivityManager.shared
-    var context: NSManagedObjectContext?
+//    let realmManager = RealmManager.shared
+    var realm: Realm?
+    var realmResults: Results<RealmRecipe>?
+    
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var urlField: UITextField!
     @IBAction func tapSendDataToWatch(_ sender: Any){
@@ -19,12 +22,12 @@ class SendToWatchController: UIViewController {
             showErrorAlert("URL wasn't valid, check the URL and try again")
             return
         }
-        let urlRecipe: URLRecipe = URLRecipe(url: recipeUrl)
         do {
-            let recipe: Recipe = try urlRecipe.convert()
+            let urlRecipe: URLRecipe = try URLRecipe(url: recipeUrl)
+            let recipe: Recipe = urlRecipe.convertToTransferrableRecipe()
             let recipeMessage: [String: Any] = ["recipe": recipe.dictionary as Any]
             
-            saveToDataStore(recipe)
+            saveToDataStore(urlRecipe)
             connectivityManager.sendMessage(message: recipeMessage, replyHandler: nil, errorHandler: {error in
                 print("In STWC there was an error sending the message: \(error)")
             })
@@ -48,17 +51,11 @@ class SendToWatchController: UIViewController {
 //            }
     }
     
-    func saveToDataStore(_ recipe: Recipe) {
-        guard let validContext = context else {
-            fatalError("Context not found")
-        }
+    func saveToDataStore(_ recipe: URLRecipe) {
+        let realmRecipe = recipe.dbEncode()
         
-        let _: NSManagedObject = recipe.convert(given: validContext)
-        
-        do {
-            try validContext.save()
-        } catch {
-            fatalError("Context failed to save! \(error)")
+        try! self.realm?.write {
+            self.realm?.add(realmRecipe)
         }
     }
     
@@ -72,70 +69,45 @@ class SendToWatchController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         connectivityManager.phoneDelegate = self
+        self.realm = try! Realm()
         
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        self.context = appDelegate.persistentContainer.viewContext
+        let _ = self.realm?.objects(RealmRecipe.self).observe{change in
+            switch change {
+            case .initial(let results):
+                print("result: \(results)")
+            case .update(let results, _, _, _):
+                print("Update: \(results)")
+            case .error(let error):
+                print("Error: \(error)")
+            }
+        }
         
         self.urlField.delegate = self
     }
 }
 
-extension Recipe: NSManagedObjectCodable {
-    static func convert(using coreRecipeObject: NSManagedObject) -> Recipe {
-        let coreRecipe = coreRecipeObject as! CoreRecipe
-        
-        let coreIngredients = coreRecipe.hasIngredient?.array as! [CoreIngredient]
-        
-        let ingredients: [Ingredient] = coreIngredients.map{Ingredient(text: $0.text!, isDone: $0.isDone)}
-        
-        let coreSteps = coreRecipe.hasStep?.array as! [CoreStep]
-        var steps = [Step]()
-        for coreStep in coreSteps {
-            let coreCookingTimes = coreStep.hasCookingTime?.array as! [CoreCookingTime]
-            let cookingTimes: [CookingTime] = coreCookingTimes.map{CookingTime(time: Int($0.time), timeDefStart: Int($0.timeDefStart), timeDefEnd: Int($0.timeDefEnd))}
-            
-            steps.append(Step(text: coreStep.text!, isDone: coreStep.isDone, cookingTimes: cookingTimes))
-        }
-        
-        return Recipe(name: coreRecipe.name!, location: coreRecipe.location, url: coreRecipe.url, image: coreRecipe.image, ingredients: ingredients, method: steps)
-    }
-    
-    func convert(given context: NSManagedObjectContext) -> NSManagedObject {
-        let recipeObject = CoreRecipe.init(context: context)
-        recipeObject.name = self.name
-        recipeObject.location = self.location
-        recipeObject.image = self.image
-        
-        for ingredient in self.ingredients {
-            let ingredientObject = CoreIngredient(context: context)
-            ingredientObject.text = ingredient.text
-            ingredientObject.isDone = ingredient.isDone
-            recipeObject.addToHasIngredient(ingredientObject)
-        }
-        
-        for step in self.method {
-            let stepObject = CoreStep(context: context)
-            stepObject.text = step.text
-            stepObject.isDone = step.isDone
-            
-            for cookingTime in step.cookingTimes {
-                let cookingTimeObject = CoreCookingTime(context: context)
-                cookingTimeObject.time = Int32(cookingTime.time)
-                cookingTimeObject.timeDefStart = Int32(cookingTime.timeDefStart)
-                cookingTimeObject.timeDefEnd = Int32(cookingTime.timeDefEnd)
-                stepObject.addToHasCookingTime(cookingTimeObject)
-            }
-            recipeObject.addToHasStep(stepObject)
-        }
-        
-        return recipeObject
-    }
-}
-
-//todo: make an extension for Recipie generics
 extension SendToWatchController: PhoneConnectivityDelegate {
     func recievedMessage(session: WCSession, message: [String : Any], replyHandler: (([String : Any]) -> Void)?) {
-        print("STWC: Got message from WCM! - not doing anything with it.")
+        let connectivityRealm = try! Realm()
+        let recipes = connectivityRealm.objects(RealmRecipe.self)
+        
+        if let numRecipeNamesRequest = message["recipeNamesRequest"] as? Int {
+
+            let index: Int = numRecipeNamesRequest < recipes.count ? numRecipeNamesRequest : recipes.count
+            let recipeNames: [String] = recipes[..<index].map{$0.name}
+            let recipeNamesMessage: [String: [String]] = ["recipeNamesResponse": recipeNames]
+
+            guard let reply = replyHandler else {return}
+            reply(recipeNamesMessage)
+        }
+        if let recipeName = message["recipeRequest"] as? String {
+            guard let requestedRealmRecipe: RealmRecipe = recipes.first(where: {$0.name == recipeName}) else {return}
+
+            let requestedRecipe: Recipe = requestedRealmRecipe.dbDecode()
+            let requestedRecipeResponse: [String: Any] = ["recipeResponse": requestedRecipe.dictionary as Any]
+            guard let reply = replyHandler else {return}
+            reply(requestedRecipeResponse)
+        }
     }
 }
 
