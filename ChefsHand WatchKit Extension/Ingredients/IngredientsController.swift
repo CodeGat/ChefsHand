@@ -21,7 +21,7 @@ class IngredientsController: WKInterfaceController {
         
         recipeManager.setRecipeIngredientIsDone(at: rowIndex, to: !selectedRowIngredient.isDone)
         
-        changeIngredientRowVisual(using: selectedRow, to: !selectedRowIngredient.isDone)
+        changeIngredientRowVisual(using: selectedRow, to: selectedRowIngredient.isDone)
     }
     
     override func willDisappear() {
@@ -43,6 +43,8 @@ class IngredientsController: WKInterfaceController {
     }
     
     func changeIngredientRowVisual(using rowController: IngredientsRowController, to isDone: Bool) {
+        print("Is Done? \(isDone)")
+        
         if (isDone) {
             rowController.ingredientGroup.setBackgroundColor(UIColor(white: 0.1, alpha: 0.5))
             rowController.doneImage.setImage(UIImage(systemName: "checkmark.circle"))

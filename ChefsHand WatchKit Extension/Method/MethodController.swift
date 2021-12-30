@@ -19,8 +19,8 @@ class MethodController: WKInterfaceController {
         let selectedRowStep: Step = recipeManager.getRecipe()!.method[rowIndex]
         
         recipeManager.setRecipeStepIsDone(at: rowIndex, to: !selectedRowStep.isDone)
-        setMethodRowVisuals(using: selectedRow, to: !selectedRowStep.isDone)
-        if (rowIndex < methodTable.numberOfRows - 1 && !selectedRowStep.isDone) {
+        setMethodRowVisuals(using: selectedRow, to: selectedRowStep.isDone)
+        if (rowIndex < methodTable.numberOfRows - 1 && selectedRowStep.isDone) {
             methodTable.scrollToRow(at: rowIndex + 1)
         }
         
