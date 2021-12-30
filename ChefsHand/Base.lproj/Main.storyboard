@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Irk-Ua-u5n">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Irk-Ua-u5n">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -92,27 +93,27 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="recipeCell" rowHeight="70" id="Bhw-ax-hNJ" customClass="RecipeTableCell" customModule="ChefsHand" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="24.5" width="414" height="70"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="recipeCell" rowHeight="70" id="Bhw-ax-hNJ" customClass="RecipeTableCell" customModule="ChefsHand" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="44.5" width="414" height="70"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Bhw-ax-hNJ" id="J1X-3V-5od">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="70"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="385.5" height="70"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jq6-0J-7XT">
-                                            <rect key="frame" x="20" y="11" width="279" height="29"/>
+                                            <rect key="frame" x="20" y="11" width="250.5" height="29"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="RJJ-Nx-vca">
-                                            <rect key="frame" x="307" y="0.0" width="107" height="70"/>
+                                            <rect key="frame" x="278.5" y="0.0" width="107" height="70"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="107" id="tiK-ib-Wli"/>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xox-69-QHD">
-                                            <rect key="frame" x="20" y="43" width="279" height="27"/>
+                                            <rect key="frame" x="20" y="43" width="250.5" height="27"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="27" id="wLZ-be-UR4"/>
                                             </constraints>
@@ -138,6 +139,7 @@
                                     <outlet property="recipeImage" destination="RJJ-Nx-vca" id="9bI-Oi-1dH"/>
                                     <outlet property="recipeLocationLabel" destination="Xox-69-QHD" id="4ne-Dh-PWL"/>
                                     <outlet property="recipeTitleLabel" destination="jq6-0J-7XT" id="Q0h-8C-rYZ"/>
+                                    <segue destination="N9U-XE-DNZ" kind="show" identifier="ShowEditableRecipeSegue" id="qOp-An-96g"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -151,6 +153,22 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ci6-v7-g1p" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1971.0144927536232" y="760.71428571428567"/>
+        </scene>
+        <!--Editable Recipe View Controller-->
+        <scene sceneID="A7Q-MU-uJd">
+            <objects>
+                <viewController id="N9U-XE-DNZ" customClass="EditableRecipeViewController" customModule="ChefsHand" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="RyI-fl-BcV">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="unF-dp-tZR"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="j87-1E-9kX"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lKh-gf-iql" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2961" y="761"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="tGM-MC-6Ew">
@@ -173,9 +191,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="applewatch.radiowaves.left.and.right" catalog="system" width="128" height="82"/>
+        <image name="applewatch.radiowaves.left.and.right" catalog="system" width="128" height="85"/>
         <namedColor name="AccentColor">
-            <color red="0.67843137254901964" green="0.71372549019607845" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color red="0.67799997329711914" green="0.71399998664855957" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

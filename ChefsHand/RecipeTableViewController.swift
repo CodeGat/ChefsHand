@@ -10,7 +10,6 @@ import RealmSwift
 import WatchConnectivity
 
 class RecipeTableViewController: UITableViewController {
-//    var realmHandler = RealmManager.shared
     var realm: Realm?
     var connectivityHandler = WatchConnectivityManager.shared
     var realmResults: Results<RealmRecipe>?
@@ -18,8 +17,6 @@ class RecipeTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
         connectivityHandler.phoneDelegate = self
         
         self.realm = try! Realm()
@@ -46,6 +43,17 @@ class RecipeTableViewController: UITableViewController {
         
         tableView.delegate = self
         tableView.dataSource = self
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ShowEditableRecipeSegue",
+           let destination = segue.destination as? EditableRecipeViewController,
+           let cell = sender as? RecipeTableCell,
+           let cellIx = tableView.indexPath(for: cell),
+           let recipe: RealmRecipe = (realmResults?.objects(at: IndexSet(integer: cellIx.row))[0]) {
+            destination.navigationItem.title = "Editing: " + recipe.name
+            destination.configure(with: recipe)
+        }
     }
 
     // MARK: - Table view data source
@@ -80,6 +88,10 @@ class RecipeTableViewController: UITableViewController {
             }
             
         }
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
     }
 
     /*
