@@ -11,7 +11,6 @@ import RealmSwift
 
 class SendToWatchController: UIViewController {
     var connectivityManager = WatchConnectivityManager.shared
-//    let realmManager = RealmManager.shared
     var realm: Realm?
     var realmResults: Results<RealmRecipe>?
     
