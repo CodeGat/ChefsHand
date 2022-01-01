@@ -146,7 +146,7 @@ extension RecipeError: CustomStringConvertible {
     public var description: String {
         switch self {
         case .unknownHostError:
-            return "Host was not given or valid"
+            return "Host was not given or was invalid"
         case .genericRecipeUnconvertableError(let host):
             return "this generic recipe from \(host) couldn't be converted into an Apple Watch format"
         case .tasteRecipeUnconvertableError:

@@ -82,6 +82,8 @@ class RecipeTableViewController: UITableViewController {
             // Delete the row from the data source
             let cell: RecipeTableCell = tableView.dequeueReusableCell(withIdentifier: "recipeCell") as! RecipeTableCell
             
+            print(cell.primaryKey?.description)
+            
             try! self.realm?.write{
                 let recipeToBeDeleted: RealmRecipe = (self.realm?.object(ofType: RealmRecipe.self, forPrimaryKey: cell.primaryKey))!
                 realm?.delete(recipeToBeDeleted)
