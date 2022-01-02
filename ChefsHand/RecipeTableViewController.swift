@@ -80,12 +80,10 @@ class RecipeTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            
             try! self.realm?.write{
                 let recipeToBeDeleted: RealmRecipe? = realmResults?.objects(at: IndexSet(integer: indexPath.row))[0]
                 realm?.delete(recipeToBeDeleted!)
             }
-            
         }
     }
     
